@@ -3,6 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 import { Exclude } from 'class-transformer';
 import { Article } from 'src/articles/entities/article.entity';
 import { Solution } from 'src/solutions/entities/solution.entity';
+import { Place } from 'src/places/entities/place.entity';
 
 @Entity()
 export class User {
@@ -21,6 +22,9 @@ export class User {
 
   @OneToMany(() => Solution, (solution) => solution.user)
   solutions: Solution[]
+
+  @OneToMany(() => Place, (place) => place.user)
+  places: Place[]
 
   @CreateDateColumn()
   createdDate: Date

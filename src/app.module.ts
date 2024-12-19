@@ -9,6 +9,7 @@ import { UploadModule } from './upload/upload.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { PlacesModule } from './places/places.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -24,7 +25,7 @@ import configuration from './config/configuration';
         password: configService.get('db.password'),
         database: configService.get('db.name'),
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: true
       }),
     }),
     ServeStaticModule.forRoot({
@@ -40,6 +41,7 @@ import configuration from './config/configuration';
     SolutionsModule,
     ArticlesModule,
     UploadModule,
+    PlacesModule,
   ],
   providers: [],
 })
