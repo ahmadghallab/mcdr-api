@@ -3,6 +3,7 @@ import { SolutionsModule } from "./solutions/solutions.module";
 import { ArticlesModule } from "./articles/articles.module";
 import { PlacesModule } from "./places/places.module";
 import { BannersModule } from "./banners/banners.module";
+import { UpdatesModule } from "./updates/updates.module";
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { BannersModule } from "./banners/banners.module";
     ArticlesModule,
     PlacesModule,
     BannersModule,
+    UpdatesModule
   ],
 })
 export class UserV1Module {}
