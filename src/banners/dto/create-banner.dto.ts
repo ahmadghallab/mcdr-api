@@ -2,14 +2,14 @@ import { Type } from "class-transformer";
 import { IsObject, ValidateNested } from "class-validator";
 import { Translation } from "src/common/dto/translation.dto";
 
-export class CreateArticleDto {
+export class CreateBannerDto {
   @IsObject()
   @ValidateNested()
   @Type(() => Translation)
-  title: Translation;
+  title: Translation
 
   @IsObject()
   @ValidateNested()
   @Type(() => Translation)
-  body: Translation;
+  description: Translation
 }

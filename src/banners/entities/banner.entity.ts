@@ -2,20 +2,17 @@ import { User } from "src/users/entities/user.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
-export class Solution {
+export class Banner {
   @PrimaryGeneratedColumn()
   id: number
-
-  @Column()
-  fileUrl: string
 
   @Column({type: "json"})
   title: { en: string, ar: string }
 
   @Column({type: "json"})
-  body: { en: string, ar: string }
+  description: { en: string, ar: string }
 
-  @ManyToOne((type) => User, (user) => user.solutions)
+  @ManyToOne((type) => User, (user) => user.banners)
   createdBy: User
 
   @CreateDateColumn()

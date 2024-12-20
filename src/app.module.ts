@@ -10,6 +10,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PlacesModule } from './places/places.module';
+import { BannersModule } from './banners/banners.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -42,6 +43,7 @@ import configuration from './config/configuration';
     ArticlesModule,
     UploadModule,
     PlacesModule,
+    BannersModule,
   ],
   providers: [],
 })

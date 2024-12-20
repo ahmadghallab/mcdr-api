@@ -15,13 +15,13 @@ export class PlacesService {
   ) {}
 
   async create(createPlaceDto: CreatePlaceDto, user: User): Promise<Place> {
-    return this.placesRepository.save({...createPlaceDto, user: user});
+    return this.placesRepository.save({...createPlaceDto, createdBy: user});
   }
 
   async findAll(lang?: string): Promise<Place[]> {
     const places = await this.placesRepository.find({
       relations: {
-        user: true,
+        createdBy: true,
       },
     });
 

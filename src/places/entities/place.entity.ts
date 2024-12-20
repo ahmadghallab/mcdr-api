@@ -28,5 +28,5 @@ export class Place {
   iframeSrc: string;
 
   @ManyToOne((type) => User, (user) => user.places)
-  user: User
+  createdBy: User
 }

@@ -13,7 +13,7 @@ export class Article {
   body: { en: string, ar: string }
 
   @ManyToOne((type) => User, (user) => user.articles)
-  user: User
+  createdBy: User
 
   @CreateDateColumn()
   createdDate: Date

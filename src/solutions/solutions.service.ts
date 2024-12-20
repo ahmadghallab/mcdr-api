@@ -15,13 +15,13 @@ export class SolutionsService {
   ) {}
 
   async create(createSolutionDto: CreateSolutionDto, user: User): Promise<Solution> {
-    return this.solutionsRepository.save({...createSolutionDto, user: user});
+    return this.solutionsRepository.save({...createSolutionDto, createdBy: user});
   }
 
   async findAll(lang?: string): Promise<Solution[]> {
     const solutions = await this.solutionsRepository.find({
       relations: {
-        user: true,
+        createdBy: true,
       },
     });
 

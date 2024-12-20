@@ -4,6 +4,7 @@ import { Exclude } from 'class-transformer';
 import { Article } from 'src/articles/entities/article.entity';
 import { Solution } from 'src/solutions/entities/solution.entity';
 import { Place } from 'src/places/entities/place.entity';
+import { Banner } from 'src/banners/entities/banner.entity';
 
 @Entity()
 export class User {
@@ -17,14 +18,17 @@ export class User {
   @Exclude()
   password: string;
 
-  @OneToMany(() => Article, (article) => article.user)
+  @OneToMany(() => Article, (article) => article.createdBy)
   articles: Article[]
 
-  @OneToMany(() => Solution, (solution) => solution.user)
+  @OneToMany(() => Solution, (solution) => solution.createdBy)
   solutions: Solution[]
 
-  @OneToMany(() => Place, (place) => place.user)
+  @OneToMany(() => Place, (place) => place.createdBy)
   places: Place[]
+
+  @OneToMany(() => Banner, (banner) => banner.createdBy)
+  banners: Banner[]
 
   @CreateDateColumn()
   createdDate: Date

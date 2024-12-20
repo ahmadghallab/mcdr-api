@@ -15,13 +15,13 @@ export class ArticlesService {
   ) {}
 
   async create(createArticleDto: CreateArticleDto, user: User): Promise<Article> {
-    return this.articlesRepository.save({...createArticleDto, user: user});
+    return this.articlesRepository.save({...createArticleDto, createdBy: user});
   }
 
   async findAll(lang?: string): Promise<Article[]> {
     const articles = await this.articlesRepository.find({
       relations: {
-        user: true,
+        createdBy: true,
       },
     });
 
