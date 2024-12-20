@@ -1,20 +1,24 @@
 import { Module } from '@nestjs/common';
 import { CoreModule } from './core/core.module';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ArticlesModule } from './articles/articles.module';
-import { SolutionsModule } from './solutions/solutions.module';
-import { UploadModule } from './upload/upload.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { PlacesModule } from './places/places.module';
-import { BannersModule } from './banners/banners.module';
 import configuration from './config/configuration';
+import { AdminV1Module } from './domain/admin/v1/admin-v1.module';
+import { UserV1Module } from './domain/user/v1/user-v1.module';
+import { RouterModule } from '@nestjs/core';
+import { routes } from './routes';
+
+export const modules = [
+  CoreModule,
+  AdminV1Module,
+  UserV1Module
+];
 
 @Module({
   imports: [
+    RouterModule.register(routes), 
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -36,14 +40,7 @@ import configuration from './config/configuration';
     ConfigModule.forRoot({
       load: [configuration],
     }),
-    CoreModule, 
-    AuthModule, 
-    UsersModule,
-    SolutionsModule,
-    ArticlesModule,
-    UploadModule,
-    PlacesModule,
-    BannersModule,
+    ...modules,
   ],
   providers: [],
 })

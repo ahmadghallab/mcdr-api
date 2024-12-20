@@ -5,7 +5,6 @@ import { BadRequestFilter } from './core/filters/bad-request.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api');
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new BadRequestFilter());
