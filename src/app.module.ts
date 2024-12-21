@@ -4,9 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import configuration from './config/configuration';
-import { AdminV1Module } from './domain/admin/v1/admin-v1.module';
-import { UserV1Module } from './domain/user/v1/user-v1.module';
+import { AdminV1Module } from './domains/admin/v1/admin-v1.module';
+import { UserV1Module } from './domains/user/v1/user-v1.module';
 import { RouterModule } from '@nestjs/core';
 import { routes } from './routes';
 
@@ -36,9 +35,6 @@ export const modules = [
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
-    }),
-    ConfigModule.forRoot({
-      load: [configuration],
     }),
     ...modules,
   ],
