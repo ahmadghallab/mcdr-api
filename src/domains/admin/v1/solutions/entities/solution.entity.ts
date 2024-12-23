@@ -32,7 +32,7 @@ export class Solution {
   }
 
   @Expose()
-  get filePath(): string {
+  get fileUrl(): string {
     const host = Solution.host;
     return `${host}/uploads/${this.fileName}`;
   }
