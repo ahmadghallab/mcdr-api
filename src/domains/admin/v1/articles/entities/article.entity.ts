@@ -12,6 +12,9 @@ export class Article {
   @Column({type: "json"})
   body: { en: string, ar: string }
 
+  @Column({ default: false })
+  isPublished: boolean
+
   @ManyToOne((type) => User, (user) => user.articles)
   createdBy: User
 

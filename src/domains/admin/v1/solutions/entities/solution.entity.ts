@@ -16,6 +16,9 @@ export class Solution {
   @Column({type: "json"})
   body: { en: string, ar: string }
 
+  @Column({ default: false })
+  isPublished: boolean
+
   @ManyToOne((type) => User, (user) => user.solutions)
   createdBy: User
 

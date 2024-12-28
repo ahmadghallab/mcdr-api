@@ -15,11 +15,7 @@ export class PlacesService {
     couponExchangePlaces: Place[],
     eSignatureCerts: Place[]
   }> {
-    const places = await this.placesRepository.find({
-      relations: {
-        createdBy: true,
-      },
-    });
+    const places = await this.placesRepository.findBy({ isPublished: true });
 
     const localizedPlaces = places.map(place => ({
       ...place,

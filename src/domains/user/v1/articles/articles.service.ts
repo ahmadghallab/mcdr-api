@@ -13,11 +13,7 @@ export class ArticlesService {
 
 
   async findAll(lang?: string): Promise<Article[]> {
-    const articles = await this.articlesRepository.find({
-      relations: {
-        createdBy: true,
-      },
-    });
+    const articles = await this.articlesRepository.findBy({ isPublished: true });
 
     const localizedArticles = articles.map(article => ({
       ...article,

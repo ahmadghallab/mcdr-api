@@ -12,6 +12,9 @@ export class Banner {
   @Column({type: "json"})
   description: { en: string, ar: string }
 
+  @Column({ default: false })
+  isPublished: boolean
+
   @ManyToOne((type) => User, (user) => user.banners)
   createdBy: User
 

@@ -27,6 +27,9 @@ export class Place {
   @Column({ type: 'text' })
   iframeSrc: string;
 
+  @Column({ default: false })
+  isPublished: boolean
+
   @ManyToOne((type) => User, (user) => user.places)
   createdBy: User
 }
