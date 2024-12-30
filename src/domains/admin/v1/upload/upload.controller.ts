@@ -12,7 +12,7 @@ export class UploadController {
     FileInterceptor('file', {
       storage: diskStorage({
         destination: (req, file, cb) => {
-          const uploadPath = join(__dirname, '../../../../..', 'uploads');
+          const uploadPath = join(process.cwd(), 'uploads');;
           cb(null, uploadPath);
         },
         filename: (req, file, cb) => {
