@@ -1,10 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Article } from './entities/article.entity';
 import { Repository } from 'typeorm';
-import { User } from '../users/entities/user.entity';
+import { Admin } from '../admins/entities/admin.entity';
 
 @Injectable()
 export class ArticlesService {
@@ -14,16 +14,12 @@ export class ArticlesService {
     private readonly articlesRepository: Repository<Article>
   ) {}
 
-  async create(createArticleDto: CreateArticleDto, user: User): Promise<Article> {
-    return this.articlesRepository.save({...createArticleDto, createdBy: user});
+  async create(createArticleDto: CreateArticleDto, user: Admin): Promise<Article> {
+    return this.articlesRepository.save(createArticleDto);
   }
 
   async findAll(): Promise<Article[]> {
-    const articles = await this.articlesRepository.find({
-      relations: {
-        createdBy: true,
-      },
-    });
+    const articles = await this.articlesRepository.find();
 
     return articles;
   }

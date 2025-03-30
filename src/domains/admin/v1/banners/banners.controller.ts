@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Header, Headers } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { BannersService } from './banners.service';
 import { CreateBannerDto } from './dto/create-banner.dto';
 import { UpdateBannerDto } from './dto/update-banner.dto';
-import { User } from '../users/entities/user.entity';
-import { AuthUser } from '../auth/auth-user.decorator';
+import { Admin } from '../admins/entities/admin.entity';
+import { AuthAdmin } from '../auth/auth-admin.decorator';
 
 @Controller()
 export class BannersController {
@@ -11,7 +11,7 @@ export class BannersController {
 
   @Post()
   create(
-    @AuthUser() user: User,
+    @AuthAdmin() user: Admin,
     @Body() createBannerDto: CreateBannerDto
   ) {
     return this.bannersService.create(createBannerDto, user);

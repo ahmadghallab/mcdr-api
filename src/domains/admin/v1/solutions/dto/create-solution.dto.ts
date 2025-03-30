@@ -1,18 +1,24 @@
-import { Type } from "class-transformer";
-import { IsNotEmpty, IsObject, ValidateNested } from "class-validator";
-import { Translation } from "src/core/common/dto/translation.dto";
+import { IsEnum, IsNotEmpty, IsObject, IsOptional, IsString } from 'class-validator';
+import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
+import { TranslationDto } from 'src/core/common/dto/translation.dto';
 
 export class CreateSolutionDto {
   @IsObject()
-  @ValidateNested()
-  @Type(() => Translation)
-  title: Translation;
+  @IsNotEmpty()
+  title: TranslationDto;
 
   @IsObject()
-  @ValidateNested()
-  @Type(() => Translation)
-  body: Translation;
-
   @IsNotEmpty()
-  fileUrl: string
+  body: TranslationDto;
+
+  @IsString()
+  @IsNotEmpty()
+  fileName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  href: string;
+
+  @IsEnum(PublishStatus)
+  status: PublishStatus;
 }

@@ -1,20 +1,26 @@
-import { Type } from "class-transformer";
-import { IsArray, IsEnum, IsObject, IsString, ValidateNested } from "class-validator";
-import { Translation } from "src/core/common/dto/translation.dto";
-import { PlaceType } from "../entities/place.entity";
+import { IsEnum, IsNotEmpty, IsObject, IsOptional, IsString, IsArray, ArrayMinSize } from 'class-validator';
+import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
+import { LocationType } from 'src/core/common/enums/location-type.enum';
+import { TranslationDto } from 'src/core/common/dto/translation.dto';
 
 export class CreatePlaceDto {
   @IsObject()
-  @ValidateNested()
-  @Type(() => Translation)
-  address: Translation;
+  @IsNotEmpty()
+  address: TranslationDto;
+
+  @IsOptional()
+  @IsArray()
+  @ArrayMinSize(1)
+  @IsString({ each: true })
+  phones?: string[];
 
   @IsString()
-  iframeSrc: string
+  @IsNotEmpty()
+  iframeSrc: string;
 
-  @IsArray()
-  phones: string[]
+  @IsEnum(LocationType)
+  type: LocationType;
 
-  @IsEnum(PlaceType)
-  type: PlaceType
+  @IsEnum(PublishStatus)
+  status: PublishStatus;
 }

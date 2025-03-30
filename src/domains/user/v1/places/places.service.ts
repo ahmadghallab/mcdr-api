@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Place, PlaceType } from 'src/domains/admin/v1/places/entities/place.entity';
+import { LocationType } from 'src/core/common/enums/location-type.enum';
+import { Place } from 'src/domains/admin/v1/places/entities/place.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -15,7 +16,7 @@ export class PlacesService {
     couponExchangePlaces: Place[],
     eSignatureCerts: Place[]
   }> {
-    const places = await this.placesRepository.findBy({ isPublished: true });
+    const places = await this.placesRepository.find();
 
     const localizedPlaces = places.map(place => ({
       ...place,
@@ -24,8 +25,8 @@ export class PlacesService {
 
 
     return {
-      couponExchangePlaces: localizedPlaces.filter(place => place.type === PlaceType.COUPON_EXCHANGE),
-      eSignatureCerts: localizedPlaces.filter(place => place.type === PlaceType.E_SIGNATURE_CERTIFICATE),
+      couponExchangePlaces: localizedPlaces.filter(place => place.type === LocationType.CouponExchange),
+      eSignatureCerts: localizedPlaces.filter(place => place.type === LocationType.ESignatureCertificate),
     };
   }
 }

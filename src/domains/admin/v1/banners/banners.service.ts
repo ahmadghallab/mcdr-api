@@ -4,7 +4,7 @@ import { UpdateBannerDto } from './dto/update-banner.dto';
 import { Banner } from './entities/banner.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../users/entities/user.entity';
+import { Admin } from '../admins/entities/admin.entity';
 
 @Injectable()
 export class BannersService {
@@ -14,14 +14,12 @@ export class BannersService {
     private readonly bannersRepository: Repository<Banner>
   ) {}
 
-  create(createBannerDto: CreateBannerDto, user: User): Promise<Banner> {
+  create(createBannerDto: CreateBannerDto, user: Admin): Promise<Banner> {
     return this.bannersRepository.save({...createBannerDto, createdBy: user})
   }
 
   async findAll(): Promise<Banner[]> {
-    const banners = await this.bannersRepository.find({
-      relations: { createdBy: true }
-    });
+    const banners = await this.bannersRepository.find();
 
     return banners;
   }

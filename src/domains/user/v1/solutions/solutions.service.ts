@@ -13,7 +13,7 @@ export class SolutionsService {
   ) {}
 
   async findAll(lang: string): Promise<Solution[]> {
-    const solutions = await this.solutionsRepository.findBy({ isPublished: true });
+    const solutions = await this.solutionsRepository.find();
 
     const localizedSolutions = solutions.map(solution => ({
       ...solution,

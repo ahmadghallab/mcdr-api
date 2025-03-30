@@ -2,8 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Headers } from '@nes
 import { SolutionsService } from './solutions.service';
 import { CreateSolutionDto } from './dto/create-solution.dto';
 import { UpdateSolutionDto } from './dto/update-solution.dto';
-import { AuthUser } from '../auth/auth-user.decorator';
-import { User } from '../users/entities/user.entity';
+import { AuthAdmin } from '../auth/auth-admin.decorator';
+import { Admin } from '../admins/entities/admin.entity';
 
 @Controller()
 export class SolutionsController {
@@ -11,10 +11,10 @@ export class SolutionsController {
 
   @Post()
   create(
-    @AuthUser() userDto: User,
+    @AuthAdmin() adminDto: Admin,
     @Body() createSolutionDto: CreateSolutionDto
   ) {
-    return this.solutionsService.create(createSolutionDto, userDto);
+    return this.solutionsService.create(createSolutionDto, adminDto);
   }
 
   @Get()

@@ -1,26 +1,32 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { User } from "../../users/entities/user.entity";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 
-@Entity()
+@Entity('articles')
 export class Article {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
-  @Column({type: "json"})
-  title: { en: string, ar: string }
+  @Column({ type: 'varchar', length: 255, name: 'title_en' })
+  titleEn: string;
 
-  @Column({type: "json"})
-  body: { en: string, ar: string }
+  @Column({ type: 'varchar', length: 255, name: 'title_ar' })
+  titleAr: string;
 
-  @Column({ default: false })
-  isPublished: boolean
+  @Column({ type: 'text', name: 'body_en' })
+  bodyEn: string;
 
-  @ManyToOne((type) => User, (user) => user.articles)
-  createdBy: User
+  @Column({ type: 'text', name: 'body_ar' })
+  bodyAr: string;
 
-  @CreateDateColumn()
-  createdDate: Date
+  @Column({ type: 'text', nullable: true, name: 'content_en' })
+  contentEn?: string;
 
-  @UpdateDateColumn()
-  updatedDate: Date
+  @Column({ type: 'text', nullable: true, name: 'content_ar' })
+  contentAr?: string;
+
+  @Column({ type: 'enum', enum: PublishStatus, name: 'status' })
+  status: PublishStatus;
+
+  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
+  createdAt: Date;
 }

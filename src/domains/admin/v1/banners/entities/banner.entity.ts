@@ -1,7 +1,7 @@
-import { User } from "../../users/entities/user.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { PublishStatus } from "src/core/common/enums/publish-status.enum";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity('banners')
 export class Banner {
   @PrimaryGeneratedColumn()
   id: number
@@ -12,15 +12,9 @@ export class Banner {
   @Column({type: "json"})
   description: { en: string, ar: string }
 
-  @Column({ default: false })
-  isPublished: boolean
+  @Column({ type: 'enum', enum: PublishStatus, name: 'status' })
+  status: PublishStatus;
 
-  @ManyToOne((type) => User, (user) => user.banners)
-  createdBy: User
-
-  @CreateDateColumn()
-  createdDate: Date
-
-  @UpdateDateColumn()
-  updatedDate: Date
+  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
+  createdAt: Date;
 }

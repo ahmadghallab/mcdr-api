@@ -1,32 +1,30 @@
-import { Expose } from "class-transformer";
-import { User } from "../../users/entities/user.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
+import { TranslationDto } from 'src/core/common/dto/translation.dto';
+import { Expose } from 'class-transformer';
 
-@Entity()
+@Entity('solutions')
 export class Solution {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
-  @Column()
-  fileName: string
+  @Column({ type: 'json', name: 'title' })
+  title: TranslationDto
 
-  @Column({type: "json"})
-  title: { en: string, ar: string }
+  @Column({ type: 'json', name: 'body' })
+  body: TranslationDto
 
-  @Column({type: "json"})
-  body: { en: string, ar: string }
+  @Column({ type: 'varchar', length: 255, name: 'file_name' })
+  fileName: string;
 
-  @Column({ default: false })
-  isPublished: boolean
+  @Column({ type: 'varchar', length: 255, name: 'href' })
+  href: string;
 
-  @ManyToOne((type) => User, (user) => user.solutions)
-  createdBy: User
+  @Column({ type: 'enum', enum: PublishStatus, name: 'status' })
+  status: PublishStatus;
 
-  @CreateDateColumn()
-  createdDate: Date
-
-  @UpdateDateColumn()
-  updatedDate: Date
+  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
+  createdAt: Date;
 
   private static host: string;
 

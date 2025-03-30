@@ -2,8 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
-import { AuthUser } from '../auth/auth-user.decorator';
-import { User } from '../users/entities/user.entity';
+import { AuthAdmin } from '../auth/auth-admin.decorator';
+import { Admin } from '../admins/entities/admin.entity';
 
 @Controller()
 export class ArticlesController {
@@ -11,10 +11,10 @@ export class ArticlesController {
 
   @Post()
   create(
-    @AuthUser() userDto: User,
+    @AuthAdmin() adminDto: Admin,
     @Body() createArticleDto: CreateArticleDto
   ) {
-    return this.articlesService.create(createArticleDto, userDto);
+    return this.articlesService.create(createArticleDto, adminDto);
   }
 
   @Get()

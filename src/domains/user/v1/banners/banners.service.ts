@@ -12,7 +12,7 @@ export class BannersService {
   ) {}
 
   async findAll(lang: string): Promise<Banner[]> {
-    const banners = await this.bannersRepository.findBy({ isPublished: true });
+    const banners = await this.bannersRepository.find();
 
     const localizedBanners = banners.map(banner => ({
       ...banner,

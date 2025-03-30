@@ -1,15 +1,31 @@
-import { Type } from "class-transformer";
-import { IsObject, ValidateNested } from "class-validator";
-import { Translation } from "src/core/common/dto/translation.dto";
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 
 export class CreateArticleDto {
-  @IsObject()
-  @ValidateNested()
-  @Type(() => Translation)
-  title: Translation;
+  @IsString()
+  @IsNotEmpty()
+  titleEn: string;
 
-  @IsObject()
-  @ValidateNested()
-  @Type(() => Translation)
-  body: Translation;
+  @IsString()
+  @IsNotEmpty()
+  titleAr: string;
+
+  @IsString()
+  @IsNotEmpty()
+  bodyEn: string;
+
+  @IsString()
+  @IsNotEmpty()
+  bodyAr: string;
+
+  @IsString()
+  @IsOptional()
+  contentEn?: string;
+
+  @IsString()
+  @IsOptional()
+  contentAr?: string;
+
+  @IsEnum(PublishStatus)
+  status: PublishStatus;
 }

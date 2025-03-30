@@ -1,4 +1,4 @@
-import { Translation } from "src/core/common/dto/translation.dto"
+import { TranslationDto } from "src/core/common/dto/translation.dto"
 
 export enum MeetingStatusEnum {
   NOT_STARTED = 'not_started',
@@ -12,7 +12,7 @@ export enum MeetingStatusEnum {
 export interface Dividend {
   id: number
   startDate: string
-  name: Translation
+  name: TranslationDto
   cash: number
   shares: number
   image: string,
@@ -22,9 +22,9 @@ export interface AssemblyDates {
   id: number,
   assemblyTime: string
   votingStatus: MeetingStatusEnum
-  company: Translation
-  associationType: Translation
-  location: Translation
+  company: TranslationDto
+  associationType: TranslationDto
+  location: TranslationDto
 }
 
 export enum IPOStatusEnum {
@@ -36,8 +36,8 @@ export interface IPO {
   id: number
   updatedAt: string
   status: IPOStatusEnum
-  name: Translation
-  description: Translation
+  name: TranslationDto
+  description: TranslationDto
   shares: number
   image: string,
 }

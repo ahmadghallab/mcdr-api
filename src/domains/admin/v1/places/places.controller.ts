@@ -2,8 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Headers } from '@nes
 import { PlacesService } from './places.service';
 import { CreatePlaceDto } from './dto/create-place.dto';
 import { UpdatePlaceDto } from './dto/update-place.dto';
-import { User } from '../users/entities/user.entity';
-import { AuthUser } from '../auth/auth-user.decorator';
+import { Admin } from '../admins/entities/admin.entity';
+import { AuthAdmin } from '../auth/auth-admin.decorator';
 
 @Controller()
 export class PlacesController {
@@ -11,10 +11,10 @@ export class PlacesController {
 
   @Post()
   create(
-    @AuthUser() userDto: User,
+    @AuthAdmin() adminDto: Admin,
     @Body() createPlaceDto: CreatePlaceDto
   ) {
-    return this.placesService.create(createPlaceDto, userDto);
+    return this.placesService.create(createPlaceDto, adminDto);
   }
 
   @Get()

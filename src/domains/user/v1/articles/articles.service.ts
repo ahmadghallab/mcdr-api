@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { localizeContent } from 'src/core/common/utils/localize.util';
 import { Article } from 'src/domains/admin/v1/articles/entities/article.entity';
 import { Repository } from 'typeorm';
 
@@ -11,14 +12,12 @@ export class ArticlesService {
     private readonly articlesRepository: Repository<Article>
   ) {}
 
-
   async findAll(lang?: string): Promise<Article[]> {
-    const articles = await this.articlesRepository.findBy({ isPublished: true });
+    const articles = await this.articlesRepository.find();
 
     const localizedArticles = articles.map(article => ({
       ...article,
-      title: article.title[lang],
-      body: article.body[lang],
+      ...localizeContent(article, lang, ["title", "body", "content"]),
     }))
 
     return localizedArticles;
@@ -29,8 +28,7 @@ export class ArticlesService {
 
     const localizedArticles = {
       ...article,
-      title: article.title[lang],
-      body: article.body[lang],
+      ...localizeContent(article, lang, ["title", "body", "content"]),
     } 
 
     return localizedArticles;

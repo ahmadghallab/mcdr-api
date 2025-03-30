@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from "class-validator";
 
-export class Translation {
+export class TranslationDto {
   @IsString()
   @IsNotEmpty({ message: 'English translation is required' })
   en: string;

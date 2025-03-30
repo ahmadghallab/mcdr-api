@@ -4,7 +4,7 @@ import { UpdateSolutionDto } from './dto/update-solution.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Solution } from './entities/solution.entity';
 import { Repository } from 'typeorm';
-import { User } from '../users/entities/user.entity';
+import { Admin } from '../admins/entities/admin.entity';
 
 @Injectable()
 export class SolutionsService {
@@ -14,16 +14,12 @@ export class SolutionsService {
     private readonly solutionsRepository: Repository<Solution>
   ) {}
 
-  async create(createSolutionDto: CreateSolutionDto, user: User): Promise<Solution> {
-    return this.solutionsRepository.save({...createSolutionDto, createdBy: user});
+  async create(createSolutionDto: CreateSolutionDto, user: Admin): Promise<Solution> {
+    return this.solutionsRepository.save(createSolutionDto);
   }
 
   async findAll(): Promise<Solution[]> {
-    const solutions = await this.solutionsRepository.find({
-      relations: {
-        createdBy: true,
-      },
-    });
+    const solutions = await this.solutionsRepository.find();
 
     return solutions;
   }

@@ -1,35 +1,28 @@
-import { User } from "../../users/entities/user.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
+import { LocationType } from 'src/core/common/enums/location-type.enum';
+import { TranslationDto } from 'src/core/common/dto/translation.dto';
 
-export enum PlaceType {
-  COUPON_EXCHANGE = "COUPON_EXCHANGE",
-  E_SIGNATURE_CERTIFICATE = "E_SIGNATURE_CERTIFICATE",
-}
-
-@Entity()
+@Entity('places')
 export class Place {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
-  @Column({
-    type: "enum",
-    enum: PlaceType,
-    default: PlaceType.COUPON_EXCHANGE,
-  })
-  type: PlaceType
+  @Column({ type: 'json', name: 'address' })
+  address: TranslationDto;
 
-  @Column({type: "json"})
-  address: { en: string, ar: string }
+  @Column({ type: 'json', nullable: true, name: 'phones' })
+  phones?: string[];
 
-  @Column("simple-array")
-  phones: string[]
-
-  @Column({ type: 'text' })
+  @Column({ type: 'text', name: 'iframe_src' })
   iframeSrc: string;
 
-  @Column({ default: false })
-  isPublished: boolean
+  @Column({ type: 'enum', enum: LocationType, name: 'type' })
+  type: LocationType;
 
-  @ManyToOne((type) => User, (user) => user.places)
-  createdBy: User
+  @Column({ type: 'enum', enum: PublishStatus, name: 'status' })
+  status: PublishStatus;
+
+  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
+  createdAt: Date;
 }

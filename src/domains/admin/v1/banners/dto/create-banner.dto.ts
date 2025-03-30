@@ -1,15 +1,15 @@
-import { Type } from "class-transformer";
-import { IsObject, ValidateNested } from "class-validator";
-import { Translation } from "src/core/common/dto/translation.dto";
+import { IsEnum, IsNotEmpty, IsObject } from 'class-validator';
+import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 
 export class CreateBannerDto {
   @IsObject()
-  @ValidateNested()
-  @Type(() => Translation)
-  title: Translation
+  @IsNotEmpty()
+  title: { en: string; ar: string };
 
   @IsObject()
-  @ValidateNested()
-  @Type(() => Translation)
-  description: Translation
+  @IsNotEmpty()
+  description: { en: string; ar: string };
+
+  @IsEnum(PublishStatus)
+  status: PublishStatus;
 }

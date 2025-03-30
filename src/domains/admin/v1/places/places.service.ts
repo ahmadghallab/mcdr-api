@@ -1,10 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreatePlaceDto } from './dto/create-place.dto';
 import { UpdatePlaceDto } from './dto/update-place.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Place } from './entities/place.entity';
 import { Repository } from 'typeorm';
-import { User } from '../users/entities/user.entity';
+import { Admin } from '../admins/entities/admin.entity';
 
 @Injectable()
 export class PlacesService {
@@ -14,16 +14,12 @@ export class PlacesService {
     private readonly placesRepository: Repository<Place>
   ) {}
 
-  async create(createPlaceDto: CreatePlaceDto, user: User): Promise<Place> {
+  async create(createPlaceDto: CreatePlaceDto, user: Admin): Promise<Place> {
     return this.placesRepository.save({...createPlaceDto, createdBy: user});
   }
 
   async findAll(lang?: string): Promise<Place[]> {
-    const places = await this.placesRepository.find({
-      relations: {
-        createdBy: true,
-      },
-    });
+    const places = await this.placesRepository.find();
 
     return places;
   }
