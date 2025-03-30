@@ -1,7 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 import { TranslationDto } from 'src/core/common/dto/translation.dto';
-import { Expose } from 'class-transformer';
 
 @Entity('solutions')
 export class Solution {
@@ -14,8 +13,8 @@ export class Solution {
   @Column({ type: 'json', name: 'body' })
   body: TranslationDto
 
-  @Column({ type: 'varchar', length: 255, name: 'file_name' })
-  fileName: string;
+  @Column({ type: 'varchar', length: 255, name: 'file_url' })
+  fileUrl: string;
 
   @Column({ type: 'varchar', length: 255, name: 'href' })
   href: string;
@@ -30,11 +29,5 @@ export class Solution {
 
   static setHost(host: string) {
     this.host = host;
-  }
-
-  @Expose()
-  get fileUrl(): string {
-    const host = Solution.host;
-    return `${host}/uploads/${this.fileName}`;
   }
 }
