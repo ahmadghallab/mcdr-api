@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Faq } from './entities/faq.entity';
 import { Repository } from 'typeorm';
 import { Admin } from '../admins/entities/admin.entity';
+import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
 
 @Injectable()
 export class FaqsService {
@@ -18,8 +19,8 @@ export class FaqsService {
     return this.faqsRepository.save(createFaqDto);
   }
 
-  async findAll(): Promise<Faq[]> {
-    const faqs = await this.faqsRepository.find();
+  async findAll(department: FaqDepartment): Promise<Faq[]> {
+    const faqs = await this.faqsRepository.findBy({ department });
 
     return faqs;
   }

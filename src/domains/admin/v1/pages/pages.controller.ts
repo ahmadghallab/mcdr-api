@@ -1,15 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { PagesService } from './pages.service';
 import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { AuthAdmin } from '../auth/auth-admin.decorator';
 import { Admin } from '../admins/entities/admin.entity';
+import { ListFaqsDto } from './dto/list-faqs.dto';
 
 @Controller()
 export class PagesController {
-  constructor(private readonly pagesService: PagesService) {}
+  constructor(
+    private readonly pagesService: PagesService,
+  ) {}
 
-  @Post()
+  @Post('common')
   create(
     @AuthAdmin() adminDto: Admin,
     @Body() createPageDto: CreatePageDto
@@ -17,24 +20,36 @@ export class PagesController {
     return this.pagesService.create(createPageDto, adminDto);
   }
 
-  @Get()
+  @Get('common')
   findAll() {
     return this.pagesService.findAll();
   }
 
-  @Get(':id')
+  @Get('directors')
+  findDirectors() {
+    return this.pagesService.findDirectors();
+  }
+
+  @Get('faqs')
+  findFaqs(
+    @Query() query: ListFaqsDto
+  ) {
+    return this.pagesService.findFaqs(query.department);
+  }
+
+  @Get('common/:id')
   findOne(
     @Param('id') id: string
   ) {
     return this.pagesService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Patch('common/:id')
   update(@Param('id') id: string, @Body() updatePageDto: UpdatePageDto) {
     return this.pagesService.update(+id, updatePageDto);
   }
 
-  @Delete(':id')
+  @Delete('common/:id')
   remove(@Param('id') id: string) {
     return this.pagesService.remove(+id);
   }

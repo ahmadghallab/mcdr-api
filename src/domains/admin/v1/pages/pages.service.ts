@@ -5,23 +5,53 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Page } from './entities/page.entity';
 import { Repository } from 'typeorm';
 import { Admin } from '../admins/entities/admin.entity';
+import { GroupedPagesBySection } from './pages.interfaces';
+import { Director } from '../directors/entities/director.entity';
+import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
+import { Faq } from '../faqs/entities/faq.entity';
 
 @Injectable()
 export class PagesService {
 
   constructor(
     @InjectRepository(Page)
-    private readonly pagesRepository: Repository<Page>
+    private readonly pagesRepository: Repository<Page>,
+    @InjectRepository(Director)
+    private readonly directorsRepository: Repository<Director>,
+    @InjectRepository(Faq)
+    private readonly faqsRepository: Repository<Faq>
   ) {}
 
   async create(createPageDto: CreatePageDto, user: Admin): Promise<Page> {
     return this.pagesRepository.save(createPageDto);
   }
 
-  async findAll(): Promise<Page[]> {
+  async findAll(): Promise<GroupedPagesBySection[]> {
     const pages = await this.pagesRepository.find();
 
-    return pages;
+    const groupBySection = (data: Page[]) =>
+      Object.values(
+        data.reduce<Record<string, GroupedPagesBySection>>((acc, item) => {
+          const key = item.section!;
+          (acc[key] ??= { section: key, pages: [] }).pages.push(item);
+          return acc;
+        }, {})
+      );
+    const responseData =  groupBySection(pages);
+
+    return responseData;
+  }
+
+  async findDirectors(): Promise<Director[]> {
+    const directors = await this.directorsRepository.find();
+
+    return directors;
+  }
+
+  async findFaqs(department: FaqDepartment): Promise<Faq[]> {
+    const faqs = await this.faqsRepository.findBy({ department });
+
+    return faqs;
   }
 
   async findOne(id: number): Promise<Page> {

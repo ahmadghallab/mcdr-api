@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Banner } from 'src/domains/admin/v1/banners/entities/banner.entity';
 import { Repository } from 'typeorm';
+import { HeroContent } from '../hero-content/hero-content.interfaces';
+
 
 @Injectable()
 export class BannersService {
