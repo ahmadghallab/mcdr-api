@@ -28,9 +28,7 @@ export class UploadController {
     @UploadedFile() file: Express.Multer.File,
     @Req() req: Request
   ) {
-    const protocol = req.protocol;
-    const host = req.get('host');
-    const accessUrl = `${protocol}://${host}/uploads/${file.filename}`;
+    const accessUrl = `${process.env.BASE_URL}/uploads/${file.filename}`;
 
     return {
       message: 'File uploaded successfully',
