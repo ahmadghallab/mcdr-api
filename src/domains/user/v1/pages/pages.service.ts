@@ -2,9 +2,9 @@ import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Faq } from 'src/domains/admin/v1/faqs/entities/faq.entity';
+import { Faq } from 'src/domains/admin/v1/pages/entities/faq.entity';
 import { Page } from 'src/domains/admin/v1/pages/entities/page.entity';
-import { Director } from 'src/domains/admin/v1/directors/entities/director.entity';
+import { Director } from 'src/domains/admin/v1/pages/entities/director.entity';
 
 import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
 import { localizeContent, localizedValue } from 'src/core/common/utils/localize.util';

@@ -7,8 +7,6 @@ import { solutionsRoutes } from "src/domains/admin/v1/solutions/solutions.routes
 import { filesRoutes } from "src/domains/admin/v1/files/files.routes";
 import { adminsRoutes } from "src/domains/admin/v1/admins/admins.routes";
 import { pagesRoutes } from "src/domains/admin/v1/pages/pages.routes";
-import { directorsRoutes } from "src/domains/admin/v1/directors/directors.routes";
-import { faqsRoutes } from "src/domains/admin/v1/faqs/faqs.routes";
 
 export const v1AdminRoutes: Routes = [
   {
@@ -22,8 +20,6 @@ export const v1AdminRoutes: Routes = [
       ...filesRoutes,
       ...bannersRoutes,
       ...pagesRoutes,
-      ...directorsRoutes,
-      ...faqsRoutes
     ],
   },
 ];

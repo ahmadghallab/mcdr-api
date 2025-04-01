@@ -5,6 +5,10 @@ import { UpdatePageDto } from './dto/update-page.dto';
 import { AuthAdmin } from '../auth/auth-admin.decorator';
 import { Admin } from '../admins/entities/admin.entity';
 import { ListFaqsDto } from './dto/list-faqs.dto';
+import { CreateDirectorDto } from './dto/create-director.dto';
+import { UpdateDirectorDto } from './dto/update-director.dto';
+import { CreateFaqDto } from './dto/create-faq.dto';
+import { UpdateFaqDto } from './dto/update-faq.dto';
 
 @Controller()
 export class PagesController {
@@ -25,18 +29,6 @@ export class PagesController {
     return this.pagesService.findAll();
   }
 
-  @Get('directors')
-  findDirectors() {
-    return this.pagesService.findDirectors();
-  }
-
-  @Get('faqs')
-  findFaqs(
-    @Query() query: ListFaqsDto
-  ) {
-    return this.pagesService.findFaqs(query.department);
-  }
-
   @Get('common/:id')
   findOne(
     @Param('id') id: string
@@ -52,5 +44,65 @@ export class PagesController {
   @Delete('common/:id')
   remove(@Param('id') id: string) {
     return this.pagesService.remove(+id);
+  }
+
+  @Post('directors')
+  createDirector(
+    @Body() createDirectorDto: CreateDirectorDto
+  ) {
+    return this.pagesService.createDirector(createDirectorDto);
+  }
+
+  @Get('directors')
+  findAllDirectors() {
+    return this.pagesService.findAllDirectors();
+  }
+
+  @Get('directors/:id')
+  findOneDirector(
+    @Param('id') id: string
+  ) {
+    return this.pagesService.findOneDirector(+id);
+  }
+
+  @Patch('directors/:id')
+  updateDirector(@Param('id') id: string, @Body() updateDirectorDto: UpdateDirectorDto) {
+    return this.pagesService.updateDirector(+id, updateDirectorDto);
+  }
+
+  @Delete('directors/:id')
+  removeDirector(@Param('id') id: string) {
+    return this.pagesService.remove(+id);
+  }
+
+  @Post('faqs')
+  createFaq(
+    @Body() createFaqDto: CreateFaqDto
+  ) {
+    return this.pagesService.createFaq(createFaqDto);
+  }
+
+  @Get('faqs')
+  findAllFaqs(
+    @Query() query: ListFaqsDto
+  ) {
+    return this.pagesService.findAllFaqs(query.department);
+  }
+
+  @Get('faqs/:id')
+  findOneFaq(
+    @Param('id') id: string
+  ) {
+    return this.pagesService.findOneFaq(+id);
+  }
+
+  @Patch('faqs/:id')
+  updateFaq(@Param('id') id: string, @Body() updateFaqDto: UpdateFaqDto) {
+    return this.pagesService.update(+id, updateFaqDto);
+  }
+
+  @Delete('faqs/:id')
+  removeFaq(@Param('id') id: string) {
+    return this.pagesService.removeFaq(+id);
   }
 }

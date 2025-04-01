@@ -3,8 +3,8 @@ import { PagesService } from './pages.service';
 import { PagesController } from './pages.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Page } from './entities/page.entity';
-import { Director } from '../directors/entities/director.entity';
-import { Faq } from '../faqs/entities/faq.entity';
+import { Director } from './entities/director.entity';
+import { Faq } from './entities/faq.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Page, Director, Faq])],

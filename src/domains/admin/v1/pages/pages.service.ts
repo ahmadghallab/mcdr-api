@@ -9,6 +9,10 @@ import { GroupedPagesBySection } from './pages.interfaces';
 import { Director } from '../directors/entities/director.entity';
 import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
 import { Faq } from '../faqs/entities/faq.entity';
+import { CreateDirectorDto } from './dto/create-director.dto';
+import { UpdateDirectorDto } from './dto/update-director.dto';
+import { UpdateFaqDto } from './dto/update-faq.dto';
+import { CreateFaqDto } from './dto/create-faq.dto';
 
 @Injectable()
 export class PagesService {
@@ -42,18 +46,6 @@ export class PagesService {
     return responseData;
   }
 
-  async findDirectors(): Promise<Director[]> {
-    const directors = await this.directorsRepository.find();
-
-    return directors;
-  }
-
-  async findFaqs(department: FaqDepartment): Promise<Faq[]> {
-    const faqs = await this.faqsRepository.findBy({ department });
-
-    return faqs;
-  }
-
   async findOne(id: number): Promise<Page> {
     return await this.pagesRepository.findOneByOrFail({ id });
   }
@@ -65,6 +57,51 @@ export class PagesService {
 
   async remove(id: number): Promise<void> {
     await this.pagesRepository.delete(id);
+  }
+
+  async findAllDirectors(): Promise<Director[]> {
+    const directors = await this.directorsRepository.find();
+    return directors;
+  }
+
+  async findOneDirector(id: number): Promise<Director> {
+    const director = await this.directorsRepository.findOneByOrFail({ id });
+    return director;
+  }
+
+  async createDirector(createDirectorDto: CreateDirectorDto): Promise<Director> {
+    return this.directorsRepository.save(createDirectorDto);
+  }
+
+  async updateDirector(id: number, updateDirectorDto: UpdateDirectorDto): Promise<Director> {
+    const director = await this.findOne(id);
+    return this.directorsRepository.save({...director, ...updateDirectorDto});
+  }
+
+  async removeDirector(id: number): Promise<void> {
+    await this.directorsRepository.delete(id);
+  }
+
+  async createFaq(createFaqDto: CreateFaqDto): Promise<Faq> {
+    return this.faqsRepository.save(createFaqDto);
+  }
+
+  async findAllFaqs(department: FaqDepartment): Promise<Faq[]> {
+    const faqs = await this.faqsRepository.findBy({ department });
+    return faqs;
+  }
+  
+  async findOneFaq(id: number): Promise<Faq> {
+    return await this.faqsRepository.findOneByOrFail({ id });
+  }
+
+  async updateFaq(id: number, updateFaqDto: UpdateFaqDto): Promise<Faq> {
+    const faq = await this.findOne(id);
+    return this.faqsRepository.save({...faq, ...updateFaqDto});
+  }
+
+  async removeFaq(id: number): Promise<void> {
+    await this.faqsRepository.delete(id);
   }
 
 }

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, Index } from 'typeorm';
 import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
 import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 
