@@ -3,7 +3,7 @@ import { AuthModule } from "./auth/auth.module";
 import { AdminsModule } from "./admins/admins.module";
 import { SolutionsModule } from "./solutions/solutions.module";
 import { ArticlesModule } from "./articles/articles.module";
-import { UploadModule } from "./upload/upload.module";
+import { FilesModule } from "./files/files.module";
 import { PlacesModule } from "./places/places.module";
 import { BannersModule } from "./banners/banners.module";
 import { PagesModule } from "./pages/pages.module";
@@ -16,7 +16,7 @@ import { FaqsModule } from "./faqs/faqs.module";
     AdminsModule,
     SolutionsModule,
     ArticlesModule,
-    UploadModule,
+    FilesModule,
     PlacesModule,
     BannersModule,
     PagesModule,

@@ -1,13 +1,16 @@
-import { Controller, Post, UseInterceptors, UploadedFile, Req } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, UploadedFile, Delete, Body, InternalServerErrorException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Request } from 'express';
 import { diskStorage } from 'multer';
 import { join } from 'path';
+import { FilesService } from './files.service';
+import { DeleteFileDto } from './dto/delete-file.dto';
 
 @Controller()
-export class UploadController {
+export class FilesController {
 
-  @Post()
+  constructor(private readonly filesService: FilesService) {}
+
+  @Post('upload')
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -25,8 +28,7 @@ export class UploadController {
     }),
   )
   uploadFile(
-    @UploadedFile() file: Express.Multer.File,
-    @Req() req: Request
+    @UploadedFile() file: Express.Multer.File
   ) {
     const accessUrl = `${process.env.BASE_URL}/uploads/${file.filename}`;
 
@@ -34,6 +36,23 @@ export class UploadController {
       message: 'File uploaded successfully',
       fileName: file.filename,
       accessUrl
+    };
+  }
+
+  @Delete('delete')
+  async deleteFile(@Body() deleteFileDto: DeleteFileDto) {
+    try {
+      await this.filesService.deleteFile(deleteFileDto.fileUrl);
+    } catch(error) {
+      throw new InternalServerErrorException({
+        message: 'File deletion failed.',
+        error: error.message,
+        code: 500,
+      });
+    }
+    return {
+      message: 'File deleted successfully',
+      fileUrl: deleteFileDto.fileUrl
     };
   }
 }
