@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Headers } from '@nestjs/common';
+import { Controller, Get, Headers } from '@nestjs/common';
 import { BannersService } from './banners.service';
 import { Public } from 'src/domains/admin/v1/auth/auth.decorator';
 
@@ -12,11 +12,5 @@ export class BannersController {
     @Headers('accept-language') lang: string
   ) {
     return this.bannersService.findAll(lang);
-  }
-
-  @Public()
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bannersService.findOne(+id);
   }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get,Param, Headers, Header, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get,Param, Headers, ParseIntPipe } from '@nestjs/common';
 import { PagesService } from './pages.service';
 import { Public } from 'src/domains/admin/v1/auth/auth.decorator';
 import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
@@ -117,10 +117,10 @@ export class PagesController {
 
   @Public()
   @Get('/*')
-  findOne(
+  findPage(
     @Param('0') slug: string,
     @Headers('accept-language') lang: string
   ) {    
-    return this.pagesService.findOne(slug, lang);
+    return this.pagesService.findPage(slug, lang);
   }
 }

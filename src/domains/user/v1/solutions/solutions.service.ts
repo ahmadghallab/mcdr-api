@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { plainToInstance } from 'class-transformer';
+import { isPublished } from 'src/core/filters/published.filter';
 import { Solution } from 'src/domains/admin/v1/solutions/entities/solution.entity';
 import { Repository } from 'typeorm';
 
@@ -13,7 +13,9 @@ export class SolutionsService {
   ) {}
 
   async findAll(lang: string): Promise<Solution[]> {
-    const solutions = await this.solutionsRepository.find();
+    const solutions = await this.solutionsRepository.find({
+      where: isPublished(),
+    });
 
     const localizedSolutions = solutions.map(solution => ({
       ...solution,
@@ -21,19 +23,6 @@ export class SolutionsService {
       body: solution.body[lang],
     }))
 
-    return plainToInstance(Solution, localizedSolutions);
+    return localizedSolutions;
   }
-
-  async findOne(id: number, lang: string): Promise<Solution> {
-    const solution = await this.solutionsRepository.findOneByOrFail({ id });
-
-    const localizedSolutions = {
-      ...solution,
-      title: solution.title[lang],
-      body: solution.body[lang],
-    } 
-
-    return plainToInstance(Solution, localizedSolutions)
-  }
-
 }

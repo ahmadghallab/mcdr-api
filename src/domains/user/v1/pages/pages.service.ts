@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Faq } from 'src/domains/admin/v1/pages/entities/faq.entity';
@@ -9,6 +9,7 @@ import { Director } from 'src/domains/admin/v1/pages/entities/director.entity';
 import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
 import { localizeContent, localizedValue } from 'src/core/common/utils/localize.util';
 import { NamedLink, ContactUs, RelatedSite, ElectronicSignatureFile, UserDirector, Award, DocumentaryVideo, LawPage } from './page.types';
+import { isPublished } from 'src/core/filters/published.filter';
 
 import * as contactInfo from './data/customer-support/contact-us.json';
 import * as relatedSite from './data/customer-support/related-sites.json';
@@ -35,26 +36,50 @@ export class PagesService {
     private readonly directorsRepository: Repository<Director>,
   ) {}
 
-  async findOne(slug: string, lang: string): Promise<Page> {
-    const page = await this.pagesRepository.findOneByOrFail({ slug });
-
-    const localizedPages = {
-      ...page,
-      ...localizeContent(page, lang, ["title", "body", "content"]),
-    } 
-
-    return localizedPages;
+  async findPage(slug: string, lang: string): Promise<Partial<Page>> {
+    try {
+      const page = await this.pagesRepository.findOneByOrFail({ slug, ...isPublished() });
+  
+      const localizedPages = {
+        id: page.id,
+        slug: page.slug,
+        section: page.section,
+        ...localizeContent(page, lang, ["title", "body", "content"]),
+      } 
+      return localizedPages;
+    } catch (err) {
+      throw new NotFoundException('Page not found');
+    }
   }
 
-  async findFaqs(lang: string, department: FaqDepartment): Promise<Faq[]> {
-    const faqs = await this.faqsRepository.findBy({ department });
+  async findFaqs(lang: string, department: FaqDepartment): Promise<Partial<Faq>[]> {
+    const faqs = await this.faqsRepository.findBy({ department, ...isPublished() });
 
     const localizedFaqs = faqs.map(faq => ({
-      ...faq,
+      id: faq.id,
+      order: faq.order,
       ...localizeContent(faq, lang, ["q", "a"]),
     }))
 
     return localizedFaqs;
+  }
+
+  async findDirectors(lang: string): Promise<UserDirector[]> {
+    const directors = await this.directorsRepository.find({
+      where: isPublished(),
+    });
+
+    const responseData = directors.map((director) => ({
+      id: director.id,
+      avatarUrl: director.avatarUrl,
+      order: director.order,
+      title: localizedValue(director.title, lang),
+      name: localizedValue(director.name, lang),
+      position: localizedValue(director.position, lang),
+      bio: localizedValue(director.bio, lang),
+    }));
+
+    return responseData;
   }
 
   findContactInfo(lang: string): ContactUs {
@@ -113,22 +138,6 @@ export class PagesService {
         {}
       )
     );
-
-    return responseData;
-  }
-
-  async findDirectors(lang: string): Promise<UserDirector[]> {
-    const directors = await this.directorsRepository.find();
-
-    const responseData = directors.map((director) => ({
-      id: director.id,
-      avatarUrl: director.avatarUrl,
-      order: director.order,
-      title: localizedValue(director.title, lang),
-      name: localizedValue(director.name, lang),
-      position: localizedValue(director.position, lang),
-      bio: localizedValue(director.bio, lang),
-    }));
 
     return responseData;
   }
@@ -194,6 +203,4 @@ export class PagesService {
 
     return responseData;
   }
-
-
 }

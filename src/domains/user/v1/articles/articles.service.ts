@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { localizeContent } from 'src/core/common/utils/localize.util';
-import { Article } from 'src/domains/admin/v1/articles/entities/article.entity';
 import { Repository } from 'typeorm';
+
+import { localizeContent } from 'src/core/common/utils/localize.util';
+import { isPublished } from 'src/core/filters/published.filter';
+import { Article } from 'src/domains/admin/v1/articles/entities/article.entity';
 
 @Injectable()
 export class ArticlesService {
@@ -12,26 +14,35 @@ export class ArticlesService {
     private readonly articlesRepository: Repository<Article>
   ) {}
 
-  async findAll(lang?: string): Promise<Article[]> {
-    const articles = await this.articlesRepository.find();
+  async findAll(lang?: string): Promise<Partial<Article>[]> {
+    const articles = await this.articlesRepository.find({
+      where: isPublished(),
+      order: { createdAt: 'DESC' },
+    });
 
     const localizedArticles = articles.map(article => ({
-      ...article,
-      ...localizeContent(article, lang, ["title", "body", "content"]),
+      id: article.id,
+      createdAt: article.createdAt,
+      ...localizeContent(article, lang, ["title", "body"]),
     }))
 
     return localizedArticles;
   }
 
-  async findOne(id: number, lang: string): Promise<Article> {
-    const article = await this.articlesRepository.findOneByOrFail({ id });
+  async findOne(id: number, lang?: string): Promise<Partial<Article>> {
+    try {
+      const article = await this.articlesRepository.findOneByOrFail({ id, ...isPublished() });
 
-    const localizedArticles = {
-      ...article,
-      ...localizeContent(article, lang, ["title", "body", "content"]),
-    } 
+      const localizedArticles = {
+        id: article.id,
+        createdAt: article.createdAt,
+        ...localizeContent(article, lang, ["title", "body", "content"]),
+      } 
 
-    return localizedArticles;
+      return localizedArticles;
+    } catch (err) {
+      throw new NotFoundException('Article not found');
+    }
   }
 
 }

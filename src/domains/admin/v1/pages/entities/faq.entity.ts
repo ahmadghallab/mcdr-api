@@ -3,7 +3,7 @@ import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
 import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 
 @Entity('faqs')
-@Index('status_department_idx', ['status', 'department']) // Composite index
+@Index('status_department_idx', ['status', 'department'])
 export class Faq {
   @PrimaryGeneratedColumn()
   id: number;

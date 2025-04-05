@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Banner } from 'src/domains/admin/v1/banners/entities/banner.entity';
 import { Repository } from 'typeorm';
-import { HeroContent } from '../hero-content/hero-content.interfaces';
+import { isPublished } from 'src/core/filters/published.filter';
 
 
 @Injectable()
@@ -14,7 +14,9 @@ export class BannersService {
   ) {}
 
   async findAll(lang: string): Promise<Banner[]> {
-    const banners = await this.bannersRepository.find();
+    const banners = await this.bannersRepository.find({
+      where: isPublished(),
+    });
 
     const localizedBanners = banners.map(banner => ({
       ...banner,
@@ -23,16 +25,5 @@ export class BannersService {
     }));
 
     return localizedBanners;
-  }
-
-  async findOne(id: number, lang?: string): Promise<Banner> {
-    const banner = await this.bannersRepository.findOneByOrFail({ id });
-
-    const localizedBanner = {
-      ...banner,
-      title: banner.title[lang],
-      description: banner.description[lang],
-    }
-    return localizedBanner;
   }
 }

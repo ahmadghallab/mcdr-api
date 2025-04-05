@@ -1,3 +1,4 @@
+import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('directors')
@@ -22,6 +23,9 @@ export class Director {
 
   @Column({ type: 'smallint', default: 0, name: 'order' })
   order: number;
+
+  @Column({ type: 'enum', enum: PublishStatus, name: 'status', default: PublishStatus.Draft })
+  status: PublishStatus;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
