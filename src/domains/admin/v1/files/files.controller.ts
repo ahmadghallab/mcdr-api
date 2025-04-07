@@ -1,58 +1,63 @@
-import { Controller, Post, UseInterceptors, UploadedFile, Delete, Body, InternalServerErrorException } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, UploadedFile, Delete, Body, InternalServerErrorException, Patch, Get } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { join } from 'path';
 import { FilesService } from './files.service';
 import { DeleteFileDto } from './dto/delete-file.dto';
+import { RenameFileDto } from './dto/rename-file.dto';
 
 @Controller()
 export class FilesController {
 
   constructor(private readonly filesService: FilesService) {}
 
+  @Get()
+  async findAll() {
+    return this.filesService.findAll();
+  }
+
   @Post('upload')
   @UseInterceptors(
     FileInterceptor('file', {
-      storage: diskStorage({
-        destination: (req, file, cb) => {
-          const uploadPath = join(process.cwd(), 'uploads');
-          cb(null, uploadPath);
-        },
-        filename: (req, file, cb) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const fileExt = file.originalname.split('.').pop();
-          const fileName = `${file.fieldname}-${uniqueSuffix}.${fileExt}`;
-          cb(null, fileName);
-        },
-      }),
+      storage: diskStorage(FilesService.generateStorageOptions()),
     }),
   )
-  uploadFile(
+  async upload(
     @UploadedFile() file: Express.Multer.File
   ) {
-    const accessUrl = `${process.env.BASE_URL}/uploads/${file.filename}`;
+    const name = file.filename;
+    const url = this.filesService.getAccessUrl(name);
+
+    await this.filesService.create(name, url);
 
     return {
       message: 'File uploaded successfully',
-      fileName: file.filename,
-      accessUrl
+      fileName: name,
+      accessUrl: url
+    };
+  }
+
+  @Patch('rename')
+  async rename(@Body() renameFileDto: RenameFileDto) {
+    const { name, url } = renameFileDto;
+
+    const file = await this.filesService.rename(name, url);
+
+    return {
+      message: 'File renamed successfully',
+      data: file
     };
   }
 
   @Delete('delete')
-  async deleteFile(@Body() deleteFileDto: DeleteFileDto) {
+  async delete(@Body() deleteFileDto: DeleteFileDto) {
     try {
-      await this.filesService.deleteFile(deleteFileDto.fileUrl);
+      await this.filesService.delete(deleteFileDto.url);
     } catch(error) {
-      throw new InternalServerErrorException({
-        message: 'File deletion failed.',
-        error: error.message,
-        code: 500,
-      });
+      throw error;
     }
     return {
       message: 'File deleted successfully',
-      fileUrl: deleteFileDto.fileUrl
+      fileUrl: deleteFileDto.url
     };
   }
 }
