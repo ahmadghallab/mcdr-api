@@ -6,6 +6,7 @@ import * as path from 'path';
 import { Repository } from "typeorm";
 import { File } from "./entities/file.entity";
 import { InjectRepository } from "@nestjs/typeorm";
+import { PaginationDto } from "src/core/common/dto/pagination.dto";
 
 @Injectable()
 export class FilesService {
@@ -16,8 +17,12 @@ export class FilesService {
     private readonly filesRepository: Repository<File>
   ) {}
 
-  async findAll(): Promise<File[]> {
-    return this.filesRepository.find();
+  async findAll(paginationDto: PaginationDto): Promise<[File[], number]> {
+   return await this.filesRepository.findAndCount({
+      skip: paginationDto.skip,
+      take: paginationDto.take,
+      order: { createdAt: 'DESC' },
+    });
   }
 
   async create(name: string, url: string): Promise<File> {

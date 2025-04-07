@@ -1,9 +1,10 @@
-import { Controller, Post, UseInterceptors, UploadedFile, Delete, Body, InternalServerErrorException, Patch, Get } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, UploadedFile, Delete, Body, InternalServerErrorException, Patch, Get, Query } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { FilesService } from './files.service';
 import { DeleteFileDto } from './dto/delete-file.dto';
 import { RenameFileDto } from './dto/rename-file.dto';
+import { PaginationDto } from 'src/core/common/dto/pagination.dto';
 
 @Controller()
 export class FilesController {
@@ -11,8 +12,19 @@ export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
   @Get()
-  async findAll() {
-    return this.filesService.findAll();
+  async findAll(@Query() paginationDto: PaginationDto) {
+    const [items, total] = await this.filesService.findAll(paginationDto);
+    const { page = 1, limit = 25 } = paginationDto;
+
+    return {
+      data: items,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   @Post('upload')
