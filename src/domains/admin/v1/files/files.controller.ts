@@ -36,14 +36,13 @@ export class FilesController {
   async upload(
     @UploadedFile() file: Express.Multer.File
   ) {
-    const name = file.filename;
-    const url = this.filesService.getAccessUrl(name);
+    const url = this.filesService.getAccessUrl(file.filename);
 
-    await this.filesService.create(name, url);
+    await this.filesService.create(file.originalname, url);
 
     return {
       message: 'File uploaded successfully',
-      fileName: name,
+      fileName: file.originalname,
       accessUrl: url
     };
   }
