@@ -14,7 +14,7 @@ export class FilesController {
   @Get()
   async findAll(@Query() paginationDto: PaginationDto) {
     const [items, total] = await this.filesService.findAll(paginationDto);
-    const { page = 1, limit = 25 } = paginationDto;
+    const { page, limit } = paginationDto;
 
     return {
       data: items,
