@@ -13,7 +13,7 @@ export class CreateSolutionDto {
 
   @IsString()
   @IsNotEmpty()
-  fileName: string;
+  fileUrl: string;
 
   @IsString()
   @IsNotEmpty()
