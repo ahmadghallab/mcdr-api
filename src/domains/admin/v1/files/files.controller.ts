@@ -1,4 +1,4 @@
-import { Controller, Post, UseInterceptors, UploadedFile, Delete, Body, InternalServerErrorException, Patch, Get, Query } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, UploadedFile, Delete, Body, Patch, Get, Query } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { FilesService } from './files.service';
@@ -36,9 +36,7 @@ export class FilesController {
   async upload(
     @UploadedFile() file: Express.Multer.File
   ) {
-    const url = this.filesService.getAccessUrl(file.filename);
-
-    await this.filesService.create(file.originalname, url);
+    const url = await this.filesService.create(file);
 
     return {
       message: 'File uploaded successfully',

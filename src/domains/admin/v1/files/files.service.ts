@@ -25,8 +25,15 @@ export class FilesService {
     });
   }
 
-  async create(name: string, url: string): Promise<File> {
-    return await this.filesRepository.save({ name, url });
+  async create(file: Express.Multer.File): Promise<string> {
+    const url = this.getAccessUrl(file.filename);
+    const name = file.originalname;
+    const type = file.mimetype; 
+    const size = file.size;
+
+    await this.filesRepository.save({ name, type, size, url });
+
+    return url;
   }
 
   async rename(name: string, url: string): Promise<File> {
