@@ -11,7 +11,13 @@ export class File {
   @Column()
   type: string;
 
-  @Column('bigint')
+  @Column({
+    type: 'bigint',
+    transformer: {
+      to: (value: number) => value,
+      from: (value: string | number) => parseInt(value as string, 10),
+    },
+  })
   size: number;
 
   @Column({ type: 'varchar', length: 255, unique: true })
