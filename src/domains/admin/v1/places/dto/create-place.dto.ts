@@ -2,6 +2,7 @@ import { IsEnum, IsNotEmpty, IsObject, IsOptional, IsString, IsArray, ArrayMinSi
 import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 import { LocationType } from 'src/core/common/enums/location-type.enum';
 import { TranslationDto } from 'src/core/common/dto/translation.dto';
+import { IsGoogleMapsIframeUrl } from '../validators/google-maps-iframe.validator';
 
 export class CreatePlaceDto {
   @IsObject()
@@ -14,8 +15,7 @@ export class CreatePlaceDto {
   @IsString({ each: true })
   phones?: string[];
 
-  @IsString()
-  @IsNotEmpty()
+  @IsGoogleMapsIframeUrl({ message: 'Invalid Google Maps iframe URL.' })
   iframeSrc: string;
 
   @IsEnum(LocationType)

@@ -6,8 +6,9 @@ import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AdminV1Module } from './domains/admin/v1/admin-v1.module';
 import { UserV1Module } from './domains/user/v1/user-v1.module';
-import { RouterModule } from '@nestjs/core';
+import { APP_GUARD, RouterModule } from '@nestjs/core';
 import { routes } from './routes';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 export const modules = [
   CoreModule,
@@ -32,12 +33,23 @@ export const modules = [
         synchronize: true
       }),
     }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 0,
+        limit: 0,
+      }
+    ]),
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'uploads'),
       serveRoot: '/uploads',
     }),
     ...modules,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard
+    }
+  ],
 })
 export class AppModule {}

@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 import { AdminRole } from 'src/core/common/enums/admin-role.enum';
+import { Exclude } from 'class-transformer';
 
 @Entity('admins')
 export class Admin {
@@ -12,6 +13,7 @@ export class Admin {
   @Column({ type: 'varchar', length: 255, unique: true, name: 'email' })
   email: string;
 
+  @Exclude()
   @Column({ type: 'varchar', length: 255, name: 'password' })
   password: string;
 
