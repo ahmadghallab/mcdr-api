@@ -24,13 +24,13 @@ export const modules = [
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
-        host: configService.get('db.host'),
-        port: +configService.get('db.port'),
-        username: configService.get('db.username'),
-        password: configService.get('db.password'),
-        database: configService.get('db.name'),
+        host: configService.get('DB_HOST'),
+        port: +configService.get('DB_PORT'),
+        username: configService.get('DB_USERNAME'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_NAME'),
+        synchronize: false,
         autoLoadEntities: true,
-        synchronize: true
       }),
     }),
     ThrottlerModule.forRoot([
