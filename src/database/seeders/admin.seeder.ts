@@ -1,6 +1,6 @@
 import { Admin } from 'src/domains/admin/v1/admins/entities/admin.entity';
 import * as bcrypt from 'bcrypt';
-import { AppDataSource } from '../typeorm.config';
+import { AppDataSource } from 'src/core/config/typeorm.config';
 import { AdminRole } from 'src/core/common/enums/admin-role.enum';
 
 (async () => {
