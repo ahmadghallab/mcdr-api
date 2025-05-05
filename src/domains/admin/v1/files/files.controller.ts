@@ -1,11 +1,9 @@
 import { Controller, Post, UseInterceptors, UploadedFile, Delete, Body, Patch, Get, Query } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
 import { FilesService } from './files.service';
 import { DeleteFileDto } from './dto/delete-file.dto';
 import { RenameFileDto } from './dto/rename-file.dto';
 import { PaginationDto } from 'src/core/common/dto/pagination.dto';
-import { fileValidator } from './utils/file-validator.util';
+import { MagicNumberValidationInterceptor } from './magic-number.interceptor';
 
 @Controller()
 export class FilesController {
@@ -30,10 +28,11 @@ export class FilesController {
 
   @Post('upload')
   @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage(FilesService.generateStorageOptions()),
-      fileFilter: fileValidator
-    }),
+    // FileInterceptor('file', {
+    //   storage: diskStorage(FilesService.generateStorageOptions()),
+    //   fileFilter: fileValidator
+    // }),
+    MagicNumberValidationInterceptor('file')
   )
   async upload(
     @UploadedFile() file: Express.Multer.File
