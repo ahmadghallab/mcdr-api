@@ -29,7 +29,7 @@ export const modules = [
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        synchronize: false,
+        synchronize: true,
         autoLoadEntities: true,
       }),
     }),

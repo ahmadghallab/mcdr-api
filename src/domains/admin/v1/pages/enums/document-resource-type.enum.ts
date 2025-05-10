@@ -1,0 +1,14 @@
+export enum DocumentResourceType {
+  ANNUAL_REPORTS = 'annual-reports',
+  ELECTRONIC_SIGNATURE_FILES = 'electronic-signature-files',
+  OTHER_LAWS_REGULATING_WORK = 'other-laws-regulating-work',
+  RULES = 'rules',
+  SETTLEMENT_GUARANTEE_FUND_RULES = 'settlement-guarantee-fund-rules',
+  MEMBERS_SUBSCRIBERS_FORMS = 'members-subscribers-forms',
+  SURVEYS = 'surveys',
+  IMPORTANT_LINKS = 'important-links',
+  CONTACT_US = 'contact-us',
+  ACHIEVEMENTS_AWARDS = 'achievements-awards',
+  DOCUMENTARIES = 'documentaries',
+  RELATED_SITES = 'related-sites',
+}

@@ -10,19 +10,8 @@ import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
 import { localizeContent, localizedValue } from 'src/core/common/utils/localize.util';
 import { NamedLink, ContactUs, RelatedSite, ElectronicSignatureFile, UserDirector, Award, DocumentaryVideo, LawPage } from './page.types';
 import { isPublished } from 'src/core/filters/published.filter';
-
-import * as contactInfo from './data/customer-support/contact-us.json';
-import * as relatedSite from './data/customer-support/related-sites.json';
-import * as annualReports from './data/reports/annual-reports.json';
-import * as surveys from './data/reports/surveys.json';
-import * as electronicSignatureFiles from './data/electronic-signature/files.json';
-import * as importantLinks from './data/laws-regulations/important-links.json';
-import * as workLaws from './data/laws-regulations/other-laws-regulating-work.json';
-import * as generalRules from './data/laws-regulations/rules.json';
-import * as fundRules from './data/laws-regulations/settlement-guarantee-fund-rules.json';
-import * as membersForms from './data/members-subscribers/forms.json';
-import * as awards from './data/overview/achievements-awards.json';
-import * as documentaries from './data/overview/documentaries.json';
+import { DocumentResource } from 'src/domains/admin/v1/pages/entities/document-resource.entity';
+import { DocumentResourceType } from 'src/domains/admin/v1/pages/enums/document-resource-type.enum';
 
 @Injectable()
 export class PagesService {
@@ -34,6 +23,8 @@ export class PagesService {
     private readonly faqsRepository: Repository<Faq>,
     @InjectRepository(Director)
     private readonly directorsRepository: Repository<Director>,
+    @InjectRepository(DocumentResource)
+    private readonly documentResourcesRepository: Repository<DocumentResource>,
   ) {}
 
   async findPage(slug: string, lang: string): Promise<Partial<Page>> {
@@ -82,28 +73,36 @@ export class PagesService {
     return responseData;
   }
 
-  findContactInfo(lang: string): ContactUs {
+  async findContactInfo(lang: string): Promise<ContactUs> {
+    const contactInfo = await this.documentResourcesRepository.findOneByOrFail({ 
+      type: DocumentResourceType.CONTACT_US 
+    });
+
     const responseData = {
-      ...contactInfo,
+      ...contactInfo.data,
       headOffice: {
-        ...contactInfo.headOffice,
-        address: contactInfo.headOffice.address[lang],
+        ...contactInfo.data.headOffice,
+        address: contactInfo.data.headOffice.address[lang],
       },
       heliopolisBranch: {
-        ...contactInfo.heliopolisBranch,
-        address: contactInfo.heliopolisBranch.address[lang],
+        ...contactInfo.data.heliopolisBranch,
+        address: contactInfo.data.heliopolisBranch.address[lang],
       },
       alexBranch: {
-        ...contactInfo.alexBranch,
-        address: contactInfo.alexBranch.address[lang],
+        ...contactInfo.data.alexBranch,
+        address: contactInfo.data.alexBranch.address[lang],
       },
     };
 
     return responseData;
   }
 
-  findRelatedSites(lang: string): RelatedSite[] {
-    const responseData = relatedSite.map((item) => ({
+  async findRelatedSites(lang: string): Promise<RelatedSite[]> {
+    const relatedSite = await this.documentResourcesRepository.findOneByOrFail({ 
+      type: DocumentResourceType.RELATED_SITES 
+    });
+
+    const responseData = relatedSite.data.map((item) => ({
       ...item,
       name: item.name[lang],
     }));
@@ -111,55 +110,71 @@ export class PagesService {
     return responseData;
   }
 
-  findAnnualReports(lang: string): NamedLink[] {
-    const responseData = annualReports.map((item) => ({
+  async findAnnualReports(lang: string): Promise<NamedLink[]> {
+    const annualReports = await this.documentResourcesRepository.findOneByOrFail({ 
+      type: DocumentResourceType.ANNUAL_REPORTS 
+    });
+
+    const responseData = annualReports.data.map((item) => ({
       url: item.url[lang],
       name: item.name[lang],
     }));
     return responseData;
   }
 
-  findSurveys(lang: string): NamedLink[] {
-    const responseData = surveys.map((item) => ({
+  async findSurveys(lang: string): Promise<NamedLink[]> {
+    const surveys = await this.documentResourcesRepository.findOneByOrFail({ 
+      type: DocumentResourceType.SURVEYS 
+    });
+
+    const responseData = surveys.data.map((item) => ({
       url: item.url,
       name: item.name[lang],
     }));
+
     return responseData;
   }
 
-  findElectronicSignatureFiles(lang: string): ElectronicSignatureFile[] {      
-    const responseData =  Object.values(
-      electronicSignatureFiles.reduce<Record<string | null, { name: string | null, items: NamedLink[] }>>(
-        (acc, item) => {
+  async findElectronicSignatureFiles(lang: string): Promise<ElectronicSignatureFile[]> {
+    const electronicSignatureFiles = await this.documentResourcesRepository.findOneByOrFail({ 
+      type: DocumentResourceType.ELECTRONIC_SIGNATURE_FILES 
+    });
+
+    const responseData = Object.values(
+      electronicSignatureFiles.data.reduce(
+        (acc: Record<string | null, { name: string | null; items: NamedLink[] }>, item) => {
           const key = item.type ?? null;
           (acc[key] ??= { name: key, items: [] }).items.push(item);
           return acc;
         },
-        {}
+        {} as Record<string | null, { name: string | null; items: NamedLink[] }>
       )
     );
 
-    return responseData;
+    return responseData as ElectronicSignatureFile[];
   }
 
-  findLawsPage(lang: string, pageName: LawPage): NamedLink[] {
-    let data: {name: {en: string; ar: string}, url: string }[];
+  async findLawsPage(lang: string, pageName: LawPage): Promise<NamedLink[]> {
+    let type: DocumentResourceType;
+    
     switch(pageName) {
       case LawPage.ImportantLinks:
-        data = importantLinks;
-        break;
-      case LawPage.Laws:
-        data = workLaws;
+        type = DocumentResourceType.IMPORTANT_LINKS;
         break;
       case LawPage.OtherLawsRegulatingWork:
-        data = generalRules;
+        type = DocumentResourceType.OTHER_LAWS_REGULATING_WORK;
+        break;
+      case LawPage.Laws:
+        type = DocumentResourceType.RULES
         break;
       case LawPage.RulesSettlementGuaranteeFund:
-        data = fundRules;
+        type = DocumentResourceType.SETTLEMENT_GUARANTEE_FUND_RULES
         break;
     }
 
-    const responseData = data.map((item) => ({
+    const lawPage = await this.documentResourcesRepository.findOneByOrFail({ type });
+
+    const responseData = lawPage.data.map((item) => ({
       name: item.name[lang],
       url: item.url,
     }));
@@ -167,16 +182,24 @@ export class PagesService {
     return responseData;
   }
 
-  findMembersForms(lang: string): NamedLink[] {
-    const responseData = membersForms.map((item) => ({
+  async findMembersForms(lang: string): Promise<NamedLink[]> {
+    const membersForms = await this.documentResourcesRepository.findOneByOrFail({ 
+      type: DocumentResourceType.MEMBERS_SUBSCRIBERS_FORMS 
+    });
+
+    const responseData = membersForms.data.map((item) => ({
       url: item.url,
       name: item.name[lang],
     }));
     return responseData;
   }
 
-  findAwards(lang: string): Award[] {
-    const responseData = awards.map((award) => ({
+  async findAwards(lang: string): Promise<Award[]> {
+    const awards = await this.documentResourcesRepository.findOneByOrFail({ 
+      type: DocumentResourceType.ACHIEVEMENTS_AWARDS 
+    });
+
+    const responseData = awards.data.map((award) => ({
       ...award,
       description: localizedValue(award.description, lang),
     }));
@@ -184,8 +207,12 @@ export class PagesService {
     return responseData;
   }
 
-  findDocumentaries(lang: string): DocumentaryVideo[] {
-    const responseData = documentaries.map((doc) => ({
+  async findDocumentaries(lang: string): Promise<DocumentaryVideo[]> {
+    const documentaries = await this.documentResourcesRepository.findOneByOrFail({ 
+      type: DocumentResourceType.DOCUMENTARIES 
+    });
+
+    const responseData = documentaries.data.map((doc) => ({
       ...doc,
       name: localizedValue(doc.name, lang),
     }));
@@ -193,8 +220,12 @@ export class PagesService {
     return responseData;
   }
 
-  findDocumentary(lang: string, id: number): DocumentaryVideo {
-    const documentary = documentaries.find(doc => doc.id === id)
+  async findDocumentary(lang: string, id: number): Promise<DocumentaryVideo> {
+    const documentaries = await this.documentResourcesRepository.findOneByOrFail({ 
+      type: DocumentResourceType.DOCUMENTARIES 
+    });
+
+    const documentary = documentaries.data.find(doc => doc.id === id)
 
     const responseData = {
       ...documentary,
