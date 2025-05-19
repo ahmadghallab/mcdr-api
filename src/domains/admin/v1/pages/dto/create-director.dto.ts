@@ -1,5 +1,6 @@
-import { IsNotEmpty, IsOptional, IsString, IsObject, IsInt } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsObject, IsInt, IsEnum } from 'class-validator';
 import { TranslationDto } from 'src/core/common/dto/translation.dto';
+import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 
 export class CreateDirectorDto {
   @IsString()
@@ -25,4 +26,8 @@ export class CreateDirectorDto {
   @IsInt()
   @IsOptional()
   order?: number;
+
+  @IsEnum(PublishStatus)
+  @IsNotEmpty()
+  status: PublishStatus;
 }

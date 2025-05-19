@@ -74,7 +74,7 @@ export class PagesService {
   }
 
   async updateDirector(id: number, updateDirectorDto: UpdateDirectorDto): Promise<Director> {
-    const director = await this.findOne(id);
+    const director = await this.directorsRepository.findOneByOrFail({ id });
     return this.directorsRepository.save({...director, ...updateDirectorDto});
   }
 
@@ -96,7 +96,7 @@ export class PagesService {
   }
 
   async updateFaq(id: number, updateFaqDto: UpdateFaqDto): Promise<Faq> {
-    const faq = await this.findOne(id);
+    const faq = await this.faqsRepository.findOneByOrFail({ id });
     return this.faqsRepository.save({...faq, ...updateFaqDto});
   }
 

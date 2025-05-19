@@ -1,6 +1,36 @@
 [
   {
     "name": {
+      "en": "Annual Report 2023",
+      "ar": "التقرير السنوي 2023"
+    },
+    "url": {
+      "en": "https://www.mcdr.com.eg/backend/uploads/file-1747585037069-843637623.pdf",
+      "ar": "https://www.mcdr.com.eg/backend/uploads/file-1747585037069-843637623.pdf"
+    }
+  },
+  {
+    "name": {
+      "en": "Annual Report 2022",
+      "ar": "التقرير السنوي 2022"
+    },
+    "url": {
+      "en": "https://www.mcdr.com.eg/backend/uploads/file-1747584989725-587658563.pdf",
+      "ar": "https://www.mcdr.com.eg/backend/uploads/file-1747584989725-587658563.pdf"
+    }
+  },
+  {
+    "name": {
+      "en": "Annual Report 2020",
+      "ar": "التقرير السنوي 2020"
+    },
+    "url": {
+      "en": "https://www.mcdr.com.eg/backend/uploads/file-1747584934560-69824423.pdf",
+      "ar": "https://www.mcdr.com.eg/backend/uploads/file-1747584934560-69824423.pdf"
+    }
+  },
+  {
+    "name": {
       "en": "Annual Report 2019",
       "ar": "التقرير السنوي 2019"
     },

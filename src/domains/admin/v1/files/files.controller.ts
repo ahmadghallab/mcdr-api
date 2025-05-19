@@ -4,6 +4,8 @@ import { DeleteFileDto } from './dto/delete-file.dto';
 import { RenameFileDto } from './dto/rename-file.dto';
 import { PaginationDto } from 'src/core/common/dto/pagination.dto';
 import { MagicNumberValidationInterceptor } from './magic-number.interceptor';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Controller()
 export class FilesController {
@@ -28,11 +30,11 @@ export class FilesController {
 
   @Post('upload')
   @UseInterceptors(
-    // FileInterceptor('file', {
-    //   storage: diskStorage(FilesService.generateStorageOptions()),
-    //   fileFilter: fileValidator
-    // }),
-    MagicNumberValidationInterceptor('file')
+    FileInterceptor('file', {
+      storage: diskStorage(FilesService.generateStorageOptions()),
+      // fileFilter: fileValidator
+    }),
+    // MagicNumberValidationInterceptor('file')
   )
   async upload(
     @UploadedFile() file: Express.Multer.File

@@ -1,105 +1,97 @@
 [
   {
-    "name": "MCDR Certificate Policy",
-    "url": "https://www.mcdr.com.eg/backend/uploads/file-1746950378833-218357568.pdf"
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1746950378833-218357568.pdf",
+    "name": "MCDR Certificate Policy"
   },
   {
-    "name": "MCDR Relying Party Agreement",
-    "url": "https://www.mcdr.com.eg/backend/uploads/file-1746950150705-238433819.pdf"
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1746950150705-238433819.pdf",
+    "name": "MCDR Relying Party Agreement"
   },
   {
-    "name": "MCDR - Certificate Revocation List 2010 - CRL",
-    "url": "https://www.mcdr.com.eg/backend/uploads/file-1746950150705-238433819.pdf"
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1746950150705-238433819.pdf",
+    "name": "MCDR - Certificate Revocation List 2010 - CRL"
   },
   {
-    "name": "MCDR - Certificate Revocation List 2014 - CRL",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/mcdrcrl2014.crl"
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1747167091896-604109915.zip",
+    "name": "Certificates"
   },
   {
-    "name": "MCDR - Certificate Revocation List 2018 - CRL",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/mcdrcrl2014.crl"
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1747167136967-412809813.zip",
+    "name": "Certificate Configuration"
   },
   {
-    "name": "Certificates",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/Certificates.zip"
-  },
-  {
-    "name": "Certificate Configuration",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/InstallCert.zip"
-  },
-  {
-    "type": "AWP",
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1747167194388-462904754.zip",
     "name": "AWP Windows 32bit",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/AWP/AWP%20v4.5.4%20Full%20English%2032-Bit.zip"
+    "type": "AWP"
   },
   {
-    "type": "AWP",
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1747167221485-926631444.zip",
     "name": "AWP Windows 64bit",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/AWP/AWP%20v4.5.4%20Full%20English%2064-Bit.zip"
+    "type": "AWP"
   },
   {
-    "type": "AWP",
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1747167275793-132966128.zip",
     "name": "HID 32 Driver",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/AWP/AWP%20v4.5.4%20Full%20English%2064-Bit.zip"
+    "type": "AWP"
   },
   {
-    "type": "AWP",
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1747167294495-263019031.zip",
     "name": "HID 64 Driver",
-    "url": "https://www.mcdr.com.eg/mcdrnew/(S(ysplv1jf03i3sezf2jxld455))/en/mainsh.aspx?pageid=647#:~:text=HID%2032%20Driver-,HID%2064%20Driver,-User%20Guide"
+    "type": "AWP"
   },
   {
-    "type": "AWP",
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1747167335176-838401165.zip",
     "name": "User Guide",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/AWP/Digital%20Signature%20user%20guide_2.zip"
+    "type": "AWP"
   },
   {
-    "type": "AWP",
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1747167356584-367505884.zip",
     "name": "Videos",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/AWP/Videos_2.zip"
+    "type": "AWP"
   },
   {
-    "type": "EPass Setup & Activation",
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1747167392558-908358380.zip",
     "name": "New EPass Setup 2024",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/EPass_2003/ePass2003-Setup-1.zip"
+    "type": "EPass Setup & Activation"
   },
   {
-    "type": "EPass Setup & Activation",
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1747167418124-624804635.zip",
     "name": "EPass2003 Linux 2023",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/EPass_2003/ePass2003-Linux.zip"
+    "type": "EPass Setup & Activation"
   },
   {
-    "type": "EPass Setup & Activation",
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1747167454122-927724433.zip",
     "name": "Token Activation 2023",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/EPass_2003/MCDR_Token_Activation2023.zip"
+    "type": "EPass Setup & Activation"
   },
   {
-    "type": "EPass Setup & Activation",
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1747167516573-745424008.zip",
     "name": "EPass Token Unlock",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/Epass2003-Unlock.zip"
+    "type": "EPass Setup & Activation"
   },
   {
-    "type": "EPass Setup & Activation",
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1747167551706-287308228.zip",
     "name": "EPass Setup for MAC",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/EPass_2003/ePass2003-Castle-mac-20210127.zip"
+    "type": "EPass Setup & Activation"
   },
   {
-    "type": "EPass Setup & Activation",
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1747167583302-283617467.zip",
     "name": "MAC Setup Video",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/EPass_2003/Setup_Mac_for_DSC.zip"
+    "type": "EPass Setup & Activation"
   },
   {
-    "type": "EPass Setup & Activation",
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1747167616868-777619573.zip",
     "name": "EPass Token Activation Videos",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/EPass_2003/Activation.zip"
+    "type": "EPass Setup & Activation"
   },
   {
-    "type": "EPass Setup & Activation",
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1747167650109-451694725.zip",
     "name": "EPass 2003 User Guide",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/EPass_2003/UserGuide.zip"
+    "type": "EPass Setup & Activation"
   },
   {
-    "type": "EPass Setup & Activation",
+    "url": "https://www.mcdr.com.eg/backend/uploads/file-1747167680088-832851575.zip",
     "name": "EPass 2003 Videos",
-    "url": "https://www.mcdr.com.eg/mcdrnew/ca/EPass_2003/Videos_2.zip"
+    "type": "EPass Setup & Activation"
   }
 ]

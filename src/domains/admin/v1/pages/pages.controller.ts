@@ -72,7 +72,7 @@ export class PagesController {
 
   @Delete('directors/:id')
   removeDirector(@Param('id') id: string) {
-    return this.pagesService.remove(+id);
+    return this.pagesService.removeDirector(+id);
   }
 
   @Post('faqs')
@@ -98,7 +98,7 @@ export class PagesController {
 
   @Patch('faqs/:id')
   updateFaq(@Param('id') id: string, @Body() updateFaqDto: UpdateFaqDto) {
-    return this.pagesService.update(+id, updateFaqDto);
+    return this.pagesService.updateFaq(+id, updateFaqDto);
   }
 
   @Delete('faqs/:id')
