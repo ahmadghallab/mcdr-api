@@ -6,9 +6,10 @@ import { Page } from 'src/domains/admin/v1/pages/entities/page.entity';
 import { Faq } from 'src/domains/admin/v1/pages/entities/faq.entity';
 import { Director } from 'src/domains/admin/v1/pages/entities/director.entity';
 import { DocumentResource } from 'src/domains/admin/v1/pages/entities/document-resource.entity';
+import { Participant } from 'src/domains/admin/v1/pages/entities/participant.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Page, Faq, Director, DocumentResource])],
+  imports: [TypeOrmModule.forFeature([Page, Faq, Director, DocumentResource, Participant])],
   controllers: [PagesController],
   providers: [PagesService],
   exports: [PagesService, ],

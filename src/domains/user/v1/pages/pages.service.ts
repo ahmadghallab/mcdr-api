@@ -12,6 +12,9 @@ import { NamedLink, ContactUs, RelatedSite, ElectronicSignatureFile, UserDirecto
 import { isPublished } from 'src/core/filters/published.filter';
 import { DocumentResource } from 'src/domains/admin/v1/pages/entities/document-resource.entity';
 import { DocumentResourceType } from 'src/domains/admin/v1/pages/enums/document-resource-type.enum';
+import { ParticipantType } from 'src/domains/admin/v1/pages/enums/participant-type.enum';
+import { Participant } from 'src/domains/admin/v1/pages/entities/participant.entity';
+import { PaginationDto } from 'src/core/common/dto/pagination.dto';
 
 @Injectable()
 export class PagesService {
@@ -25,6 +28,8 @@ export class PagesService {
     private readonly directorsRepository: Repository<Director>,
     @InjectRepository(DocumentResource)
     private readonly documentResourcesRepository: Repository<DocumentResource>,
+    @InjectRepository(Participant)
+    private readonly participantRepository: Repository<Participant>,
   ) {}
 
   async findPage(slug: string, lang: string): Promise<Partial<Page>> {
@@ -53,6 +58,44 @@ export class PagesService {
     }))
 
     return localizedFaqs;
+  }
+
+  async findParticipants(
+    lang: string, 
+    type: ParticipantType, 
+    paginationDto: PaginationDto
+  ): Promise<[Partial<Participant>[], number]> {
+    const [ items, total ] = await this.participantRepository.findAndCount({ 
+      where: {
+        type, 
+        ...isPublished(), 
+      },
+      skip: paginationDto.skip,
+      take: paginationDto.take,
+    });
+
+    const localizedParticipants = items.map(participant => ({
+      ...participant,
+      name: lang === 'ar' ? participant.aname : participant.ename,
+      address: lang === 'ar' ? participant.aaddress : participant.eaddress,
+    }));
+
+    return [ localizedParticipants, total ];
+  }
+
+  async findParticipant(
+    lang: string, 
+    id: number,
+  ): Promise<Partial<Participant>> {
+    const participant = await this.participantRepository.findOneByOrFail({ id });
+
+    const localizedParticipant = {
+      ...participant,
+      name: lang === 'ar' ? participant.aname : participant.ename,
+      address: lang === 'ar' ? participant.aaddress : participant.eaddress,
+    };
+
+    return localizedParticipant;
   }
 
   async findDirectors(lang: string): Promise<UserDirector[]> {

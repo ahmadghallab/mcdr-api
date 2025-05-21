@@ -1,8 +1,9 @@
-import { Controller, Get,Param, Headers, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get,Param, Headers, ParseIntPipe, Query } from '@nestjs/common';
 import { PagesService } from './pages.service';
 import { Public } from 'src/domains/admin/v1/auth/auth.decorator';
 import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
-import { ContactInfoDto, LawPageDto } from './pages.dto';
+import { ContactInfoDto, LawPageDto, ParticipantsPageDto } from './pages.dto';
+import { PaginationDto } from 'src/core/common/dto/pagination.dto';
 
 @Controller()
 export class PagesController {
@@ -113,6 +114,36 @@ export class PagesController {
     @Headers('accept-language') lang: string
   ) {
     return this.pagesService.findDocumentary(lang, id);
+  }
+
+  @Public()
+  @Get('members-subscribers/:type')
+  async findParticipants(
+    @Query() paginationDto: PaginationDto,
+    @Headers('accept-language') lang: string,
+    @Param() params: ParticipantsPageDto,
+  ) {
+    const [items, total] = await this.pagesService.findParticipants(lang, params.type, paginationDto);
+    const { page, limit } = paginationDto;
+
+    return {
+      data: items,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
+
+  @Public()
+  @Get('members-subscribers/:id/details')
+  findParticipant(
+    @Param('id', ParseIntPipe) id: number,
+    @Headers('accept-language') lang: string
+  ) {    
+    return this.pagesService.findParticipant(lang, id);
   }
 
   @Public()
