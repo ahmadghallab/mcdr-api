@@ -8,7 +8,7 @@ export class Participant {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 255, name: 'code', unique: true })
+  @Column({ type: 'varchar', length: 255, name: 'code' })
   code: string;
 
   @Column({ type: 'enum', enum: ParticipantType })
