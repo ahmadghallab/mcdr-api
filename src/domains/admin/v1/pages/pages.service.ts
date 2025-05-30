@@ -87,7 +87,10 @@ export class PagesService {
   }
 
   async findAllFaqs(department: FaqDepartment): Promise<Faq[]> {
-    const faqs = await this.faqsRepository.findBy({ department });
+    const faqs = await this.faqsRepository.find({
+      where: { department },
+      order: { order: 'ASC' }
+    });
     return faqs;
   }
   

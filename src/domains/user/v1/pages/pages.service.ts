@@ -49,7 +49,11 @@ export class PagesService {
   }
 
   async findFaqs(lang: string, department: FaqDepartment): Promise<Partial<Faq>[]> {
-    const faqs = await this.faqsRepository.findBy({ department, ...isPublished() });
+
+    const faqs = await this.faqsRepository.find({
+      where: { department, ...isPublished() },
+      order: { order: 'ASC' }
+    });
 
     const localizedFaqs = faqs.map(faq => ({
       id: faq.id,
