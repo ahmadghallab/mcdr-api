@@ -49,7 +49,6 @@ export class PagesService {
   }
 
   async findFaqs(lang: string, department: FaqDepartment): Promise<Partial<Faq>[]> {
-
     const faqs = await this.faqsRepository.find({
       where: { department, ...isPublished() },
       order: { order: 'ASC' }
@@ -216,6 +215,9 @@ export class PagesService {
         break;
       case LawPage.RulesSettlementGuaranteeFund:
         type = DocumentResourceType.SETTLEMENT_GUARANTEE_FUND_RULES
+        break;
+      case LawPage.ResolutionSettlementGuaranteeFund:
+        type = DocumentResourceType.SETTLEMENT_GUARANTEE_FUND_RESOLUTION
         break;
     }
 

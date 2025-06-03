@@ -4,6 +4,7 @@ export enum DocumentResourceType {
   OTHER_LAWS_REGULATING_WORK = 'other-laws-regulating-work',
   RULES = 'rules',
   SETTLEMENT_GUARANTEE_FUND_RULES = 'settlement-guarantee-fund-rules',
+  SETTLEMENT_GUARANTEE_FUND_RESOLUTION = 'settlement-guarantee-fund-resolution',
   MEMBERS_SUBSCRIBERS_FORMS = 'members-subscribers-forms',
   SURVEYS = 'surveys',
   IMPORTANT_LINKS = 'important-links',

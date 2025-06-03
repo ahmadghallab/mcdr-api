@@ -8,6 +8,7 @@ export enum LawPage {
   Laws = "laws",
   OtherLawsRegulatingWork = "other-laws-regulating-work",
   RulesSettlementGuaranteeFund = "rules-settlement-guarantee-fund",
+  ResolutionSettlementGuaranteeFund = "resolution-settlement-guarantee-fund",
 }
 
 export interface Branch {
