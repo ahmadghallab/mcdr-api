@@ -7,6 +7,7 @@ import { FilesModule } from "./files/files.module";
 import { PlacesModule } from "./places/places.module";
 import { BannersModule } from "./banners/banners.module";
 import { PagesModule } from "./pages/pages.module";
+import { HighlightsModule } from "./highlights/highlights.module";
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { PagesModule } from "./pages/pages.module";
     FilesModule,
     PlacesModule,
     BannersModule,
-    PagesModule
+    PagesModule,
+    HighlightsModule
   ]
 })
 export class AdminV1Module {}

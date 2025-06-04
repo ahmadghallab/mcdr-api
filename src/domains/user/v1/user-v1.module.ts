@@ -6,6 +6,7 @@ import { BannersModule } from "./banners/banners.module";
 import { UpdatesModule } from "./updates/updates.module";
 import { PagesModule } from "./pages/pages.module";
 import { HeroContentModule } from "./hero-content/hero-content.module";
+import { HighlightsModule } from "./highlights/highlights.module";
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { HeroContentModule } from "./hero-content/hero-content.module";
     BannersModule,
     UpdatesModule,
     PagesModule,
-    HeroContentModule
+    HeroContentModule,
+    HighlightsModule
   ],
 })
 export class UserV1Module {}
