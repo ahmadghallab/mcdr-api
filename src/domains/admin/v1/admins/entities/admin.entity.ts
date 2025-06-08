@@ -20,9 +20,6 @@ export class Admin {
   @Column({ type: 'enum', enum: AdminRole, default: AdminRole.Viewer, name: 'role' })
   role: AdminRole;
 
-  @Column({ type: 'json', nullable: true })
-  permissions: string
-
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 }

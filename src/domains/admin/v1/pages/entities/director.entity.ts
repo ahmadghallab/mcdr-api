@@ -1,5 +1,6 @@
 import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Translation } from 'src/core/common/types/translation.type';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 
 @Entity('directors')
 export class Director {
@@ -10,16 +11,16 @@ export class Director {
   avatarUrl: string;
 
   @Column({ type: 'json', name: 'title' })
-  title: { en: string; ar: string };
+  title: Translation;
 
   @Column({ type: 'json', name: 'name' })
-  name: { en: string; ar: string };
+  name: Translation;
 
   @Column({ type: 'json', name: 'position' })
-  position: { en: string; ar: string };
+  position: Translation;
 
   @Column({ type: 'json', nullable: true, name: 'bio' })
-  bio?: { en: string; ar: string };
+  bio?: Translation;
 
   @Column({ type: 'smallint', default: 0, name: 'order' })
   order: number;

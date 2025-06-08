@@ -2,8 +2,9 @@ import { Controller, Get,Param, Headers, ParseIntPipe, Query } from '@nestjs/com
 import { PagesService } from './pages.service';
 import { Public } from 'src/domains/admin/v1/auth/auth.decorator';
 import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
-import { ContactInfoDto, LawPageDto, ParticipantsPageDto } from './pages.dto';
+import { ContactInfoDto, ParticipantsPageDto } from './pages.dto';
 import { PaginationDto } from 'src/core/common/dto/pagination.dto';
+import { FindAllLegislationsDto } from 'src/domains/admin/v1/pages/dto/find-all-legislations.dto';
 
 @Controller()
 export class PagesController {
@@ -75,12 +76,12 @@ export class PagesController {
   }
 
   @Public()
-  @Get('laws-regulations/:pageName')
-  findLawsPage(
-    @Param() params: LawPageDto,
+  @Get('laws-regulations/:type')
+  findLegislations(
+    @Param() params: FindAllLegislationsDto,
     @Headers('accept-language') lang: string
   ) {    
-    return this.pagesService.findLawsPage(lang, params.pageName);
+    return this.pagesService.findLegislations(lang, params.type);
   }
 
   @Public()

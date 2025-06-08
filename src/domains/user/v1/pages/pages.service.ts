@@ -5,16 +5,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Faq } from 'src/domains/admin/v1/pages/entities/faq.entity';
 import { Page } from 'src/domains/admin/v1/pages/entities/page.entity';
 import { Director } from 'src/domains/admin/v1/pages/entities/director.entity';
-
 import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
 import { localizeContent, localizedValue } from 'src/core/common/utils/localize.util';
-import { NamedLink, ContactUs, RelatedSite, ElectronicSignatureFile, UserDirector, Award, DocumentaryVideo, LawPage } from './page.types';
+import { NamedLink, ContactUs, RelatedSite, ElectronicSignatureFile, UserDirector, Award, DocumentaryVideo } from './page.types';
 import { isPublished } from 'src/core/filters/published.filter';
 import { DocumentResource } from 'src/domains/admin/v1/pages/entities/document-resource.entity';
 import { DocumentResourceType } from 'src/domains/admin/v1/pages/enums/document-resource-type.enum';
 import { ParticipantType } from 'src/domains/admin/v1/pages/enums/participant-type.enum';
 import { Participant } from 'src/domains/admin/v1/pages/entities/participant.entity';
 import { PaginationDto } from 'src/core/common/dto/pagination.dto';
+import { AnnualReport } from 'src/domains/admin/v1/pages/entities/annual-report.entity';
+import { Survey } from 'src/domains/admin/v1/pages/entities/survey.entity';
+import { LegislationType } from 'src/domains/admin/v1/pages/enums/legislation-type.enum';
+import { Legislation } from 'src/domains/admin/v1/pages/entities/legislation.entity';
 
 @Injectable()
 export class PagesService {
@@ -30,6 +33,12 @@ export class PagesService {
     private readonly documentResourcesRepository: Repository<DocumentResource>,
     @InjectRepository(Participant)
     private readonly participantRepository: Repository<Participant>,
+    @InjectRepository(AnnualReport)
+    private readonly annualReportRepository: Repository<AnnualReport>,
+    @InjectRepository(Survey)
+    private readonly surveyRepository: Repository<Survey>,
+    @InjectRepository(Legislation)
+    private readonly legislationRepository: Repository<Legislation>,
   ) {}
 
   async findPage(slug: string, lang: string): Promise<Partial<Page>> {
@@ -157,23 +166,24 @@ export class PagesService {
   }
 
   async findAnnualReports(lang: string): Promise<NamedLink[]> {
-    const annualReports = await this.documentResourcesRepository.findOneByOrFail({ 
-      type: DocumentResourceType.ANNUAL_REPORTS 
+    const annualReports = await this.annualReportRepository.find({
+      where: isPublished(),
     });
 
-    const responseData = annualReports.data.map((item) => ({
+    const responseData = annualReports.map((item) => ({
       url: item.url[lang],
       name: item.name[lang],
     }));
-    return responseData;
+    
+    return responseData; 
   }
 
   async findSurveys(lang: string): Promise<NamedLink[]> {
-    const surveys = await this.documentResourcesRepository.findOneByOrFail({ 
-      type: DocumentResourceType.SURVEYS 
+    const surveys = await this.surveyRepository.find({
+      where: isPublished(),
     });
 
-    const responseData = surveys.data.map((item) => ({
+    const responseData = surveys.map((item) => ({
       url: item.url,
       name: item.name[lang],
     }));
@@ -200,30 +210,10 @@ export class PagesService {
     return responseData as ElectronicSignatureFile[];
   }
 
-  async findLawsPage(lang: string, pageName: LawPage): Promise<NamedLink[]> {
-    let type: DocumentResourceType;
-    
-    switch(pageName) {
-      case LawPage.ImportantLinks:
-        type = DocumentResourceType.IMPORTANT_LINKS;
-        break;
-      case LawPage.OtherLawsRegulatingWork:
-        type = DocumentResourceType.OTHER_LAWS_REGULATING_WORK;
-        break;
-      case LawPage.Laws:
-        type = DocumentResourceType.RULES
-        break;
-      case LawPage.RulesSettlementGuaranteeFund:
-        type = DocumentResourceType.SETTLEMENT_GUARANTEE_FUND_RULES
-        break;
-      case LawPage.ResolutionSettlementGuaranteeFund:
-        type = DocumentResourceType.SETTLEMENT_GUARANTEE_FUND_RESOLUTION
-        break;
-    }
+  async findLegislations(lang: string, type: LegislationType): Promise<NamedLink[]> {
+    const legislations = await this.legislationRepository.findBy({ type });
 
-    const lawPage = await this.documentResourcesRepository.findOneByOrFail({ type });
-
-    const responseData = lawPage.data.map((item) => ({
+    const responseData = legislations.map((item) => ({
       name: item.name[lang],
       url: item.url,
     }));
