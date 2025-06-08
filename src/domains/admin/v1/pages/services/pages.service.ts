@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Page } from '../entities/page.entity';
 import { Repository } from 'typeorm';
 import { Admin } from '../../admins/entities/admin.entity';
-import { GroupedPagesBySection } from '../pages.interfaces';
+import { GroupedPagesBySection } from '../interfaces/pages.interfaces';
 import { Director } from '../entities/director.entity';
 import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
 import { Faq } from '../entities/faq.entity';
@@ -13,7 +13,6 @@ import { CreateDirectorDto } from '../dto/create-director.dto';
 import { UpdateDirectorDto } from '../dto/update-director.dto';
 import { UpdateFaqDto } from '../dto/update-faq.dto';
 import { CreateFaqDto } from '../dto/create-faq.dto';
-import { DocumentResource } from '../entities/document-resource.entity';
 
 @Injectable()
 export class PagesService {
@@ -25,8 +24,6 @@ export class PagesService {
     private readonly directorsRepository: Repository<Director>,
     @InjectRepository(Faq)
     private readonly faqsRepository: Repository<Faq>,
-    @InjectRepository(DocumentResource)
-    private readonly documentResourcesRepository: Repository<DocumentResource>
   ) {}
 
   async create(createPageDto: CreatePageDto, user: Admin): Promise<Page> {

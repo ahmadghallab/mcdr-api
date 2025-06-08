@@ -16,11 +16,14 @@ import { SurveyService } from './services/survey.service';
 import { Legislation } from './entities/legislation.entity';
 import { LegislationController } from './controllers/legislation.controller';
 import { LegislationService } from './services/legislation.service';
+import { ContactUs } from './entities/contact.entity';
+import { ContactUsController } from './controllers/contact-us.controller';
+import { ContactUsService } from './services/contact-us.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Page, Director, Faq, DocumentResource, Participant, AnnualReport, Survey, Legislation])],
-  controllers: [PagesController, AnnualReportController, SurveyController, LegislationController],
-  providers: [PagesService, AnnualReportService, SurveyService, LegislationService],
+  imports: [TypeOrmModule.forFeature([Page, Director, Faq, DocumentResource, Participant, AnnualReport, Survey, Legislation, ContactUs])],
+  controllers: [PagesController, AnnualReportController, SurveyController, LegislationController, ContactUsController],
+  providers: [PagesService, AnnualReportService, SurveyService, LegislationService, ContactUsService],
   exports: [PagesService],
 })
 export class PagesModule {}

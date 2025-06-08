@@ -11,22 +11,6 @@ export enum LawPage {
   ResolutionSettlementGuaranteeFund = "resolution-settlement-guarantee-fund",
 }
 
-export interface Branch {
-  address: string;
-  tel: string;
-  telII?: string;
-  fax?: string;
-  faxII?: string;
-}
-
-export interface ContactUs {
-  hotline: string;
-  email: string;
-  headOffice: Branch;
-  heliopolisBranch: Branch;
-  alexBranch: Branch;
-}
-
 export interface RelatedSite {
   logo: string
   name: string
