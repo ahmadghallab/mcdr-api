@@ -19,6 +19,7 @@ import { Survey } from 'src/domains/admin/v1/pages/entities/survey.entity';
 import { LegislationType } from 'src/domains/admin/v1/pages/enums/legislation-type.enum';
 import { Legislation } from 'src/domains/admin/v1/pages/entities/legislation.entity';
 import { ContactUs } from 'src/domains/admin/v1/pages/entities/contact.entity';
+import { ORDER_BY_CREATED_DESC } from 'src/core/utils/order.util';
 
 @Injectable()
 export class PagesService {
@@ -162,6 +163,7 @@ export class PagesService {
   async findAnnualReports(lang: string): Promise<NamedLink[]> {
     const annualReports = await this.annualReportRepository.find({
       where: isPublished(),
+      order: ORDER_BY_CREATED_DESC,
     });
 
     const responseData = annualReports.map((item) => ({
