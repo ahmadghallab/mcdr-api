@@ -207,25 +207,16 @@ export class PagesService {
   }
 
   async findLegislations(lang: string, type: LegislationType): Promise<NamedLink[]> {
-    const legislations = await this.legislationRepository.findBy({ type });
+    const legislations = await this.legislationRepository.findBy({ 
+      type,
+      ...isPublished()
+    });
 
     const responseData = legislations.map((item) => ({
       name: item.name[lang],
       url: item.url,
     }));
 
-    return responseData;
-  }
-
-  async findMembersForms(lang: string): Promise<NamedLink[]> {
-    const membersForms = await this.documentResourcesRepository.findOneByOrFail({ 
-      type: DocumentResourceType.MEMBERS_SUBSCRIBERS_FORMS 
-    });
-
-    const responseData = membersForms.data.map((item) => ({
-      url: item.url,
-      name: item.name[lang],
-    }));
     return responseData;
   }
 

@@ -3,5 +3,7 @@ export enum LegislationType {
   OTHER_LAWS_REGULATING_WORK = 'other-laws-regulating-work',
   RESOLUTION_SETTLEMENT_GUARANTEE_FUND = 'resolution-settlement-guarantee-fund',
   RULES_SETTLEMENT_GUARANTEE_FUND = 'rules-settlement-guarantee-fund',
-  IMPORTANT_LINKS = 'important-links'
+  IMPORTANT_LINKS = 'important-links',
+  SURVEYS = 'surveys',
+  FORMS = 'forms',
 }

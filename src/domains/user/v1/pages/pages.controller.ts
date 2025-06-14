@@ -85,14 +85,6 @@ export class PagesController {
   }
 
   @Public()
-  @Get('members-subscribers/forms')
-  findMembersForms(
-    @Headers('accept-language') lang: string
-  ) {    
-    return this.pagesService.findMembersForms(lang);
-  }
-
-  @Public()
   @Get('overview/achievements-awards')
   findAwards(
     @Headers('accept-language') lang: string
