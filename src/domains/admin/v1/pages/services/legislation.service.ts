@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { CreateLegislationDto } from '../dto/create-legislation.dto';
 import { UpdateLegislationDto } from '../dto/update-legislation.dto';
 import { Legislation } from '../entities/legislation.entity';
-import { FindAllLegislationsDto } from '../dto/find-all-legislations.dto';
 import { LegislationType } from '../enums/legislation-type.enum';
 
 @Injectable()
