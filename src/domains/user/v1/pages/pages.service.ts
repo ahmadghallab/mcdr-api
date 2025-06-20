@@ -94,6 +94,10 @@ export class PagesService {
       ...participant,
       name: lang === 'ar' ? participant.aname : participant.ename,
       address: lang === 'ar' ? participant.aaddress : participant.eaddress,
+      board: participant.board?.map(b => ({
+        ...b,
+        name: lang === 'ar' ? b.aname : b.ename
+      }))
     }));
 
     return [ localizedParticipants, total ];
