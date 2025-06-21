@@ -7,7 +7,7 @@ import { Page } from 'src/domains/admin/v1/pages/entities/page.entity';
 import { Director } from 'src/domains/admin/v1/pages/entities/director.entity';
 import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
 import { localizeContent, localizedValue } from 'src/core/common/utils/localize.util';
-import { NamedLink, RelatedSite, ElectronicSignatureFile, UserDirector, Award, DocumentaryVideo } from './page.types';
+import { NamedLink, RelatedSite, ElectronicSignatureFile, UserDirector, Award, DocumentaryVideo, LocalizedDocumentary } from './page.types';
 import { isPublished } from 'src/core/filters/published.filter';
 import { DocumentResource } from 'src/domains/admin/v1/pages/entities/document-resource.entity';
 import { DocumentResourceType } from 'src/domains/admin/v1/pages/enums/document-resource-type.enum';
@@ -20,6 +20,7 @@ import { LegislationType } from 'src/domains/admin/v1/pages/enums/legislation-ty
 import { Legislation } from 'src/domains/admin/v1/pages/entities/legislation.entity';
 import { ContactUs } from 'src/domains/admin/v1/pages/entities/contact.entity';
 import { ORDER_BY_CREATED_DESC } from 'src/core/utils/order.util';
+import { Documentary } from 'src/domains/admin/v1/pages/entities/documentary.entity';
 
 @Injectable()
 export class PagesService {
@@ -43,6 +44,8 @@ export class PagesService {
     private readonly legislationRepository: Repository<Legislation>,
     @InjectRepository(ContactUs)
     private readonly contactUsRepository: Repository<ContactUs>,
+    @InjectRepository(Documentary)
+    private readonly documentaryRepository: Repository<Documentary>,
   ) {}
 
   async findPage(slug: string, lang: string): Promise<Partial<Page>> {
@@ -237,30 +240,15 @@ export class PagesService {
     return responseData;
   }
 
-  async findDocumentaries(lang: string): Promise<DocumentaryVideo[]> {
-    const documentaries = await this.documentResourcesRepository.findOneByOrFail({ 
-      type: DocumentResourceType.DOCUMENTARIES 
+  async findDocumentaries(lang: string): Promise<LocalizedDocumentary[]> {
+    const documentaries = await this.documentaryRepository.find({
+      where: isPublished(),
     });
 
-    const responseData = documentaries.data.map((doc) => ({
+    const responseData = documentaries.map((doc) => ({
       ...doc,
       name: localizedValue(doc.name, lang),
     }));
-
-    return responseData;
-  }
-
-  async findDocumentary(lang: string, id: number): Promise<DocumentaryVideo> {
-    const documentaries = await this.documentResourcesRepository.findOneByOrFail({ 
-      type: DocumentResourceType.DOCUMENTARIES 
-    });
-
-    const documentary = documentaries.data.find(doc => doc.id === id)
-
-    const responseData = {
-      ...documentary,
-      name: localizedValue(documentary.name, lang),
-    };
 
     return responseData;
   }

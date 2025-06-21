@@ -1,3 +1,5 @@
+import { Documentary } from "src/domains/admin/v1/pages/entities/documentary.entity"
+
 export enum ContactInfoModule {
   CustomerSupport = "customer-support",
   ElectronicSignature = "electronic-signature",
@@ -57,3 +59,7 @@ export interface UserDirector {
   bio: string
   order: number
 }
+
+export type LocalizedDocumentary = Omit<Documentary, 'name'> & {
+  name: string;
+};

@@ -11,9 +11,10 @@ import { AnnualReport } from 'src/domains/admin/v1/pages/entities/annual-report.
 import { Survey } from 'src/domains/admin/v1/pages/entities/survey.entity';
 import { Legislation } from 'src/domains/admin/v1/pages/entities/legislation.entity';
 import { ContactUs } from 'src/domains/admin/v1/pages/entities/contact.entity';
+import { Documentary } from 'src/domains/admin/v1/pages/entities/documentary.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Page, Faq, Director, DocumentResource, Participant, AnnualReport, Survey, Legislation, ContactUs])],
+  imports: [TypeOrmModule.forFeature([Page, Faq, Director, DocumentResource, Participant, AnnualReport, Survey, Legislation, ContactUs, Documentary])],
   controllers: [PagesController],
   providers: [PagesService],
   exports: [PagesService, ],

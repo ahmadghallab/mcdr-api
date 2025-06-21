@@ -101,15 +101,6 @@ export class PagesController {
   }
 
   @Public()
-  @Get('overview/documentaries/:id')
-  findDocumentary(
-    @Param('id', ParseIntPipe) id: number,
-    @Headers('accept-language') lang: string
-  ) {
-    return this.pagesService.findDocumentary(lang, id);
-  }
-
-  @Public()
   @Get('members-subscribers/:type')
   async findParticipants(
     @Query() paginationDto: PaginationDto,
