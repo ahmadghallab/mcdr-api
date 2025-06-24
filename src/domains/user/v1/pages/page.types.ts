@@ -1,3 +1,4 @@
+import { Achievement } from "src/domains/admin/v1/pages/entities/achievement.entity"
 import { Documentary } from "src/domains/admin/v1/pages/entities/documentary.entity"
 
 export enum ContactInfoModule {
@@ -18,21 +19,6 @@ export interface RelatedSite {
   name: string
   url: string
 }
-
-export interface DocumentaryVideo {
-  id: number
-  name: string
-  url: string
-  duration: string
-}
-
-export interface Award {
-  id: number
-  imageUrl?: string
-  date?: string
-  description: string
-}
-
 
 export interface NamedLink {
   name: string
@@ -62,4 +48,8 @@ export interface UserDirector {
 
 export type LocalizedDocumentary = Omit<Documentary, 'name'> & {
   name: string;
+};
+
+export type LocalizedAchievement = Omit<Achievement, 'description'> & {
+  description: string;
 };

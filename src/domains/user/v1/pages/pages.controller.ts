@@ -86,10 +86,10 @@ export class PagesController {
 
   @Public()
   @Get('overview/achievements-awards')
-  findAwards(
+  findAchievements(
     @Headers('accept-language') lang: string
   ) {    
-    return this.pagesService.findAwards(lang);
+    return this.pagesService.findAchievements(lang);
   }
 
   @Public()

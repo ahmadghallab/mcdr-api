@@ -7,7 +7,7 @@ import { Page } from 'src/domains/admin/v1/pages/entities/page.entity';
 import { Director } from 'src/domains/admin/v1/pages/entities/director.entity';
 import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
 import { localizeContent, localizedValue } from 'src/core/common/utils/localize.util';
-import { NamedLink, RelatedSite, ElectronicSignatureFile, UserDirector, Award, DocumentaryVideo, LocalizedDocumentary } from './page.types';
+import { NamedLink, RelatedSite, ElectronicSignatureFile, UserDirector, LocalizedDocumentary, LocalizedAchievement } from './page.types';
 import { isPublished } from 'src/core/filters/published.filter';
 import { DocumentResource } from 'src/domains/admin/v1/pages/entities/document-resource.entity';
 import { DocumentResourceType } from 'src/domains/admin/v1/pages/enums/document-resource-type.enum';
@@ -21,6 +21,7 @@ import { Legislation } from 'src/domains/admin/v1/pages/entities/legislation.ent
 import { ContactUs } from 'src/domains/admin/v1/pages/entities/contact.entity';
 import { ORDER_BY_CREATED_DESC } from 'src/core/utils/order.util';
 import { Documentary } from 'src/domains/admin/v1/pages/entities/documentary.entity';
+import { Achievement } from 'src/domains/admin/v1/pages/entities/achievement.entity';
 
 @Injectable()
 export class PagesService {
@@ -46,6 +47,8 @@ export class PagesService {
     private readonly contactUsRepository: Repository<ContactUs>,
     @InjectRepository(Documentary)
     private readonly documentaryRepository: Repository<Documentary>,
+    @InjectRepository(Achievement)
+    private readonly achievementRepository: Repository<Achievement>,
   ) {}
 
   async findPage(slug: string, lang: string): Promise<Partial<Page>> {
@@ -227,12 +230,12 @@ export class PagesService {
     return responseData;
   }
 
-  async findAwards(lang: string): Promise<Award[]> {
-    const awards = await this.documentResourcesRepository.findOneByOrFail({ 
-      type: DocumentResourceType.ACHIEVEMENTS_AWARDS 
+  async findAchievements(lang: string): Promise<LocalizedAchievement[]> {
+    const achievements = await this.achievementRepository.find({
+      where: isPublished(),
     });
 
-    const responseData = awards.data.map((award) => ({
+    const responseData = achievements.map((award) => ({
       ...award,
       description: localizedValue(award.description, lang),
     }));

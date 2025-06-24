@@ -24,11 +24,14 @@ import { ParticipantService } from './services/participant.service';
 import { Documentary } from './entities/documentary.entity';
 import { DocumentaryController } from './controllers/documentary.controller';
 import { DocumentaryService } from './services/documentary.service';
+import { Achievement } from './entities/achievement.entity';
+import { AchievementController } from './controllers/achievement.controller';
+import { AchievementService } from './services/achievement.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Page, Director, Faq, DocumentResource, Participant, AnnualReport, Survey, Legislation, ContactUs, Documentary])],
-  controllers: [PagesController, AnnualReportController, SurveyController, LegislationController, ContactUsController, ParticipantController, DocumentaryController],
-  providers: [PagesService, AnnualReportService, SurveyService, LegislationService, ContactUsService, ParticipantService, DocumentaryService],
+  imports: [TypeOrmModule.forFeature([Page, Director, Faq, DocumentResource, Participant, AnnualReport, Survey, Legislation, ContactUs, Documentary, Achievement])],
+  controllers: [PagesController, AnnualReportController, SurveyController, LegislationController, ContactUsController, ParticipantController, DocumentaryController, AchievementController],
+  providers: [PagesService, AnnualReportService, SurveyService, LegislationService, ContactUsService, ParticipantService, DocumentaryService, AchievementService],
   exports: [PagesService],
 })
 export class PagesModule {}
