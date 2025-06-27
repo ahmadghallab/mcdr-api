@@ -6,14 +6,15 @@ import {
   IsEnum,
   IsInt
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { TranslationDto } from 'src/core/common/dto/translation.dto';
 import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 
 export class CreateAchievementDto {
   @IsOptional()
+  @Transform(({ value }) => (value === '' ? null : value))
   @IsDateString()
-  date?: string;
+  date?: string | null;
 
   @IsOptional()
   @IsString()

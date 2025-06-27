@@ -1,5 +1,6 @@
 import { Achievement } from "src/domains/admin/v1/pages/entities/achievement.entity"
 import { Documentary } from "src/domains/admin/v1/pages/entities/documentary.entity"
+import { Opportunity } from "src/domains/admin/v1/pages/entities/opportunity.entity"
 
 export enum ContactInfoModule {
   CustomerSupport = "customer-support",
@@ -51,5 +52,10 @@ export type LocalizedDocumentary = Omit<Documentary, 'name'> & {
 };
 
 export type LocalizedAchievement = Omit<Achievement, 'description'> & {
+  description: string;
+};
+
+export type LocalizedOpportunity = Omit<Opportunity, 'titleEn'|'titleAr'|'descriptionEn'|'descriptionAr'> & {
+  title: string;
   description: string;
 };

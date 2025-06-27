@@ -7,7 +7,7 @@ import { Page } from 'src/domains/admin/v1/pages/entities/page.entity';
 import { Director } from 'src/domains/admin/v1/pages/entities/director.entity';
 import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
 import { localizeContent, localizedValue } from 'src/core/common/utils/localize.util';
-import { NamedLink, RelatedSite, ElectronicSignatureFile, UserDirector, LocalizedDocumentary, LocalizedAchievement } from './page.types';
+import { NamedLink, RelatedSite, ElectronicSignatureFile, UserDirector, LocalizedDocumentary, LocalizedAchievement, LocalizedOpportunity } from './page.types';
 import { isPublished } from 'src/core/filters/published.filter';
 import { DocumentResource } from 'src/domains/admin/v1/pages/entities/document-resource.entity';
 import { DocumentResourceType } from 'src/domains/admin/v1/pages/enums/document-resource-type.enum';
@@ -22,6 +22,8 @@ import { ContactUs } from 'src/domains/admin/v1/pages/entities/contact.entity';
 import { ORDER_BY_CREATED_DESC } from 'src/core/utils/order.util';
 import { Documentary } from 'src/domains/admin/v1/pages/entities/documentary.entity';
 import { Achievement } from 'src/domains/admin/v1/pages/entities/achievement.entity';
+import { Opportunity } from 'src/domains/admin/v1/pages/entities/opportunity.entity';
+import { OpportunityType } from 'src/domains/admin/v1/pages/enums/opportunity-type.enum';
 
 @Injectable()
 export class PagesService {
@@ -49,6 +51,8 @@ export class PagesService {
     private readonly documentaryRepository: Repository<Documentary>,
     @InjectRepository(Achievement)
     private readonly achievementRepository: Repository<Achievement>,
+    @InjectRepository(Opportunity)
+    private readonly opportunityRepository: Repository<Opportunity>,
   ) {}
 
   async findPage(slug: string, lang: string): Promise<Partial<Page>> {
@@ -254,5 +258,22 @@ export class PagesService {
     }));
 
     return responseData;
+  }
+
+  async findOpportunities(lang: string, type: OpportunityType): Promise<Partial<LocalizedOpportunity>[]> {
+    const opportunites = await this.opportunityRepository.find({
+      where: { 
+        type,
+        isActive: true,
+        ...isPublished() 
+      }
+    });
+
+    const localizedOpportunites = opportunites.map(opportunity => ({
+      id: opportunity.id,
+      ...localizeContent(opportunity, lang, ["title", "description"]),
+    }))
+
+    return localizedOpportunites;
   }
 }

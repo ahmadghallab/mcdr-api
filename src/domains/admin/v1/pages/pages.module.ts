@@ -27,11 +27,14 @@ import { DocumentaryService } from './services/documentary.service';
 import { Achievement } from './entities/achievement.entity';
 import { AchievementController } from './controllers/achievement.controller';
 import { AchievementService } from './services/achievement.service';
+import { Opportunity } from './entities/opportunity.entity';
+import { OpportunityController } from './controllers/opportunity.controller';
+import { OpportunityService } from './services/opportunity.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Page, Director, Faq, DocumentResource, Participant, AnnualReport, Survey, Legislation, ContactUs, Documentary, Achievement])],
-  controllers: [PagesController, AnnualReportController, SurveyController, LegislationController, ContactUsController, ParticipantController, DocumentaryController, AchievementController],
-  providers: [PagesService, AnnualReportService, SurveyService, LegislationService, ContactUsService, ParticipantService, DocumentaryService, AchievementService],
+  imports: [TypeOrmModule.forFeature([Page, Director, Faq, DocumentResource, Participant, AnnualReport, Survey, Legislation, ContactUs, Documentary, Achievement, Opportunity])],
+  controllers: [PagesController, AnnualReportController, SurveyController, LegislationController, ContactUsController, ParticipantController, DocumentaryController, AchievementController, OpportunityController],
+  providers: [PagesService, AnnualReportService, SurveyService, LegislationService, ContactUsService, ParticipantService, DocumentaryService, AchievementService, OpportunityService],
   exports: [PagesService],
 })
 export class PagesModule {}

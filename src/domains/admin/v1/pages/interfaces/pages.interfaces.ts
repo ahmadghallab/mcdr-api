@@ -10,3 +10,10 @@ export interface NamedLink {
   name: Translation
   url: Translation|string
 }
+
+export interface BranchInfo {
+  name: Translation; 
+  tel: string[];
+  fax?: string[];
+  address: Translation;
+}

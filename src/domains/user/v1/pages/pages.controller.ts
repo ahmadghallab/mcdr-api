@@ -2,7 +2,7 @@ import { Controller, Get,Param, Headers, ParseIntPipe, Query } from '@nestjs/com
 import { PagesService } from './pages.service';
 import { Public } from 'src/domains/admin/v1/auth/auth.decorator';
 import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
-import { ContactInfoDto, ParticipantsPageDto } from './pages.dto';
+import { ContactInfoDto, OpportunitiesPageDto, ParticipantsPageDto } from './pages.dto';
 import { PaginationDto } from 'src/core/common/dto/pagination.dto';
 import { FindAllLegislationsDto } from 'src/domains/admin/v1/pages/dto/find-all-legislations.dto';
 
@@ -82,6 +82,15 @@ export class PagesController {
     @Headers('accept-language') lang: string
   ) {    
     return this.pagesService.findLegislations(lang, params.type);
+  }
+
+  @Public()
+  @Get('overview/opportunities')
+  findOpportunities(
+    @Query() query: OpportunitiesPageDto,
+    @Headers('accept-language') lang: string
+  ) {    
+    return this.pagesService.findOpportunities(lang, query.type);
   }
 
   @Public()

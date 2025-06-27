@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { BranchInfo } from "../interfaces/contact-us.interface";
+import { BranchInfo } from "../interfaces/pages.interfaces";
 
 @Entity('contact_us')
 export class ContactUs {
