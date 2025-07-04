@@ -12,6 +12,10 @@ export class CreateLegislationDto {
   @IsNotEmpty()
   name: TranslationDto;
 
+  @IsString()
+  @IsOptional()
+  thumbnailUrl?: string;
+
   @IsInt()
   @IsOptional()
   order?: number;

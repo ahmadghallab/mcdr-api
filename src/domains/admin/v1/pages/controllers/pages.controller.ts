@@ -16,6 +16,13 @@ export class PagesController {
     private readonly pagesService: PagesService,
   ) {}
 
+  @Get()
+  findOneBySlug(
+    @Query('slug') slug: string
+  ) {
+    return this.pagesService.findOneBySlug(slug);
+  }
+
   @Post('common')
   create(
     @AuthAdmin() adminDto: Admin,

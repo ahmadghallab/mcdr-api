@@ -4,6 +4,7 @@ export enum LegislationType {
   RESOLUTION_SETTLEMENT_GUARANTEE_FUND = 'resolution-settlement-guarantee-fund',
   RULES_SETTLEMENT_GUARANTEE_FUND = 'rules-settlement-guarantee-fund',
   IMPORTANT_LINKS = 'important-links',
+  RELATED_SITES = 'related-sites',
   SURVEYS = 'surveys',
   FORMS = 'forms',
 }

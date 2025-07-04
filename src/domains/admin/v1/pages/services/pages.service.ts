@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePageDto } from '../dto/create-page.dto';
 import { UpdatePageDto } from '../dto/update-page.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -48,6 +48,14 @@ export class PagesService {
 
   async findOne(id: number): Promise<Page> {
     return await this.pagesRepository.findOneByOrFail({ id });
+  }
+
+  async findOneBySlug(slug: string): Promise<Page> {
+    try {
+      return await this.pagesRepository.findOneByOrFail({ slug });
+    } catch(e) {
+      throw new NotFoundException();
+    }
   }
 
   async update(id: number, updatePageDto: UpdatePageDto): Promise<Page> {

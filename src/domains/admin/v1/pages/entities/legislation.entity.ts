@@ -14,6 +14,9 @@ export class Legislation {
   @Column({ type: 'json' })
   name: Translation;
 
+  @Column({ name: 'thumbnail_url', nullable: true })
+  thumbnailUrl: string;
+
   @Column({ type: 'smallint', default: 0 })
   order: number;
 

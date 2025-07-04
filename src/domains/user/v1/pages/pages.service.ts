@@ -7,7 +7,7 @@ import { Page } from 'src/domains/admin/v1/pages/entities/page.entity';
 import { Director } from 'src/domains/admin/v1/pages/entities/director.entity';
 import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
 import { localizeContent, localizedValue } from 'src/core/common/utils/localize.util';
-import { NamedLink, RelatedSite, ElectronicSignatureFile, UserDirector, LocalizedDocumentary, LocalizedAchievement, LocalizedOpportunity } from './page.types';
+import { NamedLink, RelatedSite, ElectronicSignatureFile, UserDirector, LocalizedDocumentary, LocalizedAchievement, LocalizedOpportunity, LocalizedLegislation } from './page.types';
 import { isPublished } from 'src/core/filters/published.filter';
 import { DocumentResource } from 'src/domains/admin/v1/pages/entities/document-resource.entity';
 import { DocumentResourceType } from 'src/domains/admin/v1/pages/enums/document-resource-type.enum';
@@ -161,12 +161,13 @@ export class PagesService {
     return responseData;
   }
 
-  async findRelatedSites(lang: string): Promise<RelatedSite[]> {
-    const relatedSite = await this.documentResourcesRepository.findOneByOrFail({ 
-      type: DocumentResourceType.RELATED_SITES 
+  async findRelatedSites(lang: string): Promise<LocalizedLegislation[]> {
+    const relatedSite = await this.legislationRepository.findBy({ 
+      type: LegislationType.RELATED_SITES,
+      ...isPublished()
     });
 
-    const responseData = relatedSite.data.map((item) => ({
+    const responseData = relatedSite.map((item) => ({
       ...item,
       name: item.name[lang],
     }));
