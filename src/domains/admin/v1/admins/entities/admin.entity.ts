@@ -20,6 +20,10 @@ export class Admin {
   @Column({ type: 'enum', enum: AdminRole, default: AdminRole.Viewer, name: 'role' })
   role: AdminRole;
 
+  @Exclude()
+  @Column({ nullable: true })
+  refreshToken: string | null;
+
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 }

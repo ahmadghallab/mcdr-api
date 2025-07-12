@@ -3,20 +3,22 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AdminsService } from '../admins/admins.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { Admin } from '../admins/entities/admin.entity';
+import { ConfigService } from '@nestjs/config';
+import { AuthResponse } from './auth.interfaces';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: AdminsService,
-    private jwtService: JwtService
+    private userService: AdminsService,
+    private jwtService: JwtService,
+    private configService: ConfigService,
   ) {}
 
   async signIn(
     email: string,
     password: string,
-  ): Promise<{ access_token: string, user: Admin }> {
-    const user = await this.usersService.findEmail(email);   
+  ): Promise<AuthResponse> {
+    const user = await this.userService.findEmail(email);   
 
     if (!user) throw new UnauthorizedException('Invalid credentials');
 
@@ -25,10 +27,67 @@ export class AuthService {
     if (!isMatch) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const payload = { sub: user.id, email: user.email };
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-      user
+
+    const tokens = await this.generateTokens(user.id);
+
+    return { ...tokens, user };
+  }
+
+  async generateTokens(userId: number) {
+    const payload = { sub: userId };
+
+    const accessTokenExpiresIn = this.configService.get<number>('jwt.accessTokenExpiresIn');
+    const refreshTokenExpiresIn = this.configService.get<number>('jwt.refreshTokenExpiresIn');
+
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: accessTokenExpiresIn,
+    });
+
+    const refreshToken = this.jwtService.sign(payload, {
+      expiresIn: refreshTokenExpiresIn,
+    });
+
+    const hashedToken = await bcrypt.hash(refreshToken, 10);
+    await this.userService.updateRefreshToken(userId, hashedToken);
+
+    return { 
+      accessToken, 
+      refreshToken,
+      accessTokenExpiresIn: accessTokenExpiresIn*1000,
+      refreshTokenExpiresIn: refreshTokenExpiresIn*1000
     };
+  }
+
+  async refreshToken(token: string): Promise<AuthResponse> {
+    try {
+      const payload = this.jwtService.verify(token);      
+
+      const user = await this.userService.findOne(payload.sub);
+
+      if (!user || !user.refreshToken) throw new UnauthorizedException();
+
+      const isValid = await bcrypt.compare(token, user.refreshToken);
+
+      if (!isValid) throw new UnauthorizedException('Invalid refresh token');
+
+      const tokens = await this.generateTokens(user.id);
+
+      return { ...tokens, user };
+
+    } catch {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+  }
+
+  async verifyAccessToken(token: string) {
+    try {
+      return this.jwtService.verify(token);
+    } catch {
+      throw new UnauthorizedException('Invalid access token');
+    }
+  }
+
+  async logout(userId: number) {
+    await this.userService.updateRefreshToken(userId, null);
   }
 }

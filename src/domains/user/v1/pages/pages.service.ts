@@ -7,10 +7,8 @@ import { Page } from 'src/domains/admin/v1/pages/entities/page.entity';
 import { Director } from 'src/domains/admin/v1/pages/entities/director.entity';
 import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
 import { localizeContent, localizedValue } from 'src/core/common/utils/localize.util';
-import { NamedLink, RelatedSite, ElectronicSignatureFile, UserDirector, LocalizedDocumentary, LocalizedAchievement, LocalizedOpportunity, LocalizedLegislation } from './page.types';
+import { NamedLink, UserDirector, LocalizedDocumentary, LocalizedAchievement, LocalizedOpportunity, LocalizedLegislation, ElectronicSignatureFile } from './page.types';
 import { isPublished } from 'src/core/filters/published.filter';
-import { DocumentResource } from 'src/domains/admin/v1/pages/entities/document-resource.entity';
-import { DocumentResourceType } from 'src/domains/admin/v1/pages/enums/document-resource-type.enum';
 import { ParticipantType } from 'src/domains/admin/v1/pages/enums/participant-type.enum';
 import { Participant } from 'src/domains/admin/v1/pages/entities/participant.entity';
 import { PaginationDto } from 'src/core/common/dto/pagination.dto';
@@ -24,6 +22,8 @@ import { Documentary } from 'src/domains/admin/v1/pages/entities/documentary.ent
 import { Achievement } from 'src/domains/admin/v1/pages/entities/achievement.entity';
 import { Opportunity } from 'src/domains/admin/v1/pages/entities/opportunity.entity';
 import { OpportunityType } from 'src/domains/admin/v1/pages/enums/opportunity-type.enum';
+import { SignatureFile } from 'src/domains/admin/v1/pages/entities/signature-file.entity';
+import { SignatureType } from 'src/domains/admin/v1/pages/enums/signature-type';
 
 @Injectable()
 export class PagesService {
@@ -35,8 +35,6 @@ export class PagesService {
     private readonly faqsRepository: Repository<Faq>,
     @InjectRepository(Director)
     private readonly directorsRepository: Repository<Director>,
-    @InjectRepository(DocumentResource)
-    private readonly documentResourcesRepository: Repository<DocumentResource>,
     @InjectRepository(Participant)
     private readonly participantRepository: Repository<Participant>,
     @InjectRepository(AnnualReport)
@@ -53,6 +51,8 @@ export class PagesService {
     private readonly achievementRepository: Repository<Achievement>,
     @InjectRepository(Opportunity)
     private readonly opportunityRepository: Repository<Opportunity>,
+    @InjectRepository(SignatureFile)
+    private readonly signatureFileRepository: Repository<SignatureFile>,
   ) {}
 
   async findPage(slug: string, lang: string): Promise<Partial<Page>> {
@@ -202,23 +202,21 @@ export class PagesService {
     return responseData;
   }
 
-  async findElectronicSignatureFiles(lang: string): Promise<ElectronicSignatureFile[]> {
-    const electronicSignatureFiles = await this.documentResourcesRepository.findOneByOrFail({ 
-      type: DocumentResourceType.ELECTRONIC_SIGNATURE_FILES 
+  async findElectronicSignatureFiles(): Promise<ElectronicSignatureFile[]> {
+    const files = await this.signatureFileRepository.find({
+      where: isPublished()
     });
 
-    const responseData = Object.values(
-      electronicSignatureFiles.data.reduce(
-        (acc: Record<string | null, { name: string | null; items: NamedLink[] }>, item) => {
-          const key = item.type ?? null;
-          (acc[key] ??= { name: key, items: [] }).items.push(item);
-          return acc;
-        },
-        {} as Record<string | null, { name: string | null; items: NamedLink[] }>
-      )
-    );
+    const uniqueTypes = [
+      ...new Set(files.map(file => file.type ?? null)),
+    ];
+  
+    const grouped = uniqueTypes.map((type) => ({
+      name: type,
+      items: files.filter(file => file.type === type),
+    }));
 
-    return responseData as ElectronicSignatureFile[];
+    return grouped;
   }
 
   async findLegislations(lang: string, type: LegislationType): Promise<NamedLink[]> {

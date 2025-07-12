@@ -2,6 +2,8 @@ import { Achievement } from "src/domains/admin/v1/pages/entities/achievement.ent
 import { Documentary } from "src/domains/admin/v1/pages/entities/documentary.entity"
 import { Legislation } from "src/domains/admin/v1/pages/entities/legislation.entity"
 import { Opportunity } from "src/domains/admin/v1/pages/entities/opportunity.entity"
+import { SignatureFile } from "src/domains/admin/v1/pages/entities/signature-file.entity"
+import { SignatureType } from "src/domains/admin/v1/pages/enums/signature-type"
 
 export enum ContactInfoModule {
   CustomerSupport = "customer-support",
@@ -34,8 +36,8 @@ export interface Page {
 }
 
 export interface ElectronicSignatureFile { 
-  name: string | null; 
-  items: NamedLink[] 
+  name: SignatureType | null; 
+  items: SignatureFile[] 
 }
 
 export interface UserDirector {

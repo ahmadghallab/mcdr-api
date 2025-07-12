@@ -51,6 +51,10 @@ export class AdminsService {
     return this.adminsRepository.save(admin);
   }
 
+  async updateRefreshToken(userId: number, hashedToken: string) {
+    await this.adminsRepository.update(userId, { refreshToken: hashedToken });
+  }
+
   async remove(id: number): Promise<void> {
     await this.adminsRepository.delete(id);
   }

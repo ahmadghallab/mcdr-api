@@ -14,9 +14,10 @@ import { ContactUs } from 'src/domains/admin/v1/pages/entities/contact.entity';
 import { Documentary } from 'src/domains/admin/v1/pages/entities/documentary.entity';
 import { Achievement } from 'src/domains/admin/v1/pages/entities/achievement.entity';
 import { Opportunity } from 'src/domains/admin/v1/pages/entities/opportunity.entity';
+import { SignatureFile } from 'src/domains/admin/v1/pages/entities/signature-file.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Page, Faq, Director, DocumentResource, Participant, AnnualReport, Survey, Legislation, ContactUs, Documentary, Achievement, Opportunity])],
+  imports: [TypeOrmModule.forFeature([Page, Faq, Director, DocumentResource, Participant, AnnualReport, Survey, Legislation, ContactUs, Documentary, Achievement, Opportunity, SignatureFile])],
   controllers: [PagesController],
   providers: [PagesService],
   exports: [PagesService, ],

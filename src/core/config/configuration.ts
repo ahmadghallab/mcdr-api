@@ -12,6 +12,8 @@ export default () => ({
   },
   jwt: {
     secret: process.env.JWT_SECRET,
+    accessTokenExpiresIn: +process.env.JWT_EXPIRES_IN,
+    refreshTokenExpiresIn: +process.env.JWT_REFRESH_EXPIRES_IN,
     saltOrRounds: 10
   }
 });

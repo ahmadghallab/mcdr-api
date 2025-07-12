@@ -30,11 +30,14 @@ import { AchievementService } from './services/achievement.service';
 import { Opportunity } from './entities/opportunity.entity';
 import { OpportunityController } from './controllers/opportunity.controller';
 import { OpportunityService } from './services/opportunity.service';
+import { SignatureFile } from './entities/signature-file.entity';
+import { SignatureFileController } from './controllers/signature-file.controller';
+import { SignatureFileService } from './services/signature-file.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Page, Director, Faq, DocumentResource, Participant, AnnualReport, Survey, Legislation, ContactUs, Documentary, Achievement, Opportunity])],
-  controllers: [PagesController, AnnualReportController, SurveyController, LegislationController, ContactUsController, ParticipantController, DocumentaryController, AchievementController, OpportunityController],
-  providers: [PagesService, AnnualReportService, SurveyService, LegislationService, ContactUsService, ParticipantService, DocumentaryService, AchievementService, OpportunityService],
+  imports: [TypeOrmModule.forFeature([Page, Director, Faq, DocumentResource, Participant, AnnualReport, Survey, Legislation, ContactUs, Documentary, Achievement, Opportunity, SignatureFile])],
+  controllers: [PagesController, AnnualReportController, SurveyController, LegislationController, ContactUsController, ParticipantController, DocumentaryController, AchievementController, OpportunityController, SignatureFileController],
+  providers: [PagesService, AnnualReportService, SurveyService, LegislationService, ContactUsService, ParticipantService, DocumentaryService, AchievementService, OpportunityService, SignatureFileService],
   exports: [PagesService],
 })
 export class PagesModule {}
