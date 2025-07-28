@@ -7,7 +7,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.set('trust proxy', 'loopback');
+  app.set('trust proxy', true);
   app.enableCors();
   app.use(helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' }, 
