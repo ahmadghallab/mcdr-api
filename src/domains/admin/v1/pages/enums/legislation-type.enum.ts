@@ -7,4 +7,5 @@ export enum LegislationType {
   RELATED_SITES = 'related-sites',
   SURVEYS = 'surveys',
   FORMS = 'forms',
+  FRA_RESOLUTIONS = 'fra-resolutions'
 }
