@@ -1,5 +1,5 @@
 
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AdminsService } from '../admins/admins.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -20,12 +20,17 @@ export class AuthService {
   ): Promise<AuthResponse> {
     const user = await this.userService.findEmail(email);   
 
-    if (!user) throw new UnauthorizedException('Invalid credentials');
+    if (!user) {
+      throw new UnauthorizedException('Invalid email or password.');
+    }
 
-    const isMatch = await bcrypt.compare(password, user?.password);
+    const isPasswordValid = await bcrypt.compare(password, user?.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid email or password.');
+    }
 
-    if (!isMatch) {
-      throw new UnauthorizedException('Invalid credentials');
+    if (!user.isActive) {
+      throw new ForbiddenException('Your account is currently inactive. Please reach out to support.');
     }
 
     const tokens = await this.generateTokens(user.id);

@@ -17,12 +17,15 @@ export class Admin {
   @Column({ type: 'varchar', length: 255, name: 'password' })
   password: string;
 
-  @Column({ type: 'enum', enum: AdminRole, default: AdminRole.Viewer, name: 'role' })
+  @Column({ type: 'enum', enum: AdminRole, default: AdminRole.Editor, name: 'role' })
   role: AdminRole;
 
   @Exclude()
   @Column({ nullable: true })
   refreshToken: string | null;
+
+  @Column({ default: true, name: 'is_active' })
+  isActive: boolean;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;

@@ -27,7 +27,6 @@ export class AuthGuard implements CanActivate {
       context.getClass(),
     ]);
     if (isPublic) {
-      // 💡 See this condition
       return true;
     }
 
@@ -41,8 +40,9 @@ export class AuthGuard implements CanActivate {
         secret: this.configService.get('jwt').secret
       });
 
-      const user = await this.userService.findEmail(payload.email);
+      const user = await this.userService.findOne(payload.sub);
       request['user'] = user;
+      
     } catch {
       throw new UnauthorizedException();
     }
