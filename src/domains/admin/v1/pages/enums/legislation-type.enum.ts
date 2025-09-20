@@ -9,3 +9,8 @@ export enum LegislationType {
   FORMS = 'forms',
   FRA_RESOLUTIONS = 'fra-resolutions'
 }
+
+export const SINGLE_URL_TYPES: LegislationType[] = [
+  LegislationType.IMPORTANT_LINKS,
+  LegislationType.RELATED_SITES,
+];

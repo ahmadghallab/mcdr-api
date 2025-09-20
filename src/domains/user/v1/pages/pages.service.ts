@@ -23,7 +23,6 @@ import { Achievement } from 'src/domains/admin/v1/pages/entities/achievement.ent
 import { Opportunity } from 'src/domains/admin/v1/pages/entities/opportunity.entity';
 import { OpportunityType } from 'src/domains/admin/v1/pages/enums/opportunity-type.enum';
 import { SignatureFile } from 'src/domains/admin/v1/pages/entities/signature-file.entity';
-import { SignatureType } from 'src/domains/admin/v1/pages/enums/signature-type';
 
 @Injectable()
 export class PagesService {
@@ -161,15 +160,16 @@ export class PagesService {
     return responseData;
   }
 
-  async findRelatedSites(lang: string): Promise<LocalizedLegislation[]> {
+  async findRelatedSites(lang: string): Promise<Partial<LocalizedLegislation>[]> {
     const relatedSite = await this.legislationRepository.findBy({ 
       type: LegislationType.RELATED_SITES,
       ...isPublished()
     });
 
     const responseData = relatedSite.map((item) => ({
-      ...item,
       name: item.name[lang],
+      url: item.url[lang],
+      thumbnailUrl: item.thumbnailUrl,
     }));
 
     return responseData;
@@ -202,7 +202,7 @@ export class PagesService {
     return responseData;
   }
 
-  async findElectronicSignatureFiles(): Promise<ElectronicSignatureFile[]> {
+  async findElectronicSignatureFiles(lang: string): Promise<ElectronicSignatureFile[]> {
     const files = await this.signatureFileRepository.find({
       where: isPublished()
     });
@@ -213,7 +213,12 @@ export class PagesService {
   
     const grouped = uniqueTypes.map((type) => ({
       name: type,
-      items: files.filter(file => file.type === type),
+      items: files
+        .filter(file => file.type === type)
+        .map(item => ({
+          url: item.url[lang],
+          name: item.name[lang],
+        })),
     }));
 
     return grouped;
@@ -227,7 +232,7 @@ export class PagesService {
 
     const responseData = legislations.map((item) => ({
       name: item.name[lang],
-      url: item.url,
+      url: item.url[lang],
     }));
 
     return responseData;

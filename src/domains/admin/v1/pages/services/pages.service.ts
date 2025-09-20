@@ -13,6 +13,8 @@ import { CreateDirectorDto } from '../dto/create-director.dto';
 import { UpdateDirectorDto } from '../dto/update-director.dto';
 import { UpdateFaqDto } from '../dto/update-faq.dto';
 import { CreateFaqDto } from '../dto/create-faq.dto';
+import { ReorderService } from '../../reorder/reorder.service';
+import { ReorderDto } from '../../reorder/reorder.dto';
 
 @Injectable()
 export class PagesService {
@@ -24,6 +26,7 @@ export class PagesService {
     private readonly directorsRepository: Repository<Director>,
     @InjectRepository(Faq)
     private readonly faqsRepository: Repository<Faq>,
+    private readonly reorderService: ReorderService,
   ) {}
 
   async create(createPageDto: CreatePageDto, user: Admin): Promise<Page> {
@@ -109,6 +112,10 @@ export class PagesService {
   async updateFaq(id: number, updateFaqDto: UpdateFaqDto): Promise<Faq> {
     const faq = await this.faqsRepository.findOneByOrFail({ id });
     return this.faqsRepository.save({...faq, ...updateFaqDto});
+  }
+
+  async reorderFaqs(dto: ReorderDto): Promise<void> {
+    return this.reorderService.reorder(this.faqsRepository, dto.items);
   }
 
   async removeFaq(id: number): Promise<void> {

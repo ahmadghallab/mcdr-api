@@ -8,8 +8,8 @@ export class Legislation {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 255 })
-  url: string;
+  @Column({ type: 'json' })
+  url: Translation;
 
   @Column({ type: 'json' })
   name: Translation;

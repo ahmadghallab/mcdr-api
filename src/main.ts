@@ -18,6 +18,9 @@ async function bootstrap() {
   }));
   app.useGlobalFilters(new BadRequestFilter());
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+
+  app.useBodyParser('json', { limit: '50mb' });
+
   await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();

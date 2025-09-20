@@ -37,7 +37,7 @@ export interface Page {
 
 export interface ElectronicSignatureFile { 
   name: SignatureType | null; 
-  items: SignatureFile[] 
+  items: NamedLink[] 
 }
 
 export interface UserDirector {
@@ -63,6 +63,7 @@ export type LocalizedOpportunity = Omit<Opportunity, 'titleEn'|'titleAr'|'descri
   description: string;
 };
 
-export type LocalizedLegislation = Omit<Legislation, 'name'> & {
+export type LocalizedLegislation = Omit<Legislation, 'name'|'url'> & {
   name: string;
+  url: string;
 };

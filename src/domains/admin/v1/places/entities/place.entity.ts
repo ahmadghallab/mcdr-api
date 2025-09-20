@@ -20,6 +20,9 @@ export class Place {
   @Column({ type: 'enum', enum: LocationType, name: 'type' })
   type: LocationType;
 
+  @Column({ type: 'smallint', default: 0, name: 'order' })
+  order: number;
+
   @Column({ type: 'enum', enum: PublishStatus, name: 'status' })
   status: PublishStatus;
 

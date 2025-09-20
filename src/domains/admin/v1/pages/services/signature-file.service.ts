@@ -15,13 +15,13 @@ export class SignatureFileService {
 
   
   async findAll(): Promise<SignatureFile[]> {
-    const documentaries = await this.signatureFileRepository.find();
-    return documentaries;
+    const files = await this.signatureFileRepository.find();
+    return files;
   }
 
   async findOne(id: number): Promise<SignatureFile> {
-    const documentary = await this.signatureFileRepository.findOneByOrFail({ id });
-    return documentary;
+    const file = await this.signatureFileRepository.findOneByOrFail({ id });
+    return file;
   }
 
   async create(createSignatureFileDto: CreateSignatureFileDto): Promise<SignatureFile> {
@@ -29,8 +29,8 @@ export class SignatureFileService {
   }
 
   async update(id: number, updateSignatureFileDto: UpdateSignatureFileDto): Promise<SignatureFile> {
-    const documentary = await this.signatureFileRepository.findOneByOrFail({ id });
-    return this.signatureFileRepository.save({...documentary, ...updateSignatureFileDto});
+    const file = await this.signatureFileRepository.findOneByOrFail({ id });
+    return this.signatureFileRepository.save({...file, ...updateSignatureFileDto});
   }
 
   async remove(id: number): Promise<void> {

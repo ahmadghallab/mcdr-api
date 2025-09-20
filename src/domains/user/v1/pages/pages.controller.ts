@@ -61,8 +61,10 @@ export class PagesController {
 
   @Public()
   @Get('electronic-signature/files')
-  findElectronicSignatureFiles() {    
-    return this.pagesService.findElectronicSignatureFiles();
+  findElectronicSignatureFiles(
+    @Headers('accept-language') lang: string
+  ) {    
+    return this.pagesService.findElectronicSignatureFiles(lang);
   }
 
   @Public()

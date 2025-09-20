@@ -9,6 +9,7 @@ import { CreateDirectorDto } from '../dto/create-director.dto';
 import { UpdateDirectorDto } from '../dto/update-director.dto';
 import { CreateFaqDto } from '../dto/create-faq.dto';
 import { UpdateFaqDto } from '../dto/update-faq.dto';
+import { ReorderDto } from '../../reorder/reorder.dto';
 
 @Controller()
 export class PagesController {
@@ -106,6 +107,11 @@ export class PagesController {
   @Patch('faqs/:id')
   updateFaq(@Param('id') id: string, @Body() updateFaqDto: UpdateFaqDto) {
     return this.pagesService.updateFaq(+id, updateFaqDto);
+  }
+
+  @Post('faqs/reorder')
+  reorderFaqs(@Body() dto: ReorderDto) {
+    return this.pagesService.reorderFaqs(dto);
   }
 
   @Delete('faqs/:id')

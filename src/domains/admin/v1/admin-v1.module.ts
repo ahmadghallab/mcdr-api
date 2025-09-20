@@ -8,6 +8,7 @@ import { PlacesModule } from "./places/places.module";
 import { BannersModule } from "./banners/banners.module";
 import { PagesModule } from "./pages/pages.module";
 import { HighlightsModule } from "./highlights/highlights.module";
+import { ReorderModule } from "./reorder/reorder.module";
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { HighlightsModule } from "./highlights/highlights.module";
     PlacesModule,
     BannersModule,
     PagesModule,
-    HighlightsModule
+    HighlightsModule,
+    ReorderModule
   ]
 })
 export class AdminV1Module {}

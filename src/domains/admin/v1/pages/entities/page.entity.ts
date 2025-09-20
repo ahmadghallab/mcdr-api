@@ -19,10 +19,10 @@ export class Page {
   @Column({ type: 'varchar', length: 255, name: 'title_ar' })
   titleAr: string;
 
-  @Column({ type: 'text', name: 'content_en' })
+  @Column({ type: 'mediumtext', name: 'content_en' })
   contentEn: string;
 
-  @Column({ type: 'text', name: 'content_ar' })
+  @Column({ type: 'mediumtext', name: 'content_ar' })
   contentAr: string;
 
   @Column({ type: 'enum', enum: PublishStatus, name: 'status' })

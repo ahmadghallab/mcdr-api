@@ -4,9 +4,9 @@ import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 import { LegislationType } from '../enums/legislation-type.enum';
 
 export class CreateLegislationDto {
-  @IsString()
+  @IsObject()
   @IsNotEmpty()
-  url: string;
+  url: TranslationDto;
 
   @IsObject()
   @IsNotEmpty()

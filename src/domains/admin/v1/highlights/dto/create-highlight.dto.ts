@@ -8,7 +8,7 @@ export class CreateHighlightDto {
 
   @IsObject()
   @IsNotEmpty()
-  description: { en: string; ar: string };
+  body: { en: string; ar: string };
 
   @IsEnum(PublishStatus)
   status: PublishStatus;
