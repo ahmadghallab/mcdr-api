@@ -1,4 +1,4 @@
-import { IsEnum, IsOptional, IsString, IsEmail, IsArray, ValidateNested } from 'class-validator';
+import { IsEnum, IsOptional, IsString, IsEmail, IsArray, ValidateNested, IsInt } from 'class-validator';
 import { Type } from 'class-transformer';
 import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 import { ParticipantType } from '../enums/participant-type.enum';
@@ -63,4 +63,8 @@ export class CreateParticipantDto {
   @IsOptional()
   @IsEnum(PublishStatus)
   status?: PublishStatus;
+
+  @IsInt()
+  @IsOptional()
+  rank?: number;
 }

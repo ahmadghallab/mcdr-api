@@ -15,6 +15,7 @@ import { UpdateFaqDto } from '../dto/update-faq.dto';
 import { CreateFaqDto } from '../dto/create-faq.dto';
 import { ReorderService } from '../../reorder/reorder.service';
 import { ReorderDto } from '../../reorder/reorder.dto';
+import { ORDER_BY_ORDER_ASC } from 'src/core/utils/order.util';
 
 @Injectable()
 export class PagesService {
@@ -100,7 +101,7 @@ export class PagesService {
   async findAllFaqs(department: FaqDepartment): Promise<Faq[]> {
     const faqs = await this.faqsRepository.find({
       where: { department },
-      order: { order: 'ASC' }
+      order: ORDER_BY_ORDER_ASC
     });
     return faqs;
   }

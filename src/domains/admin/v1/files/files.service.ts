@@ -7,6 +7,7 @@ import { Repository } from "typeorm";
 import { File } from "./entities/file.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { PaginationDto } from "src/core/common/dto/pagination.dto";
+import { ORDER_BY_CREATED_DESC } from "src/core/utils/order.util";
 
 @Injectable()
 export class FilesService {
@@ -21,12 +22,12 @@ export class FilesService {
    return await this.filesRepository.findAndCount({
       skip: paginationDto.skip,
       take: paginationDto.take,
-      order: { createdAt: 'DESC' },
+      order: ORDER_BY_CREATED_DESC,
     });
   }
 
   async create(file: Express.Multer.File): Promise<string> {
-    const url = this.getAccessUrl(file.filename);
+    const url = this.getAccessUrl(file.filename, file.mimetype);
     const name = file.originalname;
     const type = file.mimetype; 
     const size = file.size;
@@ -111,7 +112,13 @@ export class FilesService {
     };
   }
 
-  getAccessUrl(fileName: string): string {
+  getAccessUrl(fileName: string, mimeType: string): string {
+    // If image, use IP for Next.js Image optimization
+    if (mimeType.startsWith('image/')) {
+      return `http://${this.configService.get('serverIp')}/uploads/${fileName}`;
+    }
+  
+    // For other files (PDFs, docs), use domain name
     return `${this.configService.get('baseUrl')}/uploads/${fileName}`;
   }
 }

@@ -7,6 +7,8 @@ import { Repository } from 'typeorm';
 import { Admin } from '../admins/entities/admin.entity';
 import { ReorderDto } from '../reorder/reorder.dto';
 import { ReorderService } from '../reorder/reorder.service';
+import { FindAllPlacesDto } from './dto/find-all-places.dto';
+import { ORDER_BY_ORDER_ASC } from 'src/core/utils/order.util';
 
 @Injectable()
 export class PlacesService {
@@ -21,8 +23,13 @@ export class PlacesService {
     return this.placesRepository.save({...createPlaceDto, createdBy: user});
   }
 
-  async findAll(lang?: string): Promise<Place[]> {
-    const places = await this.placesRepository.find();
+  async findAll(placesQueryDto: FindAllPlacesDto): Promise<Place[]> {
+    const { type } = placesQueryDto;
+
+    const places = await this.placesRepository.find({
+      where: { type },
+      order: ORDER_BY_ORDER_ASC
+    });
 
     return places;
   }

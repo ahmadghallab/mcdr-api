@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { PlacesService } from './places.service';
 import { CreatePlaceDto } from './dto/create-place.dto';
 import { UpdatePlaceDto } from './dto/update-place.dto';
 import { Admin } from '../admins/entities/admin.entity';
 import { AuthAdmin } from '../auth/auth-admin.decorator';
 import { ReorderDto } from '../reorder/reorder.dto';
+import { FindAllPlacesDto } from './dto/find-all-places.dto';
 
 @Controller()
 export class PlacesController {
@@ -19,8 +20,10 @@ export class PlacesController {
   }
 
   @Get()
-  findAll() {
-    return this.placesService.findAll();
+  findAll(
+    @Query() placesQueryDto: FindAllPlacesDto,
+  ) {
+    return this.placesService.findAll(placesQueryDto);
   }
 
   @Get(':id')
@@ -36,7 +39,7 @@ export class PlacesController {
   }
 
   @Post('reorder')
-  reorderFaqs(@Body() dto: ReorderDto) {
+  reorder(@Body() dto: ReorderDto) {
     return this.placesService.reorder(dto);
   }
 

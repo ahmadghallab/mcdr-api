@@ -1,6 +1,7 @@
 
 export default () => ({
   baseUrl: process.env.BASE_URL,
+  serverIp: process.env.SERVER_IP,
   port: parseInt(process.env.PORT, 10) || 3000,
   db: {
     host: process.env.DB_HOST,

@@ -47,6 +47,6 @@ export class Participant {
   @Column({ type: 'enum', enum: PublishStatus, name: 'status', default: PublishStatus.Draft })
   status: PublishStatus;
 
-  @Column({ type: 'smallint', default: 0, name: 'order' })
-  order: number;
+  @Column({ type: 'smallint', default: 0, name: 'rank' })
+  rank: number;
 }

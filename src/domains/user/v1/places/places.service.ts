@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LocationType } from 'src/core/common/enums/location-type.enum';
 import { isPublished } from 'src/core/filters/published.filter';
+import { ORDER_BY_ORDER_ASC } from 'src/core/utils/order.util';
 import { Place } from 'src/domains/admin/v1/places/entities/place.entity';
 import { Repository } from 'typeorm';
 
@@ -19,6 +20,7 @@ export class PlacesService {
   }> {
     const places = await this.placesRepository.find({
       where: isPublished(),
+      order: ORDER_BY_ORDER_ASC
     });
 
     const localizedPlaces = places.map(place => ({

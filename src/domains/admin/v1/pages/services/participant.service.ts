@@ -5,20 +5,24 @@ import { CreateParticipantDto } from '../dto/create-participant.dto';
 import { UpdateParticipantDto } from '../dto/update-participant.dto';
 import { Participant } from '../entities/participant.entity';
 import { FindAllParticipantsDto } from '../dto/find-all-participants.dto';
+import { ORDER_BY_RANK_DESC } from 'src/core/utils/order.util';
 
 @Injectable()
 export class ParticipantService {
 
   constructor(
     @InjectRepository(Participant)
-    private readonly participantRepository: Repository<Participant>,
+    private readonly participantRepository: Repository<Participant>
   ) {}
 
   async findAll(participantsQueryDto: FindAllParticipantsDto): Promise<[Participant[], number]> {
     const { type, skip, take } = participantsQueryDto;
 
     return await this.participantRepository.findAndCount({
-      where: { type }, skip, take
+      where: { type }, 
+      order: ORDER_BY_RANK_DESC,
+      skip, 
+      take
     });
   }
 
