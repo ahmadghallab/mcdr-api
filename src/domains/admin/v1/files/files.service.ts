@@ -27,7 +27,7 @@ export class FilesService {
   }
 
   async create(file: Express.Multer.File): Promise<string> {
-    const url = this.getAccessUrl(file.filename, file.mimetype);
+    const url = this.getAccessUrl(file.filename);
     const name = file.originalname;
     const type = file.mimetype; 
     const size = file.size;
@@ -112,13 +112,7 @@ export class FilesService {
     };
   }
 
-  getAccessUrl(fileName: string, mimeType: string): string {
-    // If image, use IP for Next.js Image optimization
-    if (mimeType.startsWith('image/')) {
-      return `http://${this.configService.get('serverIp')}/uploads/${fileName}`;
-    }
-  
-    // For other files (PDFs, docs), use domain name
+  getAccessUrl(fileName: string): string {
     return `${this.configService.get('baseUrl')}/uploads/${fileName}`;
   }
 }
