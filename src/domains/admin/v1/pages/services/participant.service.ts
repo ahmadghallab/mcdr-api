@@ -32,7 +32,20 @@ export class ParticipantService {
   }
 
   async create(createParticipantDto: CreateParticipantDto): Promise<Participant> {
-    return this.participantRepository.save(createParticipantDto);
+    return await this.participantRepository.manager.transaction(async (manager) => {
+      const last = await manager.findOne(Participant, {
+        where: { type: createParticipantDto.type },
+        order: ORDER_BY_RANK_DESC,
+        lock: { mode: 'pessimistic_write' },
+      });
+    
+      const participant = manager.create(Participant, {
+        ...createParticipantDto,
+        rank: (last?.rank || 0) + 1,
+      });
+  
+      return manager.save(participant);
+    });
   }
 
   async update(id: number, updateParticipantDto: UpdateParticipantDto): Promise<Participant> {
