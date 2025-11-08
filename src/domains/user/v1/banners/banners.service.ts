@@ -4,7 +4,6 @@ import { Banner } from 'src/domains/admin/v1/banners/entities/banner.entity';
 import { Repository } from 'typeorm';
 import { isPublished } from 'src/core/filters/published.filter';
 
-
 @Injectable()
 export class BannersService {
 
@@ -22,6 +21,7 @@ export class BannersService {
       ...banner,
       title: banner.title[lang],
       description: banner.description[lang],
+      href: banner.href ? banner.href[lang] : null
     }));
 
     return localizedBanners;

@@ -8,5 +8,5 @@ export const ORDER_BY_ORDER_ASC = {
 
 export const ORDER_BY_RANK_DESC = {
   rank: 'DESC' as const,
-  id: 'DESC' as const,
+  id: 'ASC' as const,
 };

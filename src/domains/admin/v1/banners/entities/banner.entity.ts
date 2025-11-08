@@ -12,6 +12,12 @@ export class Banner {
   @Column({type: "json"})
   description: { en: string, ar: string }
 
+  @Column({ type: 'json', nullable: true })
+  href: { en: string, ar: string } | null;
+
+  @Column({ default: false, name: 'is_external' })
+  isExternal: boolean;
+
   @Column({ type: 'enum', enum: PublishStatus, name: 'status' })
   status: PublishStatus;
 
