@@ -5,7 +5,7 @@ import { CreateParticipantDto } from '../dto/create-participant.dto';
 import { UpdateParticipantDto } from '../dto/update-participant.dto';
 import { Participant } from '../entities/participant.entity';
 import { FindAllParticipantsDto } from '../dto/find-all-participants.dto';
-import { ORDER_BY_RANK_DESC } from 'src/core/utils/order.util';
+import { ORDER_BY_RANK_ASC, ORDER_BY_RANK_DESC } from 'src/core/utils/order.util';
 
 @Injectable()
 export class ParticipantService {
@@ -20,7 +20,7 @@ export class ParticipantService {
 
     return await this.participantRepository.findAndCount({
       where: { type }, 
-      order: ORDER_BY_RANK_DESC,
+      order: ORDER_BY_RANK_ASC,
       skip, 
       take
     });
@@ -32,21 +32,20 @@ export class ParticipantService {
   }
 
   async create(createParticipantDto: CreateParticipantDto): Promise<Participant> {
-    // return await this.participantRepository.manager.transaction(async (manager) => {
-    //   const last = await manager.findOne(Participant, {
-    //     where: { type: createParticipantDto.type },
-    //     order: ORDER_BY_RANK_DESC,
-    //     lock: { mode: 'pessimistic_write' },
-    //   });
+    return await this.participantRepository.manager.transaction(async (manager) => {
+      const last = await manager.findOne(Participant, {
+        where: { type: createParticipantDto.type },
+        order: ORDER_BY_RANK_DESC,
+        lock: { mode: 'pessimistic_write' },
+      });
     
-    //   const participant = manager.create(Participant, {
-    //     ...createParticipantDto,
-    //     rank: (last?.rank || 0) + 1,
-    //   });
+      const participant = manager.create(Participant, {
+        ...createParticipantDto,
+        rank: (last?.rank || 0) + 1,
+      });
   
-    //   return manager.save(participant);
-    // });
-    return this.participantRepository.save(createParticipantDto);
+      return manager.save(participant);
+    });
   }
 
   async update(id: number, updateParticipantDto: UpdateParticipantDto): Promise<Participant> {

@@ -17,7 +17,7 @@ import { Survey } from 'src/domains/admin/v1/pages/entities/survey.entity';
 import { LegislationType } from 'src/domains/admin/v1/pages/enums/legislation-type.enum';
 import { Legislation } from 'src/domains/admin/v1/pages/entities/legislation.entity';
 import { ContactUs } from 'src/domains/admin/v1/pages/entities/contact.entity';
-import { ORDER_BY_CREATED_DESC, ORDER_BY_ORDER_ASC, ORDER_BY_RANK_DESC } from 'src/core/utils/order.util';
+import { ORDER_BY_CREATED_DESC, ORDER_BY_ORDER_ASC, ORDER_BY_RANK_ASC } from 'src/core/utils/order.util';
 import { Documentary } from 'src/domains/admin/v1/pages/entities/documentary.entity';
 import { Achievement } from 'src/domains/admin/v1/pages/entities/achievement.entity';
 import { Opportunity } from 'src/domains/admin/v1/pages/entities/opportunity.entity';
@@ -92,7 +92,7 @@ export class PagesService {
   ): Promise<[Partial<Participant>[], number]> {
     const [ items, total ] = await this.participantRepository.findAndCount({ 
       where: { type, ...isPublished() },
-      order: ORDER_BY_RANK_DESC,
+      order: ORDER_BY_RANK_ASC,
       skip: paginationDto.skip,
       take: paginationDto.take,
     });
