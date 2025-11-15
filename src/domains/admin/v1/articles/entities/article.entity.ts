@@ -1,6 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
+import { Searchable } from 'src/core/search/searchable.decorator';
 
+@Searchable({
+  index: 'global',
+  type: 'article',
+  pick: ['titleEn', 'titleAr'],
+})
 @Entity('articles')
 export class Article {
   @PrimaryGeneratedColumn()

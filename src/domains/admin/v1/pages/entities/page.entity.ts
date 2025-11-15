@@ -1,6 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
 import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
+import { Searchable } from 'src/core/search/searchable.decorator';
 
+@Searchable({
+  index: 'global',
+  type: 'page',
+  pick: ['titleEn', 'titleAr'],
+})
 @Entity('pages')
 @Index('status_slug_idx', ['status', 'slug'])
 export class Page {

@@ -9,6 +9,9 @@ import { UserV1Module } from './domains/user/v1/user-v1.module';
 import { APP_GUARD, RouterModule } from '@nestjs/core';
 import { routes } from './routes';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { SearchSubscriber } from './core/search/search.subscriber';
+import { DataSource } from 'typeorm';
+import { SearchService } from './core/search/search.service';
 
 export const modules = [
   CoreModule,
@@ -30,7 +33,7 @@ export const modules = [
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         synchronize: true,
-        autoLoadEntities: true,
+        autoLoadEntities: true
       }),
     }),
     ThrottlerModule.forRoot([
@@ -49,7 +52,12 @@ export const modules = [
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard
-    }
+    },
+    SearchService
   ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private readonly dataSource: DataSource, private readonly searchService: SearchService) {
+    this.dataSource.subscribers.push(new SearchSubscriber(this.searchService));
+  }
+}

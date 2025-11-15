@@ -5,6 +5,7 @@ import { LoggingInterceptor } from './interceptors/logging.interceptor';
 import { HostMiddleware } from './middlewares/host.middleware';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import configuration from './config/configuration';
       isGlobal: true,
       load: [configuration],
     }),
+    SearchModule
   ],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: TransformInterceptor },

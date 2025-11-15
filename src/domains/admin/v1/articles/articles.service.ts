@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -25,7 +25,11 @@ export class ArticlesService {
   }
 
   async findOne(id: number): Promise<Article> {
-    return await this.articlesRepository.findOneByOrFail({ id });
+    try {
+      return await this.articlesRepository.findOneByOrFail({ id });
+    } catch(e) {
+      throw new NotFoundException();
+    }
   }
 
   async update(id: number, updateArticleDto: UpdateArticleDto): Promise<Article> {
@@ -34,7 +38,7 @@ export class ArticlesService {
   }
 
   async remove(id: number): Promise<void> {
-    await this.articlesRepository.delete(id);
+    await this.articlesRepository.remove(await this.findOne(id));
   }
 
 }

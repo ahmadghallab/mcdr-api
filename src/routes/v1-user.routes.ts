@@ -4,6 +4,7 @@ import { bannersRoutes } from "src/domains/user/v1/banners/banners.routes";
 import { highlightsRoutes } from "src/domains/user/v1/highlights/highlights.routes";
 import { pagesRoutes } from "src/domains/user/v1/pages/pages.routes";
 import { placesRoutes } from "src/domains/user/v1/places/places.routes";
+import { searchRoutes } from "src/domains/user/v1/search/search.routes";
 import { solutionsRoutes } from "src/domains/user/v1/solutions/solutions.routes";
 import { updatesRoutes } from "src/domains/user/v1/updates/updates.routes";
 
@@ -17,7 +18,8 @@ export const v1UserRoutes: Routes = [
       ...bannersRoutes,
       ...updatesRoutes,
       ...pagesRoutes,
-      ...highlightsRoutes
+      ...highlightsRoutes,
+      ...searchRoutes
     ],
   },
 ];
