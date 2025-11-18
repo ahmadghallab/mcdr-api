@@ -5,6 +5,7 @@ import { AppModule } from '../src/app.module';
 import { DataSource } from 'typeorm';
 import { SearchService } from '../src/core/search/search.service';
 import { getSearchableMetadata } from '../src/core/search/searchable.decorator';
+import { flattenForIndex } from '../src/core/search/search.util';
 
 async function syncSearch() {
   const app = await NestFactory.createApplicationContext(AppModule);
@@ -14,22 +15,26 @@ async function syncSearch() {
   console.log('🔍 Starting Meilisearch sync...\n');
 
   for (const meta of dataSource.entityMetadatas) {
-    const target = meta.target as any;
-    const cfg = getSearchableMetadata(new target());
+    const Entity = meta.target as any;
 
+    // Instantiate entity to check metadata
+    const cfg = getSearchableMetadata(new Entity());
     if (!cfg) continue;
 
     console.log(`➡ Indexing ${cfg.type}...`);
 
-    const repo = dataSource.getRepository(target);
+    const repo = dataSource.getRepository(Entity);
     const rows = await repo.find();
 
-    const docs = rows.map((row) => ({
-      id: `${cfg.type}_${row.id}`,
-      type: cfg.type,
-      ...cfg.pick.reduce((a: any, key) => ({ ...a, [key]: row[key] }), {}),
-      searchable: cfg.pick.map((key) => row[key] || '').join(' '),
-    }));
+    const docs = rows.map((row) => {
+      const flattened = flattenForIndex(row, cfg.pick);
+
+      return {
+        id: `${cfg.type}_${row.id}`,
+        type: cfg.type,
+        ...flattened,
+      };
+    });
 
     await search.upsertBatch(cfg.index, docs);
 
