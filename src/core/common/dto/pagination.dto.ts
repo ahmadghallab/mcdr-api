@@ -3,6 +3,9 @@ import { IsOptional, IsPositive, Min } from 'class-validator';
 
 export class PaginationDto {
   @IsOptional()
+  search: string;
+
+  @IsOptional()
   @Type(() => Number)
   @IsPositive()
   page: number = 1;

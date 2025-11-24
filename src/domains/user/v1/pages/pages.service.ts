@@ -8,7 +8,7 @@ import { Director } from 'src/domains/admin/v1/pages/entities/director.entity';
 import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
 import { localizeContent, localizedValue } from 'src/core/common/utils/localize.util';
 import { NamedLink, UserDirector, LocalizedDocumentary, LocalizedAchievement, LocalizedOpportunity, LocalizedLegislation, ElectronicSignatureFile } from './page.types';
-import { isPublished } from 'src/core/filters/published.filter';
+import { isPublished, isPublishedQuery } from 'src/core/filters/published.filter';
 import { ParticipantType } from 'src/domains/admin/v1/pages/enums/participant-type.enum';
 import { Participant } from 'src/domains/admin/v1/pages/entities/participant.entity';
 import { PaginationDto } from 'src/core/common/dto/pagination.dto';
@@ -17,12 +17,14 @@ import { Survey } from 'src/domains/admin/v1/pages/entities/survey.entity';
 import { LegislationType } from 'src/domains/admin/v1/pages/enums/legislation-type.enum';
 import { Legislation } from 'src/domains/admin/v1/pages/entities/legislation.entity';
 import { ContactUs } from 'src/domains/admin/v1/pages/entities/contact.entity';
-import { ORDER_BY_CREATED_DESC, ORDER_BY_ORDER_ASC, ORDER_BY_RANK_ASC } from 'src/core/utils/order.util';
+import { ORDER_BY_CREATED_DESC, ORDER_BY_ORDER_ASC } from 'src/core/utils/order.util';
 import { Documentary } from 'src/domains/admin/v1/pages/entities/documentary.entity';
 import { Achievement } from 'src/domains/admin/v1/pages/entities/achievement.entity';
 import { Opportunity } from 'src/domains/admin/v1/pages/entities/opportunity.entity';
 import { OpportunityType } from 'src/domains/admin/v1/pages/enums/opportunity-type.enum';
 import { SignatureFile } from 'src/domains/admin/v1/pages/entities/signature-file.entity';
+import { localizeParticipants } from './utils/localize-participant.util';
+import { applySearch } from 'src/core/utils/apply-search.util';
 
 @Injectable()
 export class PagesService {
@@ -90,24 +92,22 @@ export class PagesService {
     type: ParticipantType, 
     paginationDto: PaginationDto
   ): Promise<[Partial<Participant>[], number]> {
-    const [ items, total ] = await this.participantRepository.findAndCount({ 
-      where: { type, ...isPublished() },
-      order: ORDER_BY_RANK_ASC,
-      skip: paginationDto.skip,
-      take: paginationDto.take,
-    });
+    const qb = this.participantRepository
+      .createQueryBuilder('p')
+      .where('p.type = :type', { type })
+      .andWhere(isPublishedQuery('p'))
+      .orderBy('p.rank', 'ASC')
+      .addOrderBy('p.id', 'ASC')
+      .skip(paginationDto.skip)
+      .take(paginationDto.take);
 
-    const localizedParticipants = items.map(participant => ({
-      ...participant,
-      name: lang === 'ar' ? participant.aname : participant.ename,
-      address: lang === 'ar' ? participant.aaddress : participant.eaddress,
-      board: participant.board?.map(b => ({
-        ...b,
-        name: lang === 'ar' ? b.aname : b.ename
-      }))
-    }));
+    if (paginationDto.search) {
+      applySearch(qb, paginationDto.search, ['code', 'aname', 'ename'], 'p');
+    }
 
-    return [ localizedParticipants, total ];
+    const [items, total] = await qb.getManyAndCount();
+
+    return [localizeParticipants(items, lang), total];
   }
 
   async findParticipant(
