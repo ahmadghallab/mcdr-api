@@ -5,7 +5,8 @@ import { CreateParticipantDto } from '../dto/create-participant.dto';
 import { UpdateParticipantDto } from '../dto/update-participant.dto';
 import { Participant } from '../entities/participant.entity';
 import { FindAllParticipantsDto } from '../dto/find-all-participants.dto';
-import { ORDER_BY_RANK_ASC, ORDER_BY_RANK_DESC } from 'src/core/utils/order.util';
+import { ORDER_BY_RANK_DESC } from 'src/core/utils/order.util';
+import { applySearch } from 'src/core/utils/apply-search.util';
 
 @Injectable()
 export class ParticipantService {
@@ -16,14 +17,21 @@ export class ParticipantService {
   ) {}
 
   async findAll(participantsQueryDto: FindAllParticipantsDto): Promise<[Participant[], number]> {
-    const { type, skip, take } = participantsQueryDto;
+    const { type, skip, take, search } = participantsQueryDto;
 
-    return await this.participantRepository.findAndCount({
-      where: { type }, 
-      order: ORDER_BY_RANK_ASC,
-      skip, 
-      take
-    });
+    const qb = this.participantRepository
+      .createQueryBuilder('p')
+      .where('p.type = :type', { type })
+      .orderBy('p.rank', 'ASC')
+      .addOrderBy('p.id', 'ASC')
+      .skip(skip)
+      .take(take);
+
+    if (search) {
+      applySearch(qb, search, ['code', 'aname', 'ename'], 'p');
+    }
+
+    return await qb.getManyAndCount();
   }
 
   async findOne(id: number): Promise<Participant> {
