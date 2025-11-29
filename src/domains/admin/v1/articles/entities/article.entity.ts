@@ -1,11 +1,15 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 import { Searchable } from 'src/core/search/searchable.decorator';
+import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
 
 @Searchable({
   index: 'global',
   type: 'article',
   pick: ['titleEn', 'titleAr'],
+  extra: (entity: Article) => ({
+    href: SearchHrefBuilder.forArticle(entity.id)
+  }),
 })
 @Entity('articles')
 export class Article {

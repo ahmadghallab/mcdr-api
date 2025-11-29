@@ -27,12 +27,18 @@ async function syncSearch() {
     const rows = await repo.find();
 
     const docs = rows.map((row) => {
-      const flattened = flattenForIndex(row, cfg.pick);
-
-      return {
+      const base = {
         id: `${cfg.type}_${row.id}`,
         type: cfg.type,
+      };
+
+      const flattened = flattenForIndex(row, cfg.pick);
+      const extra = cfg.extra ? cfg.extra(row) : {};
+
+      return {
+        ...base,
         ...flattened,
+        ...extra,
       };
     });
 

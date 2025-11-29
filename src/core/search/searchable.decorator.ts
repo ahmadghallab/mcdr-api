@@ -6,6 +6,7 @@ export interface SearchableConfig {
   index: string;
   type: string;
   pick: string[];
+  extra?: (entity: any) => Record<string, any>;
 }
 
 export function Searchable(config: SearchableConfig): ClassDecorator {

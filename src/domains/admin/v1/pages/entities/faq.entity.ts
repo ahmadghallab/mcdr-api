@@ -1,7 +1,23 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, Index } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  Index,
+} from 'typeorm';
 import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
 import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
+import { Searchable } from 'src/core/search/searchable.decorator';
+import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
 
+@Searchable({
+  index: 'global',
+  type: 'faq',
+  pick: ['qEn', 'qAr'],
+  extra: (faq: Faq) => ({
+    href: SearchHrefBuilder.forFaq(faq.department),
+  }),
+})
 @Entity('faqs')
 @Index('status_department_idx', ['status', 'department'])
 export class Faq {

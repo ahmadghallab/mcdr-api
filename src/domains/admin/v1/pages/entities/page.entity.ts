@@ -1,11 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, Index } from 'typeorm';
 import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 import { Searchable } from 'src/core/search/searchable.decorator';
+import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
 
 @Searchable({
   index: 'global',
   type: 'page',
   pick: ['titleEn', 'titleAr'],
+  extra: (entity: Page) => ({
+    href: SearchHrefBuilder.forPage(entity.slug)
+  }),
 })
 @Entity('pages')
 @Index('status_slug_idx', ['status', 'slug'])

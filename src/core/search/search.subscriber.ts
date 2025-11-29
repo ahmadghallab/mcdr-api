@@ -55,17 +55,6 @@ export class SearchSubscriber implements EntitySubscriberInterface {
   }
 
   private sync = async (entity: any, meta: SearchableConfig) => {    
-    // const doc = {
-    //   id: `${meta.type}_${entity.id}`,
-    //   type: meta.type,
-    //   ...meta.pick.reduce((acc: any, key) => {
-    //     acc[key] = entity[key] ?? null;
-    //     return acc;
-    //   }, {}),
-    //   searchable: meta.pick.map((key) => entity[key] ?? '').join(' '),
-    // };
-    // await this.search.upsert(meta.index, doc);
-
     const base = {
       id: `${meta.type}_${entity.id}`,
       type: meta.type,
@@ -73,9 +62,12 @@ export class SearchSubscriber implements EntitySubscriberInterface {
   
     const flattened = flattenForIndex(entity, meta.pick);
 
+    const extra = meta.extra ? meta.extra(entity) : {};
+
     await this.search.upsert(meta.index, {
       ...base,
       ...flattened,
+      ...extra,
     });
   };
 }

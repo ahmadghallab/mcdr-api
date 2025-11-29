@@ -2,7 +2,17 @@ import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 import { Translation } from 'src/core/common/types/translation.type';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 import { LegislationType } from '../enums/legislation-type.enum';
+import { Searchable } from 'src/core/search/searchable.decorator';
+import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
 
+@Searchable({
+  index: 'global',
+  type: 'legislation',
+  pick: ['name.en', 'name.ar'],
+  extra: (entity: Legislation) => ({
+    href: SearchHrefBuilder.forLegislation(entity.type),
+  }),
+})
 @Entity('legislations')
 export class Legislation {
   @PrimaryGeneratedColumn()

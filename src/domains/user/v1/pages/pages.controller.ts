@@ -52,14 +52,6 @@ export class PagesController {
   }
 
   @Public()
-  @Get('data-reports/participate-in-global-surveys')
-  findSurveys(
-    @Headers('accept-language') lang: string
-  ) {    
-    return this.pagesService.findSurveys(lang);
-  }
-
-  @Public()
   @Get('electronic-signature/files')
   findElectronicSignatureFiles(
     @Headers('accept-language') lang: string

@@ -13,7 +13,6 @@ import { ParticipantType } from 'src/domains/admin/v1/pages/enums/participant-ty
 import { Participant } from 'src/domains/admin/v1/pages/entities/participant.entity';
 import { PaginationDto } from 'src/core/common/dto/pagination.dto';
 import { AnnualReport } from 'src/domains/admin/v1/pages/entities/annual-report.entity';
-import { Survey } from 'src/domains/admin/v1/pages/entities/survey.entity';
 import { LegislationType } from 'src/domains/admin/v1/pages/enums/legislation-type.enum';
 import { Legislation } from 'src/domains/admin/v1/pages/entities/legislation.entity';
 import { ContactUs } from 'src/domains/admin/v1/pages/entities/contact.entity';
@@ -40,8 +39,6 @@ export class PagesService {
     private readonly participantRepository: Repository<Participant>,
     @InjectRepository(AnnualReport)
     private readonly annualReportRepository: Repository<AnnualReport>,
-    @InjectRepository(Survey)
-    private readonly surveyRepository: Repository<Survey>,
     @InjectRepository(Legislation)
     private readonly legislationRepository: Repository<Legislation>,
     @InjectRepository(ContactUs)
@@ -185,19 +182,6 @@ export class PagesService {
     }));
     
     return responseData; 
-  }
-
-  async findSurveys(lang: string): Promise<NamedLink[]> {
-    const surveys = await this.surveyRepository.find({
-      where: isPublished(),
-    });
-
-    const responseData = surveys.map((item) => ({
-      url: item.url,
-      name: item.name[lang],
-    }));
-
-    return responseData;
   }
 
   async findElectronicSignatureFiles(lang: string): Promise<ElectronicSignatureFile[]> {
