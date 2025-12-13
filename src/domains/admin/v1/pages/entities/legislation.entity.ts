@@ -10,6 +10,7 @@ import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
   type: 'legislation',
   pick: ['name.en', 'name.ar'],
   extra: (entity: Legislation) => ({
+    type: entity.type,
     href: SearchHrefBuilder.forLegislation(entity.type),
   }),
 })

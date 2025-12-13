@@ -1,6 +1,7 @@
 import { LegislationType } from "src/domains/admin/v1/pages/enums/legislation-type.enum";
 import { FaqDepartment } from "../common/enums/faq-department.enum";
 import { ParticipantType } from "src/domains/admin/v1/pages/enums/participant-type.enum";
+import { LocationType } from "../common/enums/location-type.enum";
 
 export class SearchHrefBuilder {
   
@@ -63,6 +64,14 @@ export class SearchHrefBuilder {
 
   static forAchievement() {
     return '/overview/achievements-awards';
+  }
+
+  static forPlace(type: LocationType) {
+    const map: Record<LocationType, string> = {
+      [LocationType.CouponExchange]: '/activities-services/coupon-exchange-locations',
+      [LocationType.ESignatureCertificate]: '/electronic-signature/introduction',
+    };
+    return map[type];
   }
 
 }

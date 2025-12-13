@@ -19,7 +19,11 @@ export class SearchController {
   ) {
     const { q, limit, skip: offset, page } = searchDto;
 
-    const results = await this.search.client.index('global').search(q, { offset, limit });
+    const results = await this.search.client.index('global').search(q, { 
+      offset, 
+      limit,
+      matchingStrategy: 'all'
+    });
 
     const total = results.estimatedTotalHits;
 

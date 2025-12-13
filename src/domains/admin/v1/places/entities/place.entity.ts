@@ -2,7 +2,18 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 import { LocationType } from 'src/core/common/enums/location-type.enum';
 import { TranslationDto } from 'src/core/common/dto/translation.dto';
+import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
+import { Searchable } from 'src/core/search/searchable.decorator';
 
+@Searchable({
+  index: 'global',
+  type: 'place',
+  pick: ['address.en', 'address.ar'],
+  extra: (entity: Place) => ({
+    type: entity.type,
+    href: SearchHrefBuilder.forPlace(entity.type)
+  }),
+})
 @Entity('places')
 export class Place {
   @PrimaryGeneratedColumn()

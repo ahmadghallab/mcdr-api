@@ -6,7 +6,7 @@ import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
 @Searchable({
   index: 'global',
   type: 'page',
-  pick: ['titleEn', 'titleAr'],
+  pick: ['titleEn', 'titleAr', 'contentEn', 'contentAr'],
   extra: (entity: Page) => ({
     href: SearchHrefBuilder.forPage(entity.slug)
   }),

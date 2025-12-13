@@ -12,7 +12,6 @@ function flattenKey(path: string) {
 
 export function flattenForIndex(entity: any, pick: string[]) {
   const doc: Record<string, any> = {};
-  const searchableParts: string[] = [];
 
   for (const path of pick) {
     const value = getValueByPath(entity, path);
@@ -20,17 +19,7 @@ export function flattenForIndex(entity: any, pick: string[]) {
     const keyName = flattenKey(path);
 
     doc[keyName] = value ?? null;
-
-    if (value !== null && value !== undefined) {
-      if (typeof value === 'object') {
-        searchableParts.push(...Object.values(value).map((v) => String(v)));
-      } else {
-        searchableParts.push(String(value));
-      }
-    }
   }
-
-  doc.searchable = searchableParts.join(' ');
 
   return doc;
 }
