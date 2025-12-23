@@ -24,6 +24,7 @@ import { OpportunityType } from 'src/domains/admin/v1/pages/enums/opportunity-ty
 import { SignatureFile } from 'src/domains/admin/v1/pages/entities/signature-file.entity';
 import { localizeParticipants } from './utils/localize-participant.util';
 import { applySearch } from 'src/core/utils/apply-search.util';
+import { ContactUsResponse } from './pages.dto';
 
 @Injectable()
 export class PagesService {
@@ -140,15 +141,16 @@ export class PagesService {
     return responseData;
   }
 
-  async findContactInfo(lang: string): Promise<ContactUs> {
+  async findContactInfo(lang: string): Promise<ContactUsResponse> {
     const contactInfo = await this.contactUsRepository.findOne({ where: {} });    
 
     const responseData = {
       ...contactInfo,
+      workHours: localizedValue(contactInfo.workHours, lang),
       branches: contactInfo.branches.map(b => ({
         ...b,
-        name: b.name[lang],
-        address: b.address[lang]
+        name: localizedValue(b.name, lang),
+        address: localizedValue(b.address, lang)
       })),
     };
 

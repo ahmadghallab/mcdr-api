@@ -22,3 +22,16 @@ export class OpportunitiesPageDto {
   @IsEnum(OpportunityType)
   type: OpportunityType;
 }
+
+export class ContactUsResponse {
+  id: number;
+  email: string;
+  hotline: string;
+  workHours: string;
+  branches: {
+    name: string;
+    address: string;
+    tel: string[];
+    fax?: string[];
+  }[];
+}

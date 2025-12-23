@@ -40,4 +40,8 @@ export class CreateContactUsDto {
   @ValidateNested({ each: true })
   @Type(() => BranchDto)
   branches: BranchDto[];
+
+  @ValidateNested()
+  @Type(() => TranslationDto)
+  workHours: TranslationDto;
 }

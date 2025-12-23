@@ -14,6 +14,6 @@ export const localizeContent = <T extends Record<string, any>>(
 export const localizedValue = (
   values: TranslationDto,
   language: string,
-): string => {
-  return values[language] || values['en'];
+): string | null => {
+  return values[language] || null
 };
