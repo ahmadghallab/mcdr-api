@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
+import { Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
 
 @Entity('files')
+@Index(['context', 'createdAt'])
 export class File {
   @PrimaryGeneratedColumn()
   id: number
@@ -22,6 +23,9 @@ export class File {
 
   @Column({ type: 'varchar', length: 255, unique: true })
   url: string
+
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  context: string;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date

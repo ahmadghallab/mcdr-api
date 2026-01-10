@@ -3,11 +3,12 @@ import { ConfigService } from "@nestjs/config";
 import * as fs from 'fs/promises';
 import { DiskStorageOptions } from "multer";
 import * as path from 'path';
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 import { File } from "./entities/file.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { PaginationDto } from "src/core/common/dto/pagination.dto";
 import { ORDER_BY_CREATED_DESC } from "src/core/utils/order.util";
+import { UploadFileDto } from "./dto/upload-file.dto";
+import { FindAllFilesDto } from "./dto/find-all-files.dto";
 
 @Injectable()
 export class FilesService {
@@ -18,21 +19,33 @@ export class FilesService {
     private readonly filesRepository: Repository<File>
   ) {}
 
-  async findAll(paginationDto: PaginationDto): Promise<[File[], number]> {
-   return await this.filesRepository.findAndCount({
-      skip: paginationDto.skip,
-      take: paginationDto.take,
+  async findAll(findAllFilesDto: FindAllFilesDto): Promise<[File[], number]> {
+    const { skip, take, context } = findAllFilesDto;
+
+    const where: FindOptionsWhere<File> = {};
+
+    if (context) {
+      where.context = context;
+    }
+    
+    return this.filesRepository.findAndCount({
+      where,
+      skip,
+      take,
       order: ORDER_BY_CREATED_DESC,
     });
   }
 
-  async create(file: Express.Multer.File): Promise<string> {
+  async create(file: Express.Multer.File, uploadFileDto: UploadFileDto): Promise<string> {
     const url = this.getAccessUrl(file.filename);
-    const name = file.originalname;
-    const type = file.mimetype; 
-    const size = file.size;
 
-    await this.filesRepository.save({ name, type, size, url });
+    await this.filesRepository.save({
+      url,
+      name: file.originalname,
+      type: file.mimetype,
+      size: file.size,
+      context: uploadFileDto.context,
+    });
 
     return url;
   }

@@ -2,10 +2,10 @@ import { Controller, Post, UseInterceptors, UploadedFile, Delete, Body, Patch, G
 import { FilesService } from './files.service';
 import { DeleteFileDto } from './dto/delete-file.dto';
 import { RenameFileDto } from './dto/rename-file.dto';
-import { PaginationDto } from 'src/core/common/dto/pagination.dto';
-import { MagicNumberValidationInterceptor } from './magic-number.interceptor';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { UploadFileDto } from './dto/upload-file.dto';
+import { FindAllFilesDto } from './dto/find-all-files.dto';
 
 @Controller()
 export class FilesController {
@@ -13,9 +13,9 @@ export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
   @Get()
-  async findAll(@Query() paginationDto: PaginationDto) {
-    const [items, total] = await this.filesService.findAll(paginationDto);
-    const { page, limit } = paginationDto;
+  async findAll(@Query() findAllFilesDto: FindAllFilesDto) {
+    const [items, total] = await this.filesService.findAll(findAllFilesDto);
+    const { page, limit } = findAllFilesDto;
 
     return {
       data: items,
@@ -37,10 +37,11 @@ export class FilesController {
     // MagicNumberValidationInterceptor('file')
   )
   async upload(
-    @UploadedFile() file: Express.Multer.File
+    @UploadedFile() file: Express.Multer.File,
+    @Body() uploadFileDto: UploadFileDto,
   ) {
 
-    const url = await this.filesService.create(file);
+    const url = await this.filesService.create(file, uploadFileDto);
 
     return {
       message: 'File uploaded successfully',
