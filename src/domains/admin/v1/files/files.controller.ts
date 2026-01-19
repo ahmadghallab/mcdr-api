@@ -6,12 +6,14 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { UploadFileDto } from './dto/upload-file.dto';
 import { FindAllFilesDto } from './dto/find-all-files.dto';
+import { Public } from '../auth/auth.decorator';
 
 @Controller()
 export class FilesController {
 
   constructor(private readonly filesService: FilesService) {}
 
+  @Public()
   @Get()
   async findAll(@Query() findAllFilesDto: FindAllFilesDto) {
     const [items, total] = await this.filesService.findAll(findAllFilesDto);
