@@ -1,14 +1,14 @@
 import { LegislationType } from "src/domains/admin/v1/pages/enums/legislation-type.enum";
-import { FaqDepartment } from "../common/enums/faq-department.enum";
+import { SupportCategory } from "../common/enums/support-category.enum";
 import { ParticipantType } from "src/domains/admin/v1/pages/enums/participant-type.enum";
 import { LocationType } from "../common/enums/location-type.enum";
 
 export class SearchHrefBuilder {
   
-  static forFaq(department: FaqDepartment) {
-    const map: Record<FaqDepartment, string> = {
-      [FaqDepartment.CustomerSupport]: '/customer-support/faqs',
-      [FaqDepartment.ElectronicSignature]: '/electronic-signature/faqs',
+  static forFaq(department: SupportCategory) {
+    const map: Record<SupportCategory, string> = {
+      [SupportCategory.CustomerSupport]: '/customer-support/faqs',
+      [SupportCategory.ElectronicSignature]: '/electronic-signature/faqs',
     };
     return map[department];
   }

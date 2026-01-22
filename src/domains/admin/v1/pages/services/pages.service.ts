@@ -7,7 +7,7 @@ import { Repository } from 'typeorm';
 import { Admin } from '../../admins/entities/admin.entity';
 import { GroupedPagesBySection } from '../interfaces/pages.interfaces';
 import { Director } from '../entities/director.entity';
-import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
+import { SupportCategory } from 'src/core/common/enums/support-category.enum';
 import { Faq } from '../entities/faq.entity';
 import { CreateDirectorDto } from '../dto/create-director.dto';
 import { UpdateDirectorDto } from '../dto/update-director.dto';
@@ -98,7 +98,7 @@ export class PagesService {
     return this.faqsRepository.save(createFaqDto);
   }
 
-  async findAllFaqs(department: FaqDepartment): Promise<Faq[]> {
+  async findAllFaqs(department: SupportCategory): Promise<Faq[]> {
     const faqs = await this.faqsRepository.find({
       where: { department },
       order: ORDER_BY_ORDER_ASC

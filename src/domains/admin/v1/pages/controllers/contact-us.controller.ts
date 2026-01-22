@@ -1,7 +1,8 @@
-import { Controller, Get, Body, Patch, Post } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Post, Query, Param } from '@nestjs/common';
 import { UpdateContactUsDto } from '../dto/update-contact-us.dto';
 import { ContactUsService } from '../services/contact-us.service';
 import { CreateContactUsDto } from '../dto/create-contact-us.dto';
+import { ContactInfoDto } from 'src/domains/user/v1/pages/pages.dto';
 
 @Controller('contact-us')
 export class ContactUsController {
@@ -10,8 +11,10 @@ export class ContactUsController {
   ) {}
 
   @Get()
-  findOne() {
-    return this.contactUsService.findOne();
+  findOne(
+    @Query() query: ContactInfoDto
+  ) {
+    return this.contactUsService.findOne(query.department);
   }
 
   @Post()
@@ -19,8 +22,11 @@ export class ContactUsController {
     return this.contactUsService.create(createDto);
   }
 
-  @Patch()
-  update(@Body() updateDto: UpdateContactUsDto) {
-    return this.contactUsService.update(updateDto);
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateContactUsDto
+  ) {
+    return this.contactUsService.update(+id, updateDto);
   }
 }

@@ -1,11 +1,12 @@
 import { IsEnum } from "class-validator";
-import { ContactInfoModule, LawPage } from "./page.types";
+import { LawPage } from "./page.types";
 import { ParticipantType } from "src/domains/admin/v1/pages/enums/participant-type.enum";
 import { OpportunityType } from "src/domains/admin/v1/pages/enums/opportunity-type.enum";
+import { SupportCategory } from "src/core/common/enums/support-category.enum";
 
 export class ContactInfoDto {
-  @IsEnum(ContactInfoModule)
-  module: ContactInfoModule;
+  @IsEnum(SupportCategory)
+  department: SupportCategory;
 }
 
 export class LawPageDto {

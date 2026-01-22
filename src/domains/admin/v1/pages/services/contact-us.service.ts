@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { ContactUs } from '../entities/contact.entity';
 import { CreateContactUsDto } from '../dto/create-contact-us.dto';
 import { UpdateContactUsDto } from '../dto/update-contact-us.dto';
+import { SupportCategory } from 'src/core/common/enums/support-category.enum';
 
 @Injectable()
 export class ContactUsService {
@@ -13,9 +14,8 @@ export class ContactUsService {
     private readonly contactUsRepository: Repository<ContactUs>,
   ) {}
 
-
-  async findOne(): Promise<ContactUs> {
-    const contact = await this.contactUsRepository.findOne({ where: {} });
+  async findOne(department: SupportCategory): Promise<ContactUs> {
+    const contact = await this.contactUsRepository.findOne({ where: { department } });
     return contact;
   }
 
@@ -23,8 +23,8 @@ export class ContactUsService {
     return this.contactUsRepository.save(createDto);
   }
 
-  async update(updateDto: UpdateContactUsDto): Promise<ContactUs> {
-    const contact = await this.findOne();
+  async update(id: number, updateDto: UpdateContactUsDto): Promise<ContactUs> {
+    const contact = await this.contactUsRepository.findOneByOrFail({ id });
     return this.contactUsRepository.save({...contact, ...updateDto});
   }
 

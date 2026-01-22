@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
   Index,
 } from 'typeorm';
-import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
+import { SupportCategory } from 'src/core/common/enums/support-category.enum';
 import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 import { Searchable } from 'src/core/search/searchable.decorator';
 import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
@@ -24,8 +24,8 @@ export class Faq {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'enum', enum: FaqDepartment, name: 'department' })
-  department: FaqDepartment;
+  @Column({ type: 'enum', enum: SupportCategory, name: 'department' })
+  department: SupportCategory;
 
   @Column({ type: 'varchar', length: 255, name: 'q_en' })
   qEn: string;

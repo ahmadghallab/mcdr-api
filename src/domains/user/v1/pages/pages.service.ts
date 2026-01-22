@@ -1,11 +1,9 @@
 import { Repository } from 'typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-
 import { Faq } from 'src/domains/admin/v1/pages/entities/faq.entity';
 import { Page } from 'src/domains/admin/v1/pages/entities/page.entity';
 import { Director } from 'src/domains/admin/v1/pages/entities/director.entity';
-import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
 import { localizeContent, localizedValue } from 'src/core/common/utils/localize.util';
 import { NamedLink, UserDirector, LocalizedDocumentary, LocalizedAchievement, LocalizedOpportunity, LocalizedLegislation, ElectronicSignatureFile } from './page.types';
 import { isPublished, isPublishedQuery } from 'src/core/filters/published.filter';
@@ -25,6 +23,7 @@ import { SignatureFile } from 'src/domains/admin/v1/pages/entities/signature-fil
 import { localizeParticipants } from './utils/localize-participant.util';
 import { applySearch } from 'src/core/utils/apply-search.util';
 import { ContactUsResponse } from './pages.dto';
+import { SupportCategory } from 'src/core/common/enums/support-category.enum';
 
 @Injectable()
 export class PagesService {
@@ -70,7 +69,7 @@ export class PagesService {
     }
   }
 
-  async findFaqs(lang: string, department: FaqDepartment): Promise<Partial<Faq>[]> {
+  async findFaqs(lang: string, department: SupportCategory): Promise<Partial<Faq>[]> {
     const faqs = await this.faqsRepository.find({
       where: { department, ...isPublished() },
       order: ORDER_BY_ORDER_ASC
@@ -141,8 +140,8 @@ export class PagesService {
     return responseData;
   }
 
-  async findContactInfo(lang: string): Promise<ContactUsResponse> {
-    const contactInfo = await this.contactUsRepository.findOne({ where: {} });    
+  async findContactInfo(lang: string, department: SupportCategory): Promise<ContactUsResponse> {
+    const contactInfo = await this.contactUsRepository.findOne({ where: { department } });    
 
     const responseData = {
       ...contactInfo,

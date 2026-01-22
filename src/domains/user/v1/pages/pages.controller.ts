@@ -1,7 +1,7 @@
 import { Controller, Get,Param, Headers, ParseIntPipe, Query } from '@nestjs/common';
 import { PagesService } from './pages.service';
 import { Public } from 'src/domains/admin/v1/auth/auth.decorator';
-import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
+import { SupportCategory } from 'src/core/common/enums/support-category.enum';
 import { ContactInfoDto, OpportunitiesPageDto, ParticipantsPageDto } from './pages.dto';
 import { PaginationDto } from 'src/core/common/dto/pagination.dto';
 import { FindAllLegislationsDto } from 'src/domains/admin/v1/pages/dto/find-all-legislations.dto';
@@ -15,16 +15,16 @@ export class PagesController {
   findCustomerSupportFaqs(
     @Headers('accept-language') lang: string
   ) {    
-    return this.pagesService.findFaqs(lang, FaqDepartment.CustomerSupport);
+    return this.pagesService.findFaqs(lang, SupportCategory.CustomerSupport);
   }
 
   @Public()
-  @Get(':module/contact-us')
+  @Get(':department/contact-us')
   findContactInfo(
-    @Param() params: ContactInfoDto,
+    @Param() contactInfoDto: ContactInfoDto,
     @Headers('accept-language') lang: string
   ) {    
-    return this.pagesService.findContactInfo(lang);
+    return this.pagesService.findContactInfo(lang, contactInfoDto.department);
   }
 
   @Public()
@@ -32,7 +32,7 @@ export class PagesController {
   findElectronicSignatureFaqs(
     @Headers('accept-language') lang: string
   ) {    
-    return this.pagesService.findFaqs(lang, FaqDepartment.ElectronicSignature);
+    return this.pagesService.findFaqs(lang, SupportCategory.ElectronicSignature);
   }
 
   @Public()

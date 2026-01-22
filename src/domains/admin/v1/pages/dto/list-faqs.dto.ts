@@ -1,7 +1,7 @@
 import { IsEnum } from "class-validator";
-import { FaqDepartment } from "src/core/common/enums/faq-department.enum";
+import { SupportCategory } from "src/core/common/enums/support-category.enum";
 
 export class ListFaqsDto {
-  @IsEnum(FaqDepartment)
-  department: FaqDepartment;
+  @IsEnum(SupportCategory)
+  department: SupportCategory;
 }

@@ -1,6 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { BranchInfo } from "../interfaces/pages.interfaces";
 import { Translation } from "src/core/common/types/translation.type";
+import { SupportCategory } from "src/core/common/enums/support-category.enum";
 
 @Entity('contact_us')
 export class ContactUs {
@@ -18,4 +19,7 @@ export class ContactUs {
 
   @Column({ type: 'json', name: 'work_hours' })
   workHours: Translation;
+
+  @Column({ type: 'enum', enum: SupportCategory, name: 'department' })
+  department: SupportCategory;
 }

@@ -4,10 +4,13 @@ import {
   IsOptional,
   IsString,
   ValidateNested,
-  ArrayNotEmpty
+  ArrayNotEmpty,
+  IsEnum,
+  IsNotEmpty
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { TranslationDto } from 'src/core/common/dto/translation.dto';
+import { SupportCategory } from 'src/core/common/enums/support-category.enum';
 
 class BranchDto {
   @ValidateNested()
@@ -44,4 +47,8 @@ export class CreateContactUsDto {
   @ValidateNested()
   @Type(() => TranslationDto)
   workHours: TranslationDto;
+
+  @IsEnum(SupportCategory)
+  @IsNotEmpty()
+  department: SupportCategory;
 }

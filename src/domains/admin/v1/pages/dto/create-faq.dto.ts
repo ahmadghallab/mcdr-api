@@ -1,11 +1,11 @@
 import { IsEnum, IsNotEmpty, IsOptional, IsString, IsInt } from 'class-validator';
-import { FaqDepartment } from 'src/core/common/enums/faq-department.enum';
+import { SupportCategory } from 'src/core/common/enums/support-category.enum';
 import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 
 export class CreateFaqDto {
-  @IsEnum(FaqDepartment)
+  @IsEnum(SupportCategory)
   @IsNotEmpty()
-  department: FaqDepartment;
+  department: SupportCategory;
 
   @IsString()
   @IsNotEmpty()
