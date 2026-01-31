@@ -1,11 +1,11 @@
 import 'reflect-metadata';
+import { DataSource } from 'typeorm';
 
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../src/app.module';
-import { DataSource } from 'typeorm';
 import { SearchService } from '../src/core/search/search.service';
 import { getSearchableMetadata } from '../src/core/search/searchable.decorator';
-import { flattenForIndex } from '../src/core/search/search.util';
+import { prepareSearchDocument } from '../src/core/search/search.util';
 
 async function syncSearch() {
   const app = await NestFactory.createApplicationContext(AppModule);
@@ -26,21 +26,7 @@ async function syncSearch() {
     const repo = dataSource.getRepository(Entity);
     const rows = await repo.find();
 
-    const docs = rows.map((row) => {
-      const base = {
-        id: `${cfg.type}_${row.id}`,
-        type: cfg.type,
-      };
-
-      const flattened = flattenForIndex(row, cfg.pick);
-      const extra = cfg.extra ? cfg.extra(row) : {};
-
-      return {
-        ...base,
-        ...flattened,
-        ...extra,
-      };
-    });
+    const docs = rows.map((row) => prepareSearchDocument(row, cfg));
 
     await search.upsertBatch(cfg.index, docs);
 

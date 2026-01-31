@@ -6,7 +6,7 @@ import {
 } from 'typeorm';
 import { SearchService } from './search.service';
 import { SearchableConfig, getSearchableMetadata, getSearchableMetadataByTarget } from './searchable.decorator';
-import { flattenForIndex } from './search.util';
+import { prepareSearchDocument } from './search.util';
 
 export class SearchSubscriber implements EntitySubscriberInterface {
   constructor(private readonly search: SearchService) {}
@@ -54,20 +54,8 @@ export class SearchSubscriber implements EntitySubscriberInterface {
     return getSearchableMetadata(entity);
   }
 
-  private sync = async (entity: any, meta: SearchableConfig) => {    
-    const base = {
-      id: `${meta.type}_${entity.id}`,
-      type: meta.type,
-    };
-  
-    const flattened = flattenForIndex(entity, meta.pick);
-
-    const extra = meta.extra ? meta.extra(entity) : {};
-
-    await this.search.upsert(meta.index, {
-      ...base,
-      ...flattened,
-      ...extra,
-    });
-  };
+  private sync = async (entity: any, meta: SearchableConfig) => {
+    const doc = prepareSearchDocument(entity, meta);
+    await this.search.upsert(meta.index, doc);
+  };  
 }

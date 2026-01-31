@@ -13,6 +13,14 @@ export class SearchHrefBuilder {
     return map[department];
   }
 
+  static forContactUs(department: SupportCategory) {
+    const map: Record<SupportCategory, string> = {
+      [SupportCategory.CustomerSupport]: '/customer-support/contact-us',
+      [SupportCategory.ElectronicSignature]: '/electronic-signature/contact-us',
+    };
+    return map[department];
+  }
+
   static forLegislation(type: LegislationType) {
     const map: Record<LegislationType, string> = {
       [LegislationType.LAWS]: '/laws-regulations/laws',

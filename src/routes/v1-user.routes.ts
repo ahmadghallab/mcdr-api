@@ -1,6 +1,7 @@
 import { Routes } from "@nestjs/core";
 import { articlesRoutes } from "src/domains/user/v1/articles/articles.routes";
 import { bannersRoutes } from "src/domains/user/v1/banners/banners.routes";
+import { chatbotRoutes } from "src/domains/user/v1/chatbot/chatbot.routes";
 import { highlightsRoutes } from "src/domains/user/v1/highlights/highlights.routes";
 import { pagesRoutes } from "src/domains/user/v1/pages/pages.routes";
 import { placesRoutes } from "src/domains/user/v1/places/places.routes";
@@ -19,7 +20,8 @@ export const v1UserRoutes: Routes = [
       ...updatesRoutes,
       ...pagesRoutes,
       ...highlightsRoutes,
-      ...searchRoutes
+      ...searchRoutes,
+      ...chatbotRoutes
     ],
   },
 ];

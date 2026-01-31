@@ -7,6 +7,7 @@ import { UpdatesModule } from "./updates/updates.module";
 import { PagesModule } from "./pages/pages.module";
 import { HighlightsModule } from "./highlights/highlights.module";
 import { SearchQueryModule } from "./search/search.module";
+import { ChatbotModule } from "./chatbot/chatbot.module";
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { SearchQueryModule } from "./search/search.module";
     UpdatesModule,
     PagesModule,
     HighlightsModule,
-    SearchQueryModule
+    SearchQueryModule,
+    ChatbotModule
   ],
 })
 export class UserV1Module {}
