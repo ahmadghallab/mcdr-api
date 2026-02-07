@@ -2,17 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { convertToModelMessages, streamText, UIMessage } from 'ai';
 import { Response } from 'express';
 import { google } from '@ai-sdk/google';
-import { RagService } from './rag.service';
 import { getMessageText } from './chatbot.utils';
+import { SearchService } from 'src/core/search/search.service';
 
 @Injectable()
 export class ChatbotService {
-  constructor(private readonly ragService: RagService) {}
+  constructor(
+    private readonly searchService: SearchService,
+  ) {}
 
   async chat(messages: UIMessage[], response: Response) {
     const question = getMessageText(messages.at(-1));
 
-    const context = await this.ragService.getContext(question);    
+    const context = await this.searchService.getContext(question);    
 
     const result = streamText({
       model: google('gemini-2.5-flash-lite'),

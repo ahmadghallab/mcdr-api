@@ -99,7 +99,7 @@ export function prepareSearchDocument(entity: any, meta: SearchableConfig) {
 
   const extra = meta.extra ? meta.extra(entity) : {};
 
-  const searchable_text = extra.searchable_text ?? buildSearchableText(flattened);
+  const searchable_text = String(extra.searchable_text ?? buildSearchableText(flattened) ?? '');
 
   return {
     ...base,

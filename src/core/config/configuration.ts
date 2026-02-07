@@ -15,5 +15,13 @@ export default () => ({
     accessTokenExpiresIn: +process.env.JWT_EXPIRES_IN,
     refreshTokenExpiresIn: +process.env.JWT_REFRESH_EXPIRES_IN,
     saltOrRounds: 10
+  },
+  meili: {
+    host: process.env.MEILI_HOST,
+    apiKey: process.env.MEILI_MASTER_KEY,
+    embedding: {
+      dimensions: 3072,
+      apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY
+    }
   }
 });
