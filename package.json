@@ -25,7 +25,8 @@
     "migration:run": "npm run typeorm migration:run -- -d ./src/core/config/typeorm.config.ts",
     "migration:revert": "npm run typeorm migration:revert -- -d ./src/core/config/typeorm.config.ts",
     "search:sync": "node dist/scripts/search-sync.js",
-    "search:flush": "node dist/scripts/search-flush.js"
+    "search:flush": "node dist/scripts/search-flush.js",
+    "search:embed": "node dist/scripts/search-embed.js"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.18",

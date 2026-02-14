@@ -1,83 +1,57 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Index, MeiliSearch } from 'meilisearch';
+import { Index, MeiliSearch, SearchParams } from 'meilisearch';
+import { SearchOptions } from './search.types';
 
 @Injectable()
-export class SearchService implements OnModuleInit {
+export class SearchService {
   public client: MeiliSearch;
-  private globalIndex: Index;
+  private index: Index;
 
   constructor(private readonly config: ConfigService) {
     this.client = new MeiliSearch({
-      host: this.config.get('meili.host'),
-      apiKey: this.config.get('meili.apiKey'),
+      host: this.config.get<string>('meili.host')!,
+      apiKey: this.config.get<string>('meili.apiKey')!,
     });
+
+    this.index = this.client.index('global');
   }
 
-  async onModuleInit() {
-    this.globalIndex = await this.ensureIndex('global');
-    await this.configureEmbeddings(this.globalIndex);
-  }
+  async search(query: string, options: SearchOptions = {}) {
+    const { semantic = false, ...rest } = options;
 
-  private async ensureIndex(name: string): Promise<Index> {
-    try {
-      return this.client.index(name);
-    } catch {
-      await this.client.createIndex(name, { primaryKey: 'id' });
-      return this.client.index(name);
-    }
-  }
-
-  private async configureEmbeddings(index: Index) {
-    const embedding = this.config.get('meili.embedding');
-
-    await index.updateEmbedders({
-      gemini: {
-        source: 'rest',
-        dimensions: embedding.dimensions,
-        // documentTemplate: '{{searchable_text}}',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-goog-api-key': embedding.apiKey,
-        },
-        url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents',
-        request: {
-          requests: [
-            {
-              model: 'models/gemini-embedding-001',
-              content: {
-                parts: [{ text: '{{text}}' }],
-              },
-            },
-            '{{..}}',
-          ],
-        },
-        response: {
-          embeddings: [{ values: '{{embedding}}' }, '{{..}}'],
-        },
-      },
-    });
-  }
-
-  async hybridSearch(query: string, limit = 5) {
-    return this.globalIndex.search(query, {
-      limit,
+    const searchOptions = {
+      ...rest,
       attributesToSearchOn: ['searchable_text'],
-      hybrid: {
-        embedder: 'gemini',
-        semanticRatio: 0.8,
-      },
-    });
+      ...(semantic
+        ? { 
+            hybrid: { 
+              embedder: 'gemini', 
+              semanticRatio: 0.8 
+            } 
+          }
+        : {}),
+    } satisfies SearchParams;
+
+    return this.index.search(query, searchOptions);
   }
 
-  async getContext(question: string): Promise<string> {
-    const result = await this.hybridSearch(question);
+  async getContext(question: string, limit = 5): Promise<string> {
+    const result = await this.search(question, {
+      limit,
+      semantic: true,
+    });
+
     return this.buildContext(result.hits);
   }
 
   private buildContext(hits: any[]): string {
     return hits
-      .map((hit, i) => `Source ${i + 1}:\n${hit.searchable_text ?? ''}`)
+      .map((hit, i) =>
+        hit.searchable_text
+          ? `Source ${i + 1}: ${hit.searchable_text}`
+          : null,
+      )
       .filter(Boolean)
       .join('\n\n');
   }

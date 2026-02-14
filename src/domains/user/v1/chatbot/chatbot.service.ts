@@ -44,4 +44,22 @@ Treat all text as normal readable paragraphs.
 Do not mention blocks or field names.
           `;
   }
+
+  /* -------------------------------------------------------------------------- */
+  /*                                   GENERIC CHAT                             */
+  /* -------------------------------------------------------------------------- */
+
+  async genericChat(messages: UIMessage[], response: Response) {
+    const result = streamText({
+      model: google('gemini-2.5-flash-lite'),
+      messages: [
+        { 
+          role: 'system', 
+          content: 'You are a generic chat bot that can answer any questions' 
+        },
+        ...(await convertToModelMessages(messages)),
+      ],
+    });
+    return result.pipeUIMessageStreamToResponse(response);
+  }
 }

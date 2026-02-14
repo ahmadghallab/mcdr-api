@@ -4,14 +4,14 @@ import { ParticipantType } from '../enums/participant-type.enum';
 import { Searchable } from 'src/core/search/searchable.decorator';
 import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
 
-@Searchable({
-  index: 'global',
-  type: 'participant',
-  pick: ['aname', 'ename'],
-  extra: (entity: Participant) => ({
-    href: SearchHrefBuilder.forParticipant(entity.type),
-  }),
-})
+// @Searchable({
+//   index: 'global',
+//   type: 'participant',
+//   pick: ['aname', 'ename'],
+//   extra: (entity: Participant) => ({
+//     href: SearchHrefBuilder.forParticipant(entity.type),
+//   }),
+// })
 @Entity('participants')
 @Index('status_type_idx', ['status', 'type'])
 export class Participant {

@@ -18,10 +18,6 @@ export default () => ({
   },
   meili: {
     host: process.env.MEILI_HOST,
-    apiKey: process.env.MEILI_MASTER_KEY,
-    embedding: {
-      dimensions: 3072,
-      apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY
-    }
+    apiKey: process.env.MEILI_MASTER_KEY
   }
 });

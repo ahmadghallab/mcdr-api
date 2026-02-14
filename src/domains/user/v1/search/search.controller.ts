@@ -7,7 +7,7 @@ import { SearchResultFormatterService } from './search-result-formatter.service'
 @Controller()
 export class SearchController {
   constructor(
-    private readonly search: SearchService,
+    private readonly searchService: SearchService,
     private readonly formatter: SearchResultFormatterService
   ) {}
 
@@ -19,7 +19,7 @@ export class SearchController {
   ) {
     const { q, limit, skip: offset, page } = searchDto;
 
-    const results = await this.search.client.index('global').search(q, { 
+    const results = await this.searchService.search(q, { 
       offset, 
       limit,
       matchingStrategy: 'all'

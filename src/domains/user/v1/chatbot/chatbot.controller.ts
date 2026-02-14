@@ -27,16 +27,12 @@ export class ChatbotController {
     return this.searchService.getContext(q);
   }
 
-  @Post('reset-index')
-  async resetIndex() {
-    try {
-      await this.searchService.client.deleteIndex('global');
-    } catch (error) {
-      // Index might not exist
-    }
-    
-    // Reinitialize
-    await this.searchService.onModuleInit();
-    return { message: 'Index reset successful' };
+  @Public()
+  @Post('generic-chat')
+  async genericChat(
+    @Body() body: { messages: UIMessage[]; model: string },
+    @Res() res: Response,
+  ) {
+    await this.chatService.genericChat(body.messages, res);
   }
 }
