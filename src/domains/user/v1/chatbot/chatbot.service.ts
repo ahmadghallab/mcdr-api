@@ -15,10 +15,10 @@ export class ChatbotService {
   async chat(messages: UIMessage[], response: Response) {
     const question = getMessageText(messages.at(-1));
 
-    const context = await this.searchService.getContext(question);    
+    const context = await this.searchService.getContext(question);
 
     if (!context.trim()) {
-      return response.json({ role: 'assistant', content: "I don't know." });
+      return this.streamFallback(response);
     }
 
     const result = streamText({
@@ -61,6 +61,17 @@ Some content may originate from block-based editors.
 Treat all text as normal readable paragraphs.
 Do not mention blocks or field names.
           `;
+  }
+
+  private streamFallback(response: Response) {
+    const result = streamText({
+      model: openai('gpt-4.1-mini'),
+      messages: [
+        { role: 'user', content: 'Reply exactly: "I don\'t know."' },
+      ],
+    });
+  
+    return result.pipeUIMessageStreamToResponse(response);
   }
 
   async genericChat(messages: UIMessage[], response: Response) {
