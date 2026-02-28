@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { convertToModelMessages, streamText, UIMessage } from 'ai';
 import { Response } from 'express';
 import { google } from '@ai-sdk/google';
+import { openai } from '@ai-sdk/openai';
 import { getMessageText } from './chatbot.utils';
 import { SearchService } from 'src/core/search/search.service';
 
@@ -16,16 +17,33 @@ export class ChatbotService {
 
     const context = await this.searchService.getContext(question);    
 
+    if (!context.trim()) {
+      return response.json({ role: 'assistant', content: "I don't know." });
+    }
+
     const result = streamText({
-      model: google('gemini-2.5-flash-lite'),
+      model: openai('gpt-4.1-mini'),
       messages: [
         { role: 'system', content: this.getSystemPrompt() },
-        { role: 'assistant', content: `Context:\n${context}` },
         ...(await convertToModelMessages(messages)),
+        { role: 'user', content: this.getUserPrompt(context, question) },
       ],
     });
 
     return result.pipeUIMessageStreamToResponse(response);
+  }
+
+  private getUserPrompt(context: string, question: string) {
+    return `
+Use ONLY the context below to answer the question at the end.
+If the answer is not found, reply exactly: "I don't know."
+
+Context:
+${context}
+
+Question:
+${question}
+`;
   }
 
   private getSystemPrompt() {
@@ -44,10 +62,6 @@ Treat all text as normal readable paragraphs.
 Do not mention blocks or field names.
           `;
   }
-
-  /* -------------------------------------------------------------------------- */
-  /*                                   GENERIC CHAT                             */
-  /* -------------------------------------------------------------------------- */
 
   async genericChat(messages: UIMessage[], response: Response) {
     const result = streamText({

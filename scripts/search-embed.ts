@@ -13,40 +13,18 @@ async function setupEmbeddings() {
 
   const current = await index.getEmbedders();
 
-  if (current?.gemini) {
-    console.log('✔ Gemini embedder already exists. Skipping.');
+  if (current?.openai) {
+    console.log('✔ OpenAI embedder already exists. Skipping.');
     process.exit(0);
   }
 
   const task = await index.updateEmbedders({
-    gemini: {
-      source: 'rest',
-      dimensions: 3072,
-
-      documentTemplate: '{{doc.searchable_text}}',
-
-      headers: {
-        'Content-Type': 'application/json',
-        'x-goog-api-key': process.env.GOOGLE_GENERATIVE_AI_API_KEY!,
-      },
-
-      url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents',
-
-      request: {
-        requests: [
-          {
-            model: 'models/gemini-embedding-001',
-            content: {
-              parts: [{ text: '{{text}}' }],
-            },
-          },
-          '{{..}}',
-        ],
-      },
-
-      response: {
-        embeddings: [{ values: '{{embedding}}' }, '{{..}}'],
-      },
+    openai: {
+      source: 'openAi',
+      apiKey: process.env.OPENAI_API_KEY!,
+      dimensions: 1536,
+      model: "text-embedding-3-small",
+      documentTemplate: '{{doc.searchable_text}}'
     },
   });
 

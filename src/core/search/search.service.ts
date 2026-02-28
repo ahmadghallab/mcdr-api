@@ -24,11 +24,11 @@ export class SearchService {
       ...rest,
       attributesToSearchOn: ['searchable_text'],
       ...(semantic
-        ? { 
-            hybrid: { 
-              embedder: 'gemini', 
-              semanticRatio: 0.8 
-            } 
+        ? {
+            hybrid: {
+              embedder: 'openai',
+              semanticRatio: 0.8,
+            },
           }
         : {}),
     } satisfies SearchParams;
@@ -46,14 +46,13 @@ export class SearchService {
   }
 
   private buildContext(hits: any[]): string {
-    return hits
-      .map((hit, i) =>
-        hit.searchable_text
-          ? `Source ${i + 1}: ${hit.searchable_text}`
-          : null,
-      )
-      .filter(Boolean)
+    const MAX_CHARS = 6000;
+
+    const text = hits
+      .map((hit, i) => `Source ${i + 1}: ${hit.searchable_text}`)
       .join('\n\n');
+
+    return text.slice(0, MAX_CHARS);
   }
 
   async upsert(indexName: string, doc: any) {
