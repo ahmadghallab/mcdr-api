@@ -3,6 +3,7 @@ import { LegislationService } from '../services/legislation.service';
 import { CreateLegislationDto } from '../dto/create-legislation.dto';
 import { UpdateLegislationDto } from '../dto/update-legislation.dto';
 import { FindAllLegislationsDto } from '../dto/find-all-legislations.dto';
+import { ReorderDto } from '../../reorder/reorder.dto';
 
 @Controller('legislations')
 export class LegislationController {
@@ -39,5 +40,10 @@ export class LegislationController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.legislationService.remove(+id);
+  }
+
+  @Post('reorder')
+  reorder(@Body() dto: ReorderDto) {
+    return this.legislationService.reorder(dto);
   }
 }
