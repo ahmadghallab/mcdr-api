@@ -208,9 +208,9 @@ export class PagesService {
   }
 
   async findLegislations(lang: string, type: LegislationType): Promise<NamedLink[]> {
-    const legislations = await this.legislationRepository.findBy({ 
-      type,
-      ...isPublished()
+    const legislations = await this.legislationRepository.find({
+      where: { type, ...isPublished() },
+      order: ORDER_BY_ORDER_ASC
     });
 
     const responseData = legislations.map((item) => ({
