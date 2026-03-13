@@ -6,6 +6,7 @@ export interface SearchableConfig {
   index: string;
   type: string;
   pick: string[];
+  chunked?: boolean;
   extra?: (entity: any) => Record<string, any>;
 }
 

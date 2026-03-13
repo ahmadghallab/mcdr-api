@@ -109,3 +109,57 @@ export function prepareSearchDocument(entity: any, meta: SearchableConfig) {
   }
 }
 
+export function prepareSearchDocuments(entity: any, meta: SearchableConfig): any[] {
+  const flattenedRaw = flattenForIndex(entity, meta.pick);
+  const flattened: Record<string, string> = {};
+
+  for (const [k, v] of Object.entries(flattenedRaw)) {
+    flattened[k] = normalizeSearchableValue(v);
+  }
+
+  const extra = meta.extra ? meta.extra(entity) : {};
+  const compositeParentId = `${meta.type}_${entity.id}`; // Common ID for both types
+
+  // --- CASE 1: Simple Entities (FAQs) ---
+  if (!meta.chunked) {
+    const searchable_text = String(extra.searchable_text ?? buildSearchableText(flattened) ?? '');
+    return [{
+      id: compositeParentId, // For single docs, the ID and Parent ID can be the same
+      parent_id: compositeParentId, 
+      type: meta.type,
+      ...flattened,
+      searchable_text,
+      ...extra,
+    }];
+  }
+
+  // --- CASE 2: Huge Pages (Chunked) ---
+  const fullText = buildSearchableText(flattened);
+  const chunks = splitTextIntoChunks(fullText, 1500, 200);
+
+  return chunks.map((chunk, i) => ({
+    id: `${compositeParentId}_${i}`, // Unique ID per chunk
+    parent_id: compositeParentId,    // Same Parent ID as the FAQ version
+    type: meta.type,
+    ...flattened,
+    searchable_text: chunk,
+    ...extra,
+  }));
+}
+
+function splitTextIntoChunks(text: string, size: number, overlap: number): string[] {
+  const result: string[] = [];
+  let start = 0;
+
+  while (start < text.length) {
+    let end = start + size;
+    // Try to find a natural break (newline or period) near the limit
+    if (end < text.length) {
+      const lastBreak = text.lastIndexOf('\n', end);
+      if (lastBreak > start + (size * 0.8)) end = lastBreak;
+    }
+    result.push(text.slice(start, end).trim());
+    start = end - overlap;
+  }
+  return result;
+}

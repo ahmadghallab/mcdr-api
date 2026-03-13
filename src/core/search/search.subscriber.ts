@@ -6,7 +6,7 @@ import {
 } from 'typeorm';
 import { SearchService } from './search.service';
 import { SearchableConfig, getSearchableMetadata, getSearchableMetadataByTarget } from './searchable.decorator';
-import { prepareSearchDocument } from './search.util';
+import { prepareSearchDocuments } from './search.util';
 
 export class SearchSubscriber implements EntitySubscriberInterface {
   constructor(private readonly search: SearchService) {}
@@ -31,6 +31,12 @@ export class SearchSubscriber implements EntitySubscriberInterface {
     const meta = this.getMeta(entity, event.metadata.target);
     if (!meta) return;
 
+    const compositeParentId = `${meta.type}_${entity.id}`;  
+
+    // 1. Wipe all old chunks
+    await this.search.deleteByParent(meta.index, compositeParentId);
+
+    // 2. Add new chunks (via sync which calls upsertBatch)
     await this.sync(entity, meta);
   }
 
@@ -41,9 +47,9 @@ export class SearchSubscriber implements EntitySubscriberInterface {
     const meta = getSearchableMetadataByTarget(target);
     if (!meta) return;
     
-    const id = `${meta.type}_${event.entityId}`;    
+    const compositeParentId = `${meta.type}_${event.entityId}`;   
 
-    await this.search.delete(meta.index, id);
+    await this.search.deleteByParent(meta.index, compositeParentId);
   }
 
   private getMeta(entity: any, target: any): SearchableConfig | null {
@@ -54,8 +60,8 @@ export class SearchSubscriber implements EntitySubscriberInterface {
     return getSearchableMetadata(entity);
   }
 
-  private sync = async (entity: any, meta: SearchableConfig) => {
-    const doc = prepareSearchDocument(entity, meta);
-    await this.search.upsert(meta.index, doc);
+  private async sync(entity: any, meta: SearchableConfig) {
+    const docs = prepareSearchDocuments(entity, meta); // Returns an array
+    await this.search.upsertBatch(meta.index, docs);
   };  
 }

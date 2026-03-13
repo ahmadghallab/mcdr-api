@@ -66,4 +66,10 @@ export class SearchService {
   async delete(indexName: string, id: string) {
     await this.client.index(indexName).deleteDocument(id);
   }
+
+  async deleteByParent(indexName: string, compositeParentId: string) {    
+    await this.client.index(indexName).deleteDocuments({
+      filter: `parent_id = "${compositeParentId}"` 
+    });
+  }
 }
