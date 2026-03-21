@@ -1,3 +1,4 @@
+import { PublishStatus } from "../common/enums/publish-status.enum";
 import { SearchableConfig } from "./searchable.decorator";
 
 function getValueByPath(obj: any, path: string) {
@@ -162,4 +163,8 @@ function splitTextIntoChunks(text: string, size: number, overlap: number): strin
     start = end - overlap;
   }
   return result;
+}
+
+export function shouldIndex(entity: any, meta: SearchableConfig): boolean {
+  return meta.condition ? meta.condition(entity) : true;
 }

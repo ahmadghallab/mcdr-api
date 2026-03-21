@@ -10,6 +10,7 @@ import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
   extra: (entity: Article) => ({
     href: SearchHrefBuilder.forArticle(entity.id)
   }),
+  condition: (entity: Article) => entity.status === PublishStatus.Published,
 })
 @Entity('articles')
 export class Article {

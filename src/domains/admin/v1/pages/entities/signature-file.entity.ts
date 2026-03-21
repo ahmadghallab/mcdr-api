@@ -12,6 +12,7 @@ import { SearchHrefBuilder } from "src/core/search/search-href.builder";
   extra: () => ({
     href: SearchHrefBuilder.forSignatureFile()
   }),
+  condition: (entity: SignatureFile) => entity.status === PublishStatus.Published,
 })
 @Entity('signature_files')
 export class SignatureFile {

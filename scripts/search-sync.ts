@@ -4,7 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../src/app.module';
 import { SearchService } from '../src/core/search/search.service';
 import { getSearchableMetadataByTarget } from '../src/core/search/searchable.decorator';
-import { prepareSearchDocuments } from '../src/core/search/search.util';
+import { prepareSearchDocuments, shouldIndex } from '../src/core/search/search.util';
 
 async function syncSearch() {
   const app = await NestFactory.createApplicationContext(AppModule);
@@ -24,12 +24,19 @@ async function syncSearch() {
     const repo = dataSource.getRepository(EntityTarget);
     const rows = await repo.find();
 
-    // Use .flatMap because prepareSearchDocuments now returns an ARRAY of chunks
-    const allDocs = rows.flatMap((row) => prepareSearchDocuments(row, cfg));
+    const index = search.client.index(cfg.index);
+
+    // Ensure the index knows 'id' is the primary key before adding documents
+    await index.update({ primaryKey: 'id' }); 
+    
+    const filteredRows = rows.filter((row) => shouldIndex(row, cfg));
+    
+    // Use .flatMap because prepareSearchDocuments returns an ARRAY of chunks
+    const allDocs = filteredRows.flatMap((row) =>
+      prepareSearchDocuments(row, cfg)
+    );
 
     if (allDocs.length > 0) {
-      // Meilisearch handles batches automatically. 
-      // Upserting replaces any existing chunks with the same deterministic IDs.
       await search.upsertBatch(cfg.index, allDocs);
       console.log(`✔ ${rows.length} ${cfg.type} records split into ${allDocs.length} chunks\n`);
     }

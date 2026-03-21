@@ -11,6 +11,7 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeor
   extra: () => ({
     href: SearchHrefBuilder.forAchievement()
   }),
+  condition: (entity: Achievement) => entity.status === PublishStatus.Published,
 })
 @Entity('achievements')
 export class Achievement {

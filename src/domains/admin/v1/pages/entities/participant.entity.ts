@@ -11,6 +11,7 @@ import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
 //   extra: (entity: Participant) => ({
 //     href: SearchHrefBuilder.forParticipant(entity.type),
 //   }),
+//   condition: (entity: Participant) => entity.status === PublishStatus.Published,
 // })
 @Entity('participants')
 @Index('status_type_idx', ['status', 'type'])

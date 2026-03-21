@@ -11,6 +11,7 @@ import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
   extra: (entity: Page) => ({
     href: SearchHrefBuilder.forPage(entity.slug)
   }),
+  condition: (entity: Page) => entity.status === PublishStatus.Published,
 })
 @Entity('pages')
 @Index('status_slug_idx', ['status', 'slug'])

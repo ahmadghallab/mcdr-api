@@ -11,6 +11,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeor
   extra: () => ({
     href: SearchHrefBuilder.forAnnualReport()
   }),
+  condition: (entity: AnnualReport) => entity.status === PublishStatus.Published,
 })
 @Entity('annual_reports')
 export class AnnualReport {

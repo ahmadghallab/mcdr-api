@@ -13,6 +13,7 @@ import { Searchable } from 'src/core/search/searchable.decorator';
     type: entity.type,
     href: SearchHrefBuilder.forPlace(entity.type)
   }),
+  condition: (entity: Place) => entity.status === PublishStatus.Published,
 })
 @Entity('places')
 export class Place {

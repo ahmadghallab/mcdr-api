@@ -13,6 +13,7 @@ import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
     type: entity.type,
     href: SearchHrefBuilder.forLegislation(entity.type),
   }),
+  condition: (entity: Legislation) => entity.status === PublishStatus.Published,
 })
 @Entity('legislations')
 export class Legislation {

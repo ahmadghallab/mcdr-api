@@ -10,6 +10,7 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeor
   extra: () => ({
     href: SearchHrefBuilder.forDocumentary()
   }),
+  condition: (entity: Documentary) => entity.status === PublishStatus.Published,
 })
 @Entity('documentaries')
 export class Documentary {

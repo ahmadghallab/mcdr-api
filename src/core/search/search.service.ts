@@ -39,7 +39,7 @@ export class SearchService {
   async getContext(question: string, limit = 5): Promise<string> {
     const result = await this.search(question, {
       limit,
-      semantic: true,
+      semantic: false,
     });
 
     return this.buildContext(result.hits);
