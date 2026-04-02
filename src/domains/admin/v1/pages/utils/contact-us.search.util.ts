@@ -3,37 +3,20 @@ import { ContactUs } from "../entities/contact.entity";
 export function buildContactUsSearchableText(contact: ContactUs): string {
   const parts: string[] = [];
 
-  parts.push(
-    `contact ${contact.name.en} ${contact.name.ar}`
-  );
+  const add = (text: string) => parts.push(text);
 
-  parts.push(
-    `email contact mail ${contact.email}`
-  );
-
-  parts.push(
-    `hotline phone call number ${contact.hotline}`
-  );
-
-  parts.push(
-    `working hours schedule timing ${contact.workHours.en} ${contact.workHours.ar}`
-  );
+  add(`contact تواصل ${contact.name.en} ${contact.name.ar}`);
+  add(`email mail بريد ايميل ${contact.email}`);
+  add(`phone hotline هاتف رقم خط ساخن ${contact.hotline}`);
+  add(`working hours ساعات العمل مواعيد العمل ${contact.workHours.en} ${contact.workHours.ar}`);
 
   for (const branch of contact.branches) {
-    parts.push(
-      `branch ${branch.name.en} ${branch.name.ar}`
-    );
-
-    parts.push(
-      `address location ${branch.address.en} ${branch.address.ar}`
-    );
-
-    parts.push(
-      `phone tel ${branch.tel.join(' ')}`
-    );
+    add(`branch فرع ${branch.name.en} ${branch.name.ar}`);
+    add(`address location عنوان ${branch.address.en} ${branch.address.ar}`);
+    add(`phone هاتف ${branch.tel.join(' ')}`);
 
     if (branch.fax?.length) {
-      parts.push(`fax ${branch.fax.join(' ')}`);
+      add(`fax فاكس ${branch.fax.join(' ')}`);
     }
   }
 

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { convertToModelMessages, streamText, UIMessage } from 'ai';
 import { Response } from 'express';
-import { google } from '@ai-sdk/google';
 import { openai } from '@ai-sdk/openai';
 import { getMessageText } from './chatbot.utils';
 import { SearchService } from 'src/core/search/search.service';
@@ -50,17 +49,14 @@ ${question}
     return `
 You are a CMS assistant.
 
-Rules:
+STRICT RULES:
 - Answer ONLY using the provided context.
-- Reply in the SAME language as the user (Arabic or English).
-- If the answer is missing, say "I don't know."
-
-Notes:
-The context comes from the CMS, flattened into "searchable_text".
-Some content may originate from block-based editors.
-Treat all text as normal readable paragraphs.
-Do not mention blocks or field names.
-          `;
+- ALWAYS reply in the SAME language as the user.
+- If the answer is missing, reply EXACTLY:
+  - "I don't know." for English
+  - "لا أعرف." for Arabic
+- Do not add explanations or variations.
+`;
   }
 
   private streamFallback(response: Response) {
@@ -76,7 +72,7 @@ Do not mention blocks or field names.
 
   async genericChat(messages: UIMessage[], response: Response) {
     const result = streamText({
-      model: google('gemini-2.5-flash-lite'),
+      model: openai('gpt-4.1-mini'),
       messages: [
         { 
           role: 'system', 
