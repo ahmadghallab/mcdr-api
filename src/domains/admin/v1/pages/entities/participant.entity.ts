@@ -3,16 +3,18 @@ import { PublishStatus } from 'src/core/common/enums/publish-status.enum';
 import { ParticipantType } from '../enums/participant-type.enum';
 import { Searchable } from 'src/core/search/searchable.decorator';
 import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
+import { buildParticipantSearchableText } from '../utils/participant.search.util';
 
-// @Searchable({
-//   index: 'global',
-//   type: 'participant',
-//   pick: ['aname', 'ename'],
-//   extra: (entity: Participant) => ({
-//     href: SearchHrefBuilder.forParticipant(entity.type),
-//   }),
-//   condition: (entity: Participant) => entity.status === PublishStatus.Published,
-// })
+@Searchable({
+  index: 'global',
+  type: 'participant',
+  pick: ['aname', 'ename'],
+  extra: (entity: Participant) => ({
+    href: SearchHrefBuilder.forParticipant(entity.type),
+    searchable_text: buildParticipantSearchableText(entity),
+  }),
+  condition: (entity: Participant) => entity.status === PublishStatus.Published,
+})
 @Entity('participants')
 @Index('status_type_idx', ['status', 'type'])
 export class Participant {

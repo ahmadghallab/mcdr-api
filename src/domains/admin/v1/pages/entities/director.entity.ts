@@ -3,13 +3,15 @@ import { Translation } from 'src/core/common/types/translation.type';
 import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
 import { Searchable } from 'src/core/search/searchable.decorator';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import { buildDirectorSearchableText } from '../utils/director.search.util';
 
 @Searchable({
   index: 'global',
   type: 'director',
   pick: ['name.en', 'name.ar'],
-  extra: () => ({
-    href: SearchHrefBuilder.forDirector()
+  extra: (entity: Director) => ({
+    href: SearchHrefBuilder.forDirector(),
+    searchable_text: buildDirectorSearchableText(entity),
   }),
   condition: (entity: Director) => entity.status === PublishStatus.Published,
 })

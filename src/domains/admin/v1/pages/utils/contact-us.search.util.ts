@@ -1,9 +1,8 @@
+import { createSearchBuilder } from "src/core/search/search.util";
 import { ContactUs } from "../entities/contact.entity";
 
 export function buildContactUsSearchableText(contact: ContactUs): string {
-  const parts: string[] = [];
-
-  const add = (text: string) => parts.push(text);
+  const { add, build } = createSearchBuilder();
 
   add(`contact تواصل ${contact.name.en} ${contact.name.ar}`);
   add(`email mail بريد ايميل ${contact.email}`);
@@ -20,7 +19,7 @@ export function buildContactUsSearchableText(contact: ContactUs): string {
     }
   }
 
-  return parts.join(' ');
+  return build();
 }
 
 

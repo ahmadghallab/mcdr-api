@@ -168,3 +168,17 @@ function splitTextIntoChunks(text: string, size: number, overlap: number): strin
 export function shouldIndex(entity: any, meta: SearchableConfig): boolean {
   return meta.condition ? meta.condition(entity) : true;
 }
+
+export function createSearchBuilder() {
+  const parts: string[] = [];
+
+  const add = (...values: (string | undefined | null)[]) => {
+    values.forEach((v) => {
+      if (v && v.trim()) parts.push(v);
+    });
+  };
+
+  const build = () => parts.join(' ');
+
+  return { add, build };
+}
