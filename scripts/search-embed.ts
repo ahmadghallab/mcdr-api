@@ -29,7 +29,9 @@ async function setupEmbeddings() {
   });
 
   console.log('⏳ Waiting for Meili task...');
-  await search.client.tasks.waitForTask(task.taskUid);
+  await search.client.tasks.waitForTask(task.taskUid, {
+    timeout: 300000
+  });
 
   console.log('🎉 Embeddings ready!');
   process.exit(0);

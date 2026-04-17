@@ -1,4 +1,3 @@
-import { PublishStatus } from "../common/enums/publish-status.enum";
 import { SearchableConfig } from "./searchable.decorator";
 
 function getValueByPath(obj: any, path: string) {
@@ -122,21 +121,21 @@ export function prepareSearchDocuments(entity: any, meta: SearchableConfig): any
   const compositeParentId = `${meta.type}_${entity.id}`; // Common ID for both types
 
   // --- CASE 1: Simple Entities (FAQs) ---
-  if (!meta.chunked) {
-    const searchable_text = String(extra.searchable_text ?? buildSearchableText(flattened) ?? '');
-    return [{
-      id: compositeParentId, // For single docs, the ID and Parent ID can be the same
-      parent_id: compositeParentId, 
-      type: meta.type,
-      ...flattened,
-      searchable_text,
-      ...extra,
-    }];
-  }
+  // if (!meta.chunked) {
+  //   const searchable_text = String(extra.searchable_text ?? buildSearchableText(flattened) ?? '');
+  //   return [{
+  //     id: compositeParentId, // For single docs, the ID and Parent ID can be the same
+  //     parent_id: compositeParentId, 
+  //     type: meta.type,
+  //     ...flattened,
+  //     searchable_text,
+  //     ...extra,
+  //   }];
+  // }
 
   // --- CASE 2: Huge Pages (Chunked) ---
   const fullText = buildSearchableText(flattened);
-  const chunks = splitTextIntoChunks(fullText, 1500, 200);
+  const chunks = splitTextIntoChunks(fullText, 700, 100);
 
   return chunks.map((chunk, i) => ({
     id: `${compositeParentId}_${i}`, // Unique ID per chunk

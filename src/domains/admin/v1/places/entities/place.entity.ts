@@ -4,6 +4,7 @@ import { LocationType } from 'src/core/common/enums/location-type.enum';
 import { TranslationDto } from 'src/core/common/dto/translation.dto';
 import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
 import { Searchable } from 'src/core/search/searchable.decorator';
+import { buildPlaceSearchableText } from '../../pages/utils/place.search.util';
 
 @Searchable({
   index: 'global',
@@ -11,7 +12,8 @@ import { Searchable } from 'src/core/search/searchable.decorator';
   pick: ['address.en', 'address.ar'],
   extra: (entity: Place) => ({
     type: entity.type,
-    href: SearchHrefBuilder.forPlace(entity.type)
+    href: SearchHrefBuilder.forPlace(entity.type),
+    searchable_text: buildPlaceSearchableText(entity)
   }),
   condition: (entity: Place) => entity.status === PublishStatus.Published,
 })

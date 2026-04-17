@@ -27,7 +27,7 @@ export class SearchService {
         ? {
             hybrid: {
               embedder: 'openai',
-              semanticRatio: 0.8,
+              semanticRatio: 0.7,
             },
           }
         : {}),
@@ -36,10 +36,10 @@ export class SearchService {
     return this.index.search(query, searchOptions);
   }
 
-  async getContext(question: string, limit = 5): Promise<string> {
+  async getContext(question: string, limit = 25): Promise<string> {
     const result = await this.search(question, {
       limit,
-      semantic: false,
+      semantic: true,
     });
 
     return this.buildContext(result.hits);

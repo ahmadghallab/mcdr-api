@@ -20,7 +20,10 @@ async function searchSetup() {
     pagination: { maxTotalHits: 1000 }, 
   });
 
-  await search.client.tasks.waitForTask(settingsTask.taskUid);
+  await search.client.tasks.waitForTask(settingsTask.taskUid, {
+    timeout: 300000
+  });
+  
   console.log('✅ Settings Synced!');
   process.exit(0);
 }

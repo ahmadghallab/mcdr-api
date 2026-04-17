@@ -13,7 +13,6 @@ import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
 @Searchable({
   index: 'global',
   type: 'faq',
-  chunked: true,
   pick: ['qEn', 'qAr', 'aEn', 'aAr'],
   extra: (faq: Faq) => ({
     href: SearchHrefBuilder.forFaq(faq.department),

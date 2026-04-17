@@ -4,6 +4,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeor
 import { LegislationType } from '../enums/legislation-type.enum';
 import { Searchable } from 'src/core/search/searchable.decorator';
 import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
+import { buildFileSearchableText } from '../utils/file.search.util';
 
 @Searchable({
   index: 'global',
@@ -12,6 +13,7 @@ import { SearchHrefBuilder } from 'src/core/search/search-href.builder';
   extra: (entity: Legislation) => ({
     type: entity.type,
     href: SearchHrefBuilder.forLegislation(entity.type),
+    searchable_text: buildFileSearchableText(entity),
   }),
   condition: (entity: Legislation) => entity.status === PublishStatus.Published,
 })

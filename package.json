@@ -24,12 +24,12 @@
     "migration:create": "npm run typeorm -- migration:create ./src/database/migrations/$npm_config_name",
     "migration:run": "npm run typeorm migration:run -- -d ./src/core/config/typeorm.config.ts",
     "migration:revert": "npm run typeorm migration:revert -- -d ./src/core/config/typeorm.config.ts",
+    "search:flush-search": "node dist/scripts/search-flush.js",
     "search:setup": "node dist/scripts/search-setup.js",
     "search:sync": "node dist/scripts/search-sync.js",
-    "search:flush-docs": "node dist/scripts/search-docs-flush.js",
-    "search:flush-search": "node dist/scripts/search-flush.js",
     "search:embed": "node dist/scripts/search-embed.js",
-    "search:reindex": "pnpm search:flush-search && pnpm search:setup && pnpm search:sync"
+    "search:flush-docs": "node dist/scripts/search-docs-flush.js",
+    "search:reindex": "pnpm search:flush-search && pnpm search:setup && pnpm search:sync && pnpm search:embed"
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.36",

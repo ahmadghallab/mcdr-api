@@ -4,13 +4,15 @@ import { PublishStatus } from "src/core/common/enums/publish-status.enum";
 import { Translation } from "src/core/common/types/translation.type";
 import { Searchable } from "src/core/search/searchable.decorator";
 import { SearchHrefBuilder } from "src/core/search/search-href.builder";
+import { buildFileSearchableText } from "../utils/file.search.util";
 
 @Searchable({
   index: 'global',
   type: 'signature_file',
   pick: ['name.en', 'name.ar'],
-  extra: () => ({
-    href: SearchHrefBuilder.forSignatureFile()
+  extra: (entity: SignatureFile) => ({
+    href: SearchHrefBuilder.forSignatureFile(),
+    searchable_text: buildFileSearchableText(entity),
   }),
   condition: (entity: SignatureFile) => entity.status === PublishStatus.Published,
 })
