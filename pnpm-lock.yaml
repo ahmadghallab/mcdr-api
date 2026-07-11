@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@ai-sdk/openai':
         specifier: ^3.0.36
-        version: 3.0.36(zod@4.3.6)
+        version: 3.0.36(zod@4.4.3)
       '@nestjs/common':
         specifier: ^10.0.0
         version: 10.4.7(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -40,7 +40,7 @@ importers:
         version: 10.0.2(@nestjs/common@10.4.7(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.7)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(mysql2@3.11.5)(ts-node@10.9.2(@types/node@20.17.6)(typescript@5.6.3)))
       ai:
         specifier: ^6.0.62
-        version: 6.0.62(zod@4.3.6)
+        version: 6.0.62(zod@4.4.3)
       bcrypt:
         specifier: ^5.1.1
         version: 5.1.1
@@ -74,6 +74,9 @@ importers:
       typeorm:
         specifier: ^0.3.20
         version: 0.3.20(mysql2@3.11.5)(ts-node@10.9.2(@types/node@20.17.6)(typescript@5.6.3))
+      zod:
+        specifier: ^4.4.3
+        version: 4.4.3
     devDependencies:
       '@nestjs/cli':
         specifier: ^10.0.0
@@ -3234,37 +3237,37 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zod@4.3.6:
-    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
+  zod@4.4.3:
+    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
 
 snapshots:
 
-  '@ai-sdk/gateway@3.0.29(zod@4.3.6)':
+  '@ai-sdk/gateway@3.0.29(zod@4.4.3)':
     dependencies:
       '@ai-sdk/provider': 3.0.6
-      '@ai-sdk/provider-utils': 4.0.11(zod@4.3.6)
+      '@ai-sdk/provider-utils': 4.0.11(zod@4.4.3)
       '@vercel/oidc': 3.1.0
-      zod: 4.3.6
+      zod: 4.4.3
 
-  '@ai-sdk/openai@3.0.36(zod@4.3.6)':
+  '@ai-sdk/openai@3.0.36(zod@4.4.3)':
     dependencies:
       '@ai-sdk/provider': 3.0.8
-      '@ai-sdk/provider-utils': 4.0.15(zod@4.3.6)
-      zod: 4.3.6
+      '@ai-sdk/provider-utils': 4.0.15(zod@4.4.3)
+      zod: 4.4.3
 
-  '@ai-sdk/provider-utils@4.0.11(zod@4.3.6)':
+  '@ai-sdk/provider-utils@4.0.11(zod@4.4.3)':
     dependencies:
       '@ai-sdk/provider': 3.0.6
       '@standard-schema/spec': 1.1.0
       eventsource-parser: 3.0.6
-      zod: 4.3.6
+      zod: 4.4.3
 
-  '@ai-sdk/provider-utils@4.0.15(zod@4.3.6)':
+  '@ai-sdk/provider-utils@4.0.15(zod@4.4.3)':
     dependencies:
       '@ai-sdk/provider': 3.0.8
       '@standard-schema/spec': 1.1.0
       eventsource-parser: 3.0.6
-      zod: 4.3.6
+      zod: 4.4.3
 
   '@ai-sdk/provider@3.0.6':
     dependencies:
@@ -4273,13 +4276,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ai@6.0.62(zod@4.3.6):
+  ai@6.0.62(zod@4.4.3):
     dependencies:
-      '@ai-sdk/gateway': 3.0.29(zod@4.3.6)
+      '@ai-sdk/gateway': 3.0.29(zod@4.4.3)
       '@ai-sdk/provider': 3.0.6
-      '@ai-sdk/provider-utils': 4.0.11(zod@4.3.6)
+      '@ai-sdk/provider-utils': 4.0.11(zod@4.4.3)
       '@opentelemetry/api': 1.9.0
-      zod: 4.3.6
+      zod: 4.4.3
 
   ajv-formats@2.1.1(ajv@8.12.0):
     optionalDependencies:
@@ -6741,4 +6744,4 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod@4.3.6: {}
+  zod@4.4.3: {}

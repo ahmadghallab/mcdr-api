@@ -5,6 +5,7 @@ import { SearchResultFormatterService } from './search-result-formatter.service'
 
 @Module({
   controllers: [SearchController],
-  providers: [SearchService, SearchResultFormatterService],
+  providers: [SearchResultFormatterService, SearchService],
+  exports: [SearchResultFormatterService]
 })
 export class SearchQueryModule {}

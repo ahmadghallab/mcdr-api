@@ -8,3 +8,7 @@ export function getMessageText(message?: UIMessage): string {
     .map((p: any) => p.text)
     .join('');
 }
+
+export function isArabic(text: string): boolean {
+  return /[\u0600-\u06FF]/.test(text);
+}

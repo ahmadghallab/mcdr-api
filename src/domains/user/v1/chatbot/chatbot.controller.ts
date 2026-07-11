@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Post, Query, Res } from '@nestjs/common';
 import { ChatbotService } from './chatbot.service';
 import { UIMessage } from 'ai';
 import { Response } from 'express';
@@ -17,8 +17,9 @@ export class ChatbotController {
   chat(
     @Body() body: { messages: UIMessage[] },
     @Res() res: Response,
+    @Headers('accept-language') lang: string
   ) {
-    return this.chatService.chat(body.messages, res);
+    return this.chatService.chat(body.messages, res, lang);
   }
 
   @Public()
